@@ -24,3 +24,6 @@ We restructure the data for passing to the ImageFolder class of Dataset in torch
 We allow for learning rate scheduling, changing batch size etc.
 
 
+![image](https://user-images.githubusercontent.com/48018617/194888313-a586faca-3ff0-4423-9b87-aba254cec9ba.png)
+
+At the initial first working copy, no hyperparamter tuning, we get 82.1% accuracy on the validation set. Acceptable for the first day.
