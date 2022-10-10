@@ -23,4 +23,4 @@ def mktrainval(args, preprocess):
   valid_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
   test_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
   
-  raise(NotImplementedError)
+  return train_loader, valid_loader, test_loader, train_set, valid_set, test_set
