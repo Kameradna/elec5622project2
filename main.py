@@ -100,4 +100,7 @@ if __name__ == "__main__":
                     help="Learning rate")
   parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
                     help="Learning rate")
+  #args.batch_size, num_workers=args.num_workers
+  parser.add_argument("--batch_size", type=int, required=False, default=16,
+                    help="Batch size for training")
   main(parser.parse_args())
