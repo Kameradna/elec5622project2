@@ -2,9 +2,9 @@
 
 
 ## Datasets
-gdown https://drive.google.com/drive/folders/1gHLaMCayQtvR7viV-2_0TC8H8Fdv6n70
+gdown https://drive.google.com/file/d/1reoKyZ3SwNDcZlNmT_031VgvQSI4dkhU/view?usp=sharing --fuzzy
+unzip "Three Datasets for Training, Validation and Test.zip" -d data
 
-unzip data.zip -d data
 unzip data/test.zip data/training.zip data/validation.zip
 
 ## Code itself
