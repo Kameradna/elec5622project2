@@ -54,11 +54,11 @@ def main(args):
                                                    
   #initial validation
   model.eval()
-  valid_acc = parts.run_eval(args, model, step, stats, valid_loader)
+  stats = parts.run_eval(args, model, step, stats, valid_loader)
   
   #main training loop
   for x, y in parts.recycle(train_loader):
-    
+    step += 1
     #onto training
     model.train()
     #move to device
@@ -82,8 +82,8 @@ def main(args):
     
     #run validation
     model.eval()
-    train_acc = parts.run_eval(args, model, step, stats, train_loader)
-    valid_acc = parts.run_eval(args, model, step, stats, valid_loader)
+    stats = parts.run_eval(args, model, step, stats, train_loader)
+    stats = parts.run_eval(args, model, step, stats, valid_loader)
   
   print(f"Done training!")
   
