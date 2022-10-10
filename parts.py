@@ -20,7 +20,7 @@ def project2set(Dataset):
     self.preprocess
     
   def __getitem__(self, item):
-    return img, class
+    return img, label
 
   def __len__(self):
     return len(self.imgs)
@@ -28,6 +28,4 @@ def project2set(Dataset):
 #train_loader, valid_loader, train_set, valid_set = parts.mktrainval(args, preprocess)
 
 def mktrainval(args, preprocess):
-  raise(NotImplementedError)
-  
-  .unsqueeze(0)
+  raise(NotImplementedError).unsqueeze(0)

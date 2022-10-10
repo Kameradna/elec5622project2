@@ -14,7 +14,7 @@ import argparse
 import torch
 
 #more boilerplate stuff
-import pandas
+# import pandas
 import numpy as np
 
 import parts
@@ -40,7 +40,7 @@ def main(args):
   #optimiser, loss function, lr scheduler
   criterion = torch.nn.MSELoss.to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
-  optim_schedule = torch.optim.lr_scheduler.StepLR(optim=optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False
+  optim_schedule = torch.optim.lr_scheduler.StepLR(optim=optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
   
   #move to GPU if present
   model = model.to(device)
@@ -91,13 +91,13 @@ def main(args):
   #graphs, save to csv, etc
   
 if __name__ == "__main__":
-  parser = argparse.argparser()
-  parser.add_argument("--datadir", required=True,
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--datadir data", required=True,
                     help="Path to the data folder, preprocessed for torchvision.")
   parser.add_argument("--lr", type=int, required=True,
                     help="Learning rate")
-  parser.add_argument("--lr_step_size", type=float, required=False, default=10
+  parser.add_argument("--lr_step_size", type=float, required=False, default=10,
                     help="Learning rate")
-  parser.add_argument("--lr_gamma", type=float, required=False, default=0.1
+  parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
                     help="Learning rate")
   main(parser.parse_args())
