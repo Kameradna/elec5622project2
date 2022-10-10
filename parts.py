@@ -1,6 +1,8 @@
-import torchvision
 import torch
-from torch.utils.data import ImageFolder, SubsetRandomSampler, DataLoader
+import torchvision
+from os import path
+from torch.utils.data import SubsetRandomSampler, DataLoader
+from torchvision.datasets import ImageFolder
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
@@ -15,9 +17,9 @@ def run_eval(args, model, step, stats, data_loader):
 
 def mktrainval(args, preprocess):
   
-  train_set = ImageFolder(pjoin(args.datadir,'training'),transform=preprocess)
-  valid_set = ImageFolder(pjoin(args.datadir,'validation'),transform=preprocess)
-  test_set = ImageFolder(pjoin(args.datadir,'test'),transform=preprocess)
+  train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
+  valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)
+  test_set = ImageFolder(path.join(args.datadir,'test'),transform=preprocess)
   
   train_loader = DataLoader(train_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
   valid_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)

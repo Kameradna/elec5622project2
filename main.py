@@ -92,7 +92,7 @@ def main(args):
   
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--datadir data", required=True,
+  parser.add_argument("--datadir", default="data", required=False,
                     help="Path to the data folder, preprocessed for torchvision.")
   parser.add_argument("--lr", type=float, required=True,
                     help="Learning rate")
