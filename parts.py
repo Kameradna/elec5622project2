@@ -10,20 +10,6 @@ def recycle(iterable): #stolen from Google Brain Big Transfer
       
 def run_eval(args, data_loader):
   raise(NotImplementedError)
-
-  
-def project2set(Dataset):
-  def __init__(self, args, preprocess):
-    raise(NotImplementedError)
-    self.imgs
-    self.classes
-    self.preprocess
-    
-  def __getitem__(self, item):
-    return img, label
-
-  def __len__(self):
-    return len(self.imgs)
   
 #train_loader, valid_loader, train_set, valid_set = parts.mktrainval(args, preprocess)
 
