@@ -94,7 +94,7 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--datadir data", required=True,
                     help="Path to the data folder, preprocessed for torchvision.")
-  parser.add_argument("--lr", type=int, required=True,
+  parser.add_argument("--lr", type=float, required=True,
                     help="Learning rate")
   parser.add_argument("--lr_step_size", type=float, required=False, default=10,
                     help="Learning rate")
