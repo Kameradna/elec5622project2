@@ -3,15 +3,62 @@ import torchvision
 from os import path
 from torch.utils.data import SubsetRandomSampler, DataLoader
 from torchvision.datasets import ImageFolder
+import time
+import numpy as np
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
   while True:
     for i in iterable:
       yield i
+
+def accuracy(output, target, topk=(1,)): #from pytorch/references/classification/utils.py
+    """Computes the accuracy over the k top predictions for the specified values of k"""
+    with torch.inference_mode():#same as the old no_grad context manager
+        maxk = max(topk)
+        batch_size = target.size(0)
+        if target.ndim == 2:
+            target = target.max(dim=1)[1]
+
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        correct = pred.eq(target[None])
+
+        res = []
+        for k in topk:
+            correct_k = correct[:k].flatten().sum(dtype=torch.float32)
+            res.append(correct_k * (100.0 / batch_size))
+        return res
       
-def run_eval(args, model, step, stats, data_loader):
-  raise(NotImplementedError)
+def run_eval(args, model, step, stats, device, data_loader, split): #also largely from Google Brain Team Big Transfer
+  #setup
+  all_c, all_top1, all_top2 = [], [], []
+  end = time.perf_counter()
+
+  for b, (x, y) in enumerate(data_loader):
+    with torch.no_grad():
+      x = x.to(device, non_blocking=True)
+      y = y.to(device, non_blocking=True)
+
+      logits = model(x)
+      c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
+
+      #get stats
+      top1, top2 = accuracy(logits, y, topk=(1, 2))
+
+      #group stats and move to cpu
+      all_c.extend(c.cpu().numpy())  # Also ensures a sync point.
+      all_top1.append(top1.cpu().numpy())
+      all_top2.append(top2.cpu().numpy())
+  
+  stats[f'{split}_acc'][step] = np.mean(all_top1)
+  stats[f'{split}_loss'][step] = np.mean(all_c)
+
+  #close
+  time_taken = time.perf_counter() - end
+  if args.verbose:
+    print(f"{split.capitalize()}@{step}: loss {np.mean(all_c):.5f} : top1 {np.mean(all_top1):.2f}% : top2 {np.mean(all_top2):.2f}% : took {time_taken:.2f} seconds")
+  return stats
   
 #train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
 
