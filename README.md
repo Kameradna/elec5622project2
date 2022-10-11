@@ -43,6 +43,7 @@ With an initial understanding of the landscape of the learning rate and batch si
 We get quite promising results from this regime, for example this run with identical hyperparameters to our happy guess at the beginning;
 ![Training and validation loss](https://user-images.githubusercontent.com/48018617/195115413-7b780b47-7f02-4129-a7c5-e113ce92da9c.png)
 ![Validation accuracy vs step](https://user-images.githubusercontent.com/48018617/195116133-eb920351-95aa-467c-82c4-2f8fbb32c4db.png)
+
 We could consider this a somewhat over-regularised scheme, with training loss staying well above validation loss.
 
 
