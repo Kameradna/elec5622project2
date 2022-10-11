@@ -11,5 +11,5 @@ __pycache__
 save
 output.txt
 *.png
-grid_search_results*
-.~lock.grid_search_results_with_graphs.ods#
+*csv*
+*.ods*

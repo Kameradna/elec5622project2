@@ -28,19 +28,19 @@ def grid_search(args):
 
   best_acc = 0.0
   grid_dict = {
-    'base_lr': [0.01, 0.0075, 0.005, 0.003, 0.002, 0.001, 0.0005],
-    'lr_step_size':[100, 200],
-    'lr_gamma':[0.1, 0.5],
-    'batch_size':[32, 64, 128]
+    'base_lr': [0.003],
+    'batch_size':[64, 128],
+    'repeats':range(25)
   }
 
   grid = ParameterGrid(grid_dict)
   print(f"Grid searching across {len(grid)} combinations")
   for params in grid:
     args.base_lr = params['base_lr']
-    args.lr_step_size = params['lr_step_size']
-    args.lr_gamma = params['lr_gamma']
+    # args.lr_step_size = params['lr_step_size']
+    # args.lr_gamma = params['lr_gamma']
     args.batch_size = params['batch_size']
+    args.early_stop_steps = int(3*8707/args.batch_size)
     
     stats, step, model, stop_reason = main(args)
     if stats['test_acc'][step] > best_acc:
@@ -77,9 +77,9 @@ def main(args):
   
   #misc dataparallel
   device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
   #getting alexnet and altering the final output layer
   model = alexnet(weights=weights)
-
   num_features = model.classifier[-1].in_features
   model.classifier[-1] = torch.nn.Linear(num_features, len(valid_set.classes),bias=True)
 
@@ -250,13 +250,13 @@ if __name__ == "__main__":
                     help="Save pth for every run?")
   parser.add_argument("--base_lr", type=float, required=False, default=0.003,
                     help="Base learning rate")
-  parser.add_argument("--lr_step_size", type=int, required=False, default=10,
+  parser.add_argument("--lr_step_size", type=int, required=False, default=100,
                     help="Learning rate schedule step size")
   parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
                     help="Learning rate multiplier every step size")
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
-  parser.add_argument("--early_stop_steps", type=int, required=False, default=30,
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=100,
                     help="Number of epochs of no learning to terminate")
   parser.add_argument("--num_workers", type=int, required=False, default=8,
                     help="Number of workers for dataloading")
