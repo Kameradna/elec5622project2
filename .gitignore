@@ -5,3 +5,8 @@ data
 
 #generic
 __pycache__
+
+
+#output
+save
+output.txt

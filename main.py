@@ -12,17 +12,62 @@ Move run_eval to parts.py
 from torchvision.models import alexnet, AlexNet_Weights
 import argparse
 import torch
+from sklearn.model_selection import ParameterGrid
+import os
 
 #more boilerplate stuff
-# import pandas
-# import numpy as np
+import pandas as pd
+import numpy as np
 from copy import deepcopy
+import time
 
 #other companion code
 import parts
 
+def grid_search(args):
+
+  best_acc = 0.0
+  grid_dict = {
+    'base_lr': [0.01, 0.0075, 0.005, 0.003, 0.002, 0.001, 0.0005],
+    'lr_step_size':[100, 200],
+    'lr_gamma':[0.1, 0.5],
+    'batch_size':[32, 64, 128]
+  }
+
+  grid = ParameterGrid(grid_dict)
+  print(f"Grid searching across {len(grid)} combinations")
+  for params in grid:
+    args.base_lr = params['base_lr']
+    args.lr_step_size = params['lr_step_size']
+    args.lr_gamma = params['lr_gamma']
+    args.batch_size = params['batch_size']
+    
+    stats, step, model, stop_reason = main(args)
+    if stats['test_acc'][step] > best_acc:
+      best_acc = stats['test_acc'][step]
+      best_model = model
+      best_args = args
+      best_stats = stats
+      best_stop_reason = stop_reason
+
+  print(f"The best combination of params found was {best_args}, with test accuracy {best_acc}")
+  print(f"Saving best model in {args.savedir}, along with best_stats.csv")
+  if os.path.exists(args.savedir) != True:
+      os.mkdir(args.savedir)
+
+  args = best_args
+  name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason]
+  name = f"{'_'.join(name_args)}_{best_stop_reason}_best_{best_acc}.pth"
+  torch.save(best_model.module.state_dict(),os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
+
+  name = f"{'_'.join(name_args)}_{best_stop_reason}_best_{best_acc}.csv"
+  best_stat_df = pd.DataFrame(best_stats)
+  best_stat_df.to_csv(os.path.join(args.savedir,name))
+
 def main(args):
   print("Loading model, weights and data")
+  print(f"args = {args}")
+  end = time.perf_counter()
   #getting transforms
   weights = AlexNet_Weights.DEFAULT
   preprocess = weights.transforms()
@@ -65,12 +110,21 @@ def main(args):
   print("Running initial validation")
   model.eval()
   stats = parts.run_eval(args, model, step, stats, device, valid_loader, 'valid')
-  stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
+  if args.training_stats:
+    stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
+
+  time_taken = time.perf_counter()-end
+  print(f"Stats@{step}: valid loss {stats['valid_loss'][step]:.5f},",
+                      f"valid accuracy {stats['valid_acc'][step]:.2f}%",
+                      f"time taken loading {time_taken:.2f}s"
+                    )
+
   
   print("Beginning training")
   try:
     #main training loop
     for x, y in parts.recycle(train_loader):
+      end = time.perf_counter()
       step += 1 #so by design, the first trained epoch is 0, while the first initial starting point is at step -1
       if args.verbose:
         print(f"Training step {step}")
@@ -101,31 +155,48 @@ def main(args):
       stats['train_loss'][step] = float(c.data.cpu().numpy())
       stats['lr'][step] = optim_schedule.get_last_lr()[0]
 
+      #grab the best model if it happens
+      if stats['valid_acc'][step] > best_valid_acc:
+        best_valid_acc = stats['valid_acc'][step]
+        best_weights = deepcopy(model.state_dict())
+        best_step = step
+
+      time_taken = time.perf_counter()-end
       if args.training_stats:
         print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
                               f"train accuracy {stats['train_acc'][step]:.2f}%,",
                               f"valid loss {stats['valid_loss'][step]:.5f},",
                               f"valid accuracy {stats['valid_acc'][step]:.2f}%",
-                              f"learning rate {stats['lr'][step]}"
+                              f"learning rate {stats['lr'][step]:.8f}",
+                              f"time taken this step {time_taken:.2f}s",
+                              f"{'(best)' if best_step == step else ''}"
                     )
       else:
         print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
                               f"valid loss {stats['valid_loss'][step]:.5f},",
                               f"valid accuracy {stats['valid_acc'][step]:.2f}%",
-                              f"learning rate {stats['lr'][step]}"
+                              f"learning rate {stats['lr'][step]:.8f}",
+                              f"time taken this step {time_taken:.2f}s",
+                              f"{'(best)' if best_step == step else ''}"
                     )
 
-      #grab the best model if it happens
-      if stats['valid_acc'][step] > best_valid_acc:
-        best_weights = deepcopy(model.state_dict())
-        best_step = step
-
-      if step % args.lr_step_size == 0:
-        optim_schedule.step()
+      
+      
+      if step - args.early_stop_steps > best_step:
+        print(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
+        stop_reason = f'stagnate@{step}'
+        break
+      if step >= args.early_stop_steps*50:#at worst, this will run for 45 mins (1 step is 1.9s - 2.2s on average)
+        print(f"Learning has taken too long; {args.early_stop_steps*50} steps, terminating training and running test stats")
+        stop_reason = f'too_slow@{step}'
+        break
+        
+      optim_schedule.step()
       
       ######### end of training loop
   except KeyboardInterrupt:
-    print(f"Done training, calculating test accuracy!")
+    print(f"Keyboard interrupted training, calculating test accuracy!")
+    stop_reason = f'keyboard@{step}'
   
   #display best stats
   model.load_state_dict(best_weights)
@@ -136,18 +207,34 @@ def main(args):
                           f"train accuracy {stats['train_acc'][step]:.2f}%,",
                           f"valid loss {stats['valid_loss'][step]:.5f},",
                           f"valid accuracy {stats['valid_acc'][step]:.2f}%,",
-                          f"learning rate {stats['lr'][step]}"
+                          f"learning rate {stats['lr'][step]:.8f}"
                 )
   else:
     print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
                           f"valid loss {stats['valid_loss'][step]:.5f},",
                           f"valid accuracy {stats['valid_acc'][step]:.2f}%,",
-                          f"learning rate {stats['lr'][step]}"
+                          f"learning rate {stats['lr'][step]:.8f}"
                 )
 
   stats = parts.run_eval(args, model, step, stats, device, test_loader, 'test')
   print(f"Test stats@{step}: test loss {stats['test_loss'][step]:.5f},",
-                          f"test accuracy {stats['train_acc'][step]:.2f}%")
+                          f"test accuracy {stats['test_acc'][step]:.2f}%")
+
+  if args.savepth:
+    if os.path.exists(args.savedir) != True:
+      os.mkdir(args.savedir)
+    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}"]
+    name = f"{'_'.join(name_args)}.pth"
+    print(f"Saving model in {os.path.join(args.savedir,name)}")
+    torch.save({"checkpoint":model.module.state_dict()},os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
+  if args.savestats:
+    if os.path.exists(args.savedir) != True:
+      os.mkdir(args.savedir)
+    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}"]
+    name = f"{'_'.join(name_args)}.csv"
+    stat_df = pd.DataFrame(stats).to_csv(os.path.join(args.savedir,name))
+
+  return stats, step, model, stop_reason
 
   
   
@@ -155,19 +242,33 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--datadir", default="data", required=False,
                     help="Path to the data folder, preprocessed for torchvision.")
+  parser.add_argument("--savedir", default="save", required=False,
+                    help="Path to the save folder, for placement of csv and pth files.")
+  parser.add_argument("--savestats", default=True, action="store_true", required=False,
+                    help="Save stats for every run?")
+  parser.add_argument("--savepth", default=False, action="store_true", required=False,
+                    help="Save pth for every run?")
   parser.add_argument("--base_lr", type=float, required=False, default=0.003,
-                    help="Learning rate")
-  parser.add_argument("--lr_step_size", type=float, required=False, default=10,
-                    help="Learning rate")
+                    help="Base learning rate")
+  parser.add_argument("--lr_step_size", type=int, required=False, default=10,
+                    help="Learning rate schedule step size")
   parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
-                    help="Learning rate")
-  #args.batch_size, num_workers=args.num_workers
+                    help="Learning rate multiplier every step size")
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=30,
+                    help="Number of epochs of no learning to terminate")
   parser.add_argument("--num_workers", type=int, required=False, default=8,
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,
                     help="Print data all the time?")
   parser.add_argument("--training_stats", required=False, action="store_true", default=False,
                     help="Calculate training stats?")
-  main(parser.parse_args())
+  parser.add_argument("--grid_search", required=False, action="store_true", default=False,
+                    help="Run a grid search across some common hyperparameters?")
+  args = parser.parse_args()
+  
+  if args.grid_search:
+    grid_search(args)
+  else:
+    main(args)
