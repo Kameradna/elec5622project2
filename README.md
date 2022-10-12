@@ -13,8 +13,46 @@ rm -v "Three Datasets for Training, Validation and Test.zip" data/test.zip data/
 ```
 ## Prerequisites
 
-Install a conda env or your choice of sandboxed environment, yml files included.
+Install a conda env or your choice of sandboxed environment, yml files will be included.
 We just need python=3.x, pip, pytorch, torchvision, maybe some numpy and pandas.
+
+## How to use
+
+```shell
+python dataset_format.py #only need to run once
+python main.py --savestats #recommended, other params visible using -h, defaults should be functional for normal use case
+python process_output.py
+```
+Dataset_format puts the images in the training, validation and test sets into or use by the torchvision class ImageFolder.
+
+main.py runs either a single run with selectable parameters or a grid search (when using --grid_search, see -h) based on the values of grid_dict inside the function grid_search in main.py. parts.py is function definitions. main.py optionally saves pth for each run, csv for each run, and other functions see below.
+
+usage: main.py [-h] [--datadir DATADIR] [--savedir SAVEDIR] [--savestats] [--savepth] [--base_lr BASE_LR] [--lr_step_size LR_STEP_SIZE] [--lr_gamma LR_GAMMA]
+               [--batch_size BATCH_SIZE] [--early_stop_steps EARLY_STOP_STEPS] [--num_workers NUM_WORKERS] [--verbose] [--training_stats] [--grid_search]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --datadir DATADIR     Path to the data folder, preprocessed for torchvision.
+  --savedir SAVEDIR     Path to the save folder, for placement of csv and pth files.
+  --savestats           Save stats for every run?
+  --savepth             Save pth for every run?
+  --base_lr BASE_LR     Base learning rate
+  --lr_step_size LR_STEP_SIZE
+                        Learning rate schedule step size
+  --lr_gamma LR_GAMMA   Learning rate multiplier every step size
+  --batch_size BATCH_SIZE
+                        Batch size for training
+  --early_stop_steps EARLY_STOP_STEPS
+                        Number of epochs of no learning to terminate
+  --num_workers NUM_WORKERS
+                        Number of workers for dataloading
+  --verbose             Print data all the time?
+  --training_stats      Calculate training stats?
+  --grid_search         Run a grid search across some common hyperparameters?
+
+process_output.py takes the output csv files and reports the aggregated results in a single csv file grid_search_results.csv.
+
+
 
 ## Actual code
 Absolutely standard Alexnet from pytorch. The code was completed in less than a day.
