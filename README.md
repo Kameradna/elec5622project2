@@ -27,6 +27,7 @@ Dataset_format puts the images in the training, validation and test sets into or
 
 main.py runs either a single run with selectable parameters or a grid search (when using --grid_search, see -h) based on the values of grid_dict inside the function grid_search in main.py. parts.py is function definitions. main.py optionally saves pth for each run, csv for each run, and other functions see below.
 
+```shell
 usage: main.py [-h] [--datadir DATADIR] [--savedir SAVEDIR] [--savestats] [--savepth] [--base_lr BASE_LR] [--lr_step_size LR_STEP_SIZE] [--lr_gamma LR_GAMMA]
                [--batch_size BATCH_SIZE] [--early_stop_steps EARLY_STOP_STEPS] [--num_workers NUM_WORKERS] [--verbose] [--training_stats] [--grid_search]
 
@@ -49,6 +50,7 @@ optional arguments:
   --verbose             Print data all the time?
   --training_stats      Calculate training stats?
   --grid_search         Run a grid search across some common hyperparameters?
+```
 
 process_output.py takes the output csv files and reports the aggregated results in a single csv file grid_search_results.csv.
 
