@@ -40,7 +40,8 @@ With an initial understanding of the landscape of the learning rate and batch si
 ![Test acc vs base lr longer](https://user-images.githubusercontent.com/48018617/195110084-08b14ab6-14b6-4fc9-bf19-20721f59f84d.png)
 ![Test acc vs base lr longer128](https://user-images.githubusercontent.com/48018617/195110094-ec3cc6e6-a853-4092-b760-ffa26082996b.png)
 
-We get quite promising results from this regime, for example this run with identical hyperparameters to our happy guess at the beginning;
+We get quite promising results from this regime, for example this run with identical hyperparameters to our happy guess at the beginning; getting 85.33% validation accuracy.
+
 ![Training and validation loss](https://user-images.githubusercontent.com/48018617/195115413-7b780b47-7f02-4129-a7c5-e113ce92da9c.png)
 ![Validation accuracy vs step](https://user-images.githubusercontent.com/48018617/195116133-eb920351-95aa-467c-82c4-2f8fbb32c4db.png)
 
