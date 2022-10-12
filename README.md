@@ -95,6 +95,6 @@ A teammates computer was able to run the model with a batch size of 256, and we 
 ![loss vs step 256 0 006](https://user-images.githubusercontent.com/48018617/195250701-66f90036-ee57-41be-8c2f-409a3f0d5dea.png)
 ![valid acc vs step 256 0 006](https://user-images.githubusercontent.com/48018617/195250707-3f97dfdb-d6ca-4748-8897-17e88535afa8.png)
 
-Based on this positive result of acheiving 96.44% accuracy with the same early stopping rules as above, of stopping after 3 epochs, we can try batches of 512 if we can run them, as well as automated learning rate scheduling when learning stagnates.
+Based on this positive result of acheiving 96.44% accuracy with the same early stopping rules as above, of stopping after 3 epochs, we can try batches of 512 if we can run them, as well as automated learning rate scheduling when learning stagnates. Also noteworthy is the lack of overfitting, so longer runs should be possible with no consequence.
 
 ## Final model
