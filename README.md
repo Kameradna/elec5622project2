@@ -90,5 +90,5 @@ We could consider this a somewhat over-regularised scheme, with training loss st
 
 100 steps still only represents just 0.735 or 1.47 epochs respectively for batch sizes 64 and 128 (based on the 8707 image training set). We can standardise the testing to account for this, making the early stopping a function of batch size, and early stopping if there is no learning for 3 epochs (408 and 204 steps each for batch sizes 64 and 128). Let's explore some of the most promising hyperparameter options; learning rate 0.003, batch sizes 64 and 128, with a scheduler step size of 100, gamma 0.1.
 
-
+A teammates computer was able to run the model with a batch size of 256, and we found the higher learning rate of 0.006, no scheduling, to be a viable candidate for best training scheme.
 ## Final model
