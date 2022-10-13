@@ -1,6 +1,21 @@
 """
 This is the main functional section of the Project 2 cell classification,
-including main training loop and entry point for users to run the project
+including main training loop and entry point for users to run the project.
+
+Most interesting parts-
+
+- Using batch size to dictate patience of early stopping and ReduceLROnPlateau scheduler
+- Grid search using sklearn.model_selection.ParameterGrid
+- Using updated pytorch weights API to apply transforms to data
+- Saving non-DataParallel state_dict() for easier reloading
+- Friendly interface to run different combinations of parameters from the command line
+- Terminating long training via keyboard will still execute testing phase and report stats
+
+Defaults are 
+Batch size = 128 (use higher if you have access to more VRAM)
+Learning rate = 0.003 (optimal at batch size of 128, 0.006 better for higher batch sizes)
+Early stopping after 10 epochs of no improvement (1 epoch = 8707/batch_size steps)
+Learning rate * 0.1 after 5 epochs of no *significant* improvement (significant defined by defaults of ReduceLROnPlateau scheduler)
 """
 
 from torchvision.models import alexnet, AlexNet_Weights
@@ -24,8 +39,7 @@ def grid_search(args):
   grid_dict = {
     'base_lr': [0.003,0.006],
     'batch_size':[128],
-    'repeats':range(10),
-    'lr_gamma':[1.0]
+    'repeats':range(10)
   }
 
   grid = ParameterGrid(grid_dict)
@@ -35,7 +49,7 @@ def grid_search(args):
     # args.lr_step_size = params['lr_step_size']
     args.lr_gamma = params['lr_gamma']
     args.batch_size = params['batch_size']
-    args.early_stop_steps = int(3*8707/args.batch_size)
+    args.early_stop_steps = int(10*8707/args.batch_size) #10 epochs, patience of lr scheduler is 5 epochs
     
     #run main
     stats, step, model, stop_reason = main(args)
@@ -87,7 +101,7 @@ def main(args):
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
   # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
-  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='min', factor=args.lr_gamma) #other items default
+  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='min', factor=args.lr_gamma, patience=args.early_stop_steps//2) #other items default
   if args.early_stop_steps == 100: #if left at default
     args.early_stop_steps = int(3*8707/args.batch_size)
   
