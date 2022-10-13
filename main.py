@@ -52,7 +52,7 @@ def grid_search(args):
     args.early_stop_steps = int(10*8707/args.batch_size) #10 epochs, patience of lr scheduler is 5 epochs
     
     #run main
-    stats, step, model, stop_reason = main(args)
+    stats, step, model, stop_reason, kill_flag = main(args)
 
     if stats['test_acc'][step] > best_acc:
       best_acc = stats['test_acc'][step]
@@ -60,6 +60,10 @@ def grid_search(args):
       best_args = deepcopy(args)
       best_stats = stats
       best_stop_reason = stop_reason
+    
+    if kill_flag:
+      print("Ending grid search...")
+      break
 
   print(f"The best combination of params found was {best_args}, with test accuracy {best_acc}")
   print(f"Saving best model in {args.savedir}, along with best_stats.csv")
@@ -210,6 +214,11 @@ def main(args):
       ######### end of training loop
   except KeyboardInterrupt:
     print(f"Keyboard interrupted training, calculating test accuracy!")
+    kill_flag = input("Do you want to end all runs? [y]/n")
+    if kill_flag == 'y' or kill_flag == '':
+      kill_flag = True
+    else:
+      kill_flag = False
     stop_reason = f'keyboard@{step}'
   
   #display best stats
@@ -248,7 +257,7 @@ def main(args):
     name = f"{'_'.join(name_args)}.csv"
     stat_df = pd.DataFrame(stats).to_csv(os.path.join(args.savedir,name))
 
-  return stats, step, model, stop_reason
+  return stats, step, model, stop_reason, kill_flag
 
   
   
