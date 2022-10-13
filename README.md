@@ -69,7 +69,7 @@ At the initial first working copy, no hyperparamter tuning, we get 82.1% accurac
 
 ## Results
 
-Grid search is running for the hyperparameters batch size, learning rate, and some learning rate scheduling parameters. Early stopping is used to ensure models that begin to overfit are not pursued further than 30 steps, which may need to be increased if this proves too constraining for promising models.
+Hyperparamter grid search was run for batch size, learning rate, and some learning rate scheduling parameters. Early stopping is used to ensure models that do not learn well are not pursued further than 30 steps, which may need to be increased if this proves too constraining for promising models. We run each model around 5 times, taking the maximum test accuracy acheived for each set of hyperparameters as a good starting point for viability of those hyperparameters.
 
 ![Test acc vs base lr](https://user-images.githubusercontent.com/48018617/195095185-99de1f3e-cf74-497a-aa75-ee0290504c08.png)
 ![Test acc vs base lr bs64](https://user-images.githubusercontent.com/48018617/195095194-b60583b7-f674-4dc5-bb17-6be8a1071658.png)
@@ -88,7 +88,7 @@ We get quite promising results from this regime, for example this run with near-
 We could consider this a somewhat over-regularised scheme, with training loss staying well above validation loss.
 
 
-100 steps still only represents just 0.735 or 1.47 epochs respectively for batch sizes 64 and 128 (based on the 8707 image training set). We can standardise the testing to account for this, making the early stopping a function of batch size, and early stopping if there is no learning for 3 epochs (408 and 204 steps each for batch sizes 64 and 128). Let's explore some of the most promising hyperparameter options; learning rate 0.003, batch sizes 64 and 128, with a scheduler step size of 100, gamma 0.1.
+100 steps still only represents just 0.735 or 1.47 epochs respectively for batch sizes 64 and 128 (based on the 8707 image training set). We can standardise the testing to account for this, making the early stopping a function of batch size, and early stopping if there is no learning for 3 epochs (408 and 204 steps each for batch sizes 64 and 128). Let's explore some of the most promising hyperparameter options; learning rate 0.003, batch sizes 64 and 128, with a scheduler step size of 100, gamma 0.1. We use the longer early stopping regime of 3 epochs to better see the differences between these more viable options.
 
 A teammates computer was able to run the model with a batch size of 256, and we found the higher learning rate of 0.006, no scheduling, to be a viable candidate for best training scheme.
 
@@ -99,6 +99,13 @@ Based on this positive result of acheiving 96.44% accuracy with the same early s
 
 To summarise; the up to this point best model training scheme is batch size 256, learning rate 0.006 with no scheduling, and seemingly we should let the training go for longer with a more relaxed early stopping guideline of >3 epochs (>102 steps). 
 
+When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gamma when the validation accuracy stagnates for 5 epochs, and extending learning time with longer ten epoch early stopping, we get great results at batch size 128. We expect this trend to continue for final runs at batch size 256 or 512.
+
+![ReduceLROnPlateau](https://user-images.githubusercontent.com/48018617/195511198-9e5c017a-e0e0-400e-9ac0-740db8cde399.png)
+![ReduceLROnPlateauloss](https://user-images.githubusercontent.com/48018617/195511216-86b02053-24ef-4fb5-9982-ac9a40649da5.png)
+![ReduceLROnPlateaulr](https://user-images.githubusercontent.com/48018617/195512514-277a81ce-dbe6-40f6-87d1-2811d465b569.png)
+
+This method of reducing learning rate at epoch landmarks, as well as early stopping as a function of epochs and not steps makes the learning regime less discriminative to batch size, as we see batches of 128 performing excellently.
 ## Final model
 
 We aggregate all our runs and show graphs of the best examples from each combination of hyperparameters.
