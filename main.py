@@ -1,12 +1,6 @@
 """
 This is the main functional section of the Project 2 cell classification,
 including main training loop and entry point for users to run the project
-
-Not debugged at all, just written.
-
-To do:
-Implement the dataloading in parts.py
-Move run_eval to parts.py
 """
 
 from torchvision.models import alexnet, AlexNet_Weights
@@ -28,9 +22,10 @@ def grid_search(args):
 
   best_acc = 0.0
   grid_dict = {
-    'base_lr': [0.003],
-    'batch_size':[64, 128],
-    'repeats':range(25)
+    'base_lr': [0.003,0.006],
+    'batch_size':[128],
+    'repeats':range(10),
+    'lr_gamma':[1.0]
   }
 
   grid = ParameterGrid(grid_dict)
@@ -38,11 +33,13 @@ def grid_search(args):
   for params in grid:
     args.base_lr = params['base_lr']
     # args.lr_step_size = params['lr_step_size']
-    # args.lr_gamma = params['lr_gamma']
+    args.lr_gamma = params['lr_gamma']
     args.batch_size = params['batch_size']
     args.early_stop_steps = int(3*8707/args.batch_size)
     
+    #run main
     stats, step, model, stop_reason = main(args)
+
     if stats['test_acc'][step] > best_acc:
       best_acc = stats['test_acc'][step]
       best_model = model

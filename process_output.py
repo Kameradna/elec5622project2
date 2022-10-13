@@ -14,9 +14,10 @@ stats = {
 
 for root, dir, files in os.walk('save'):
     for file in files: #some quirks with the saving of _best files, maybe pth has some issues too
-        # if '.pth' in file or '_best' in file:
-        #     break
-        # print(file)
+        if '.pth' in file or '_best' in file or '.ods' in file:
+            print(f"skipping {file}")
+            continue
+        print(file)
         fileinfo = file.split('_')
         stats['base_lr'].append(float(fileinfo[1].strip('baselr')))
         # stats['lr_step_size'].append(int(fileinfo[2].strip('lrstep')))
