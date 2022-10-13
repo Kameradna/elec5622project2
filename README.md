@@ -69,7 +69,7 @@ At the initial first working copy, no hyperparamter tuning, we get 82.1% accurac
 
 ## Results
 
-Grid search is running for the hyperparameters batch size, learning rate, and some learning rate scheduling parameters. Early stopping is used to ensure models that begin to overfit are not pursued further than 30 steps, which may need to be increased if this proves too constraining for promising models.
+Grid search is running for the hyperparameters batch size, learning rate, and some learning rate scheduling parameters. Early stopping is used to ensure models that begin to overfit are not pursued further than 30 steps, which may need to be increased if this proves too constraining for promising models. We run each model around 5 times, taking the maximum of each set of hyperparameters.
 
 ![Test acc vs base lr](https://user-images.githubusercontent.com/48018617/195095185-99de1f3e-cf74-497a-aa75-ee0290504c08.png)
 ![Test acc vs base lr bs64](https://user-images.githubusercontent.com/48018617/195095194-b60583b7-f674-4dc5-bb17-6be8a1071658.png)
@@ -98,6 +98,11 @@ A teammates computer was able to run the model with a batch size of 256, and we 
 Based on this positive result of acheiving 96.44% accuracy with the same early stopping rules (3 epochs = 102 steps) as above, of stopping after 3 epochs, we can try batches of 512 if we can run them, as well as automated learning rate scheduling when learning stagnates. Also noteworthy is the lack of overfitting, so longer runs should be possible with no consequence.
 
 To summarise; the up to this point best model training scheme is batch size 256, learning rate 0.006 with no scheduling, and seemingly we should let the training go for longer with a more relaxed early stopping guideline of >3 epochs (>102 steps). 
+
+When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gamma when the validation accuracy stagnates for 5 epochs, and extending learning time with longer ten epoch early stopping, we get great results at batch size 128. We expect this trend to continue for final runs at batch size 256 or 512.
+
+![ReduceLROnPlateau](https://user-images.githubusercontent.com/48018617/195511198-9e5c017a-e0e0-400e-9ac0-740db8cde399.png)
+![ReduceLROnPlateauloss](https://user-images.githubusercontent.com/48018617/195511216-86b02053-24ef-4fb5-9982-ac9a40649da5.png)
 
 ## Final model
 
