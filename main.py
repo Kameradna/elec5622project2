@@ -39,7 +39,7 @@ def grid_search(args):
   grid_dict = {
     'base_lr': [0.003,0.006],
     'batch_size':[128],
-    # 'repeats':range(10)
+    'repeats':range(10)
   }
 
   grid = ParameterGrid(grid_dict)
@@ -140,6 +140,7 @@ def main(args):
   
   print("Beginning training")
   try:
+    kill_flag = False
     #main training loop
     for x, y in parts.recycle(train_loader):
       end = time.perf_counter()
