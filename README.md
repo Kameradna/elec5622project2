@@ -102,8 +102,8 @@ To summarise; the up to this point best model training scheme is batch size 256,
 ## Final model
 
 
-|base\_lr|batch\_size|test\_acc|stop\_reason|step
-:-----:|:-----:|:-----:|:-----:|:-----:|:-----:
+| base\_lr | batch\_size | test\_acc | stop\_reason | step
+: -----: | :-----: | :-----: | :-----: |:-----:|:-----:
 0|0.002|32|65.52|stagnate|104
 1|0.003|128|68.64|stagnate|75
 2|0.0075|64|49.43|stagnate|67
