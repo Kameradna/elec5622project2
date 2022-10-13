@@ -86,7 +86,10 @@ def main(args):
   #optimiser, loss function, lr scheduler
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
-  optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
+  # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
+  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='min', factor=args.lr_gamma) #other items default
+  if args.early_stop_steps == 100: #if left at default
+    args.early_stop_steps = int(3*8707/args.batch_size)
   
   #move to GPU if present
   model = model.to(device)
@@ -181,14 +184,14 @@ def main(args):
       
       if step - args.early_stop_steps > best_step:
         print(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
-        stop_reason = f'stagnate@{step}'
+        stop_reason = f'stagnatewithreduceonplateau@{step}'
         break
-      if step >= args.early_stop_steps*50:#at worst, this will run for 45 mins (1 step is 1.9s - 2.2s on average)
+      if step >= args.early_stop_steps*50:#for worst case scenario of learning continuing at snail pace
         print(f"Learning has taken too long; {args.early_stop_steps*50} steps, terminating training and running test stats")
         stop_reason = f'too_slow@{step}'
         break
         
-      optim_schedule.step()
+      optim_schedule.step(stats['valid_loss'][step])
       
       ######### end of training loop
   except KeyboardInterrupt:
