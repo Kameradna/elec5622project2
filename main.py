@@ -14,8 +14,8 @@ Most interesting parts-
 Defaults are 
 Batch size = 128 (use higher if you have access to more VRAM)
 Learning rate = 0.003 (optimal at batch size of 128, 0.006 better for higher batch sizes)
-Early stopping after 10 epochs of no improvement (1 epoch = 8707/batch_size steps)
-Learning rate * 0.1 after 5 epochs of no *significant* improvement (significant defined by defaults of ReduceLROnPlateau scheduler)
+Early stopping after 10 epochs of no improvement in validation accuracy (1 epoch = 8707/batch_size steps)
+Learning rate *= 0.1 after 5 epochs of no *significant* improvement in validation accuracy (significant defined by defaults of ReduceLROnPlateau scheduler)
 """
 
 from torchvision.models import alexnet, AlexNet_Weights
@@ -39,7 +39,7 @@ def grid_search(args):
   grid_dict = {
     'base_lr': [0.003,0.006],
     'batch_size':[128],
-    'repeats':range(10)
+    # 'repeats':range(10)
   }
 
   grid = ParameterGrid(grid_dict)
@@ -47,7 +47,7 @@ def grid_search(args):
   for params in grid:
     args.base_lr = params['base_lr']
     # args.lr_step_size = params['lr_step_size']
-    args.lr_gamma = params['lr_gamma']
+    # args.lr_gamma = params['lr_gamma']
     args.batch_size = params['batch_size']
     args.early_stop_steps = int(10*8707/args.batch_size) #10 epochs, patience of lr scheduler is 5 epochs
     
@@ -57,7 +57,7 @@ def grid_search(args):
     if stats['test_acc'][step] > best_acc:
       best_acc = stats['test_acc'][step]
       best_model = model
-      best_args = args
+      best_args = deepcopy(args)
       best_stats = stats
       best_stop_reason = stop_reason
 
@@ -67,8 +67,8 @@ def grid_search(args):
       os.mkdir(args.savedir)
 
   args = best_args
-  name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason]
-  name = f"{'_'.join(name_args)}_{best_stop_reason}_best_{best_acc}.pth"
+  name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", best_stop_reason]
+  name = f"{'_'.join(name_args)}_best_{best_acc}.pth"
   torch.save(best_model.module.state_dict(),os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
 
   name = f"{'_'.join(name_args)}_{best_stop_reason}_best_{best_acc}.csv"
@@ -101,7 +101,7 @@ def main(args):
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
   # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
-  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='min', factor=args.lr_gamma, patience=args.early_stop_steps//2) #other items default
+  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2) #other items default
   if args.early_stop_steps == 100: #if left at default
     args.early_stop_steps = int(3*8707/args.batch_size)
   
@@ -167,7 +167,7 @@ def main(args):
       if args.training_stats:
         stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
       stats['train_loss'][step] = float(c.data.cpu().numpy())
-      stats['lr'][step] = optim_schedule.get_last_lr()[0]
+      stats['lr'][step] = optim.param_groups[0]['lr']
 
       #grab the best model if it happens
       if stats['valid_acc'][step] > best_valid_acc:
@@ -205,7 +205,7 @@ def main(args):
         stop_reason = f'too_slow@{step}'
         break
         
-      optim_schedule.step(stats['valid_loss'][step])
+      optim_schedule.step(stats['valid_acc'][step])
       
       ######### end of training loop
   except KeyboardInterrupt:
