@@ -102,6 +102,6 @@ To summarise; the up to this point best model training scheme is batch size 256,
 ## Final model
 
 | Left-aligned | Center-aligned | Right-aligned |
-| :---         |     :---:      |          ---: |
+| :----         |     :---:      |          ---: |
 | git status   | git status     | git status    |
 | git diff     | git diff       | git diff      |
