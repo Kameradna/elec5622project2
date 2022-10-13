@@ -103,7 +103,9 @@ When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gam
 
 ![ReduceLROnPlateau](https://user-images.githubusercontent.com/48018617/195511198-9e5c017a-e0e0-400e-9ac0-740db8cde399.png)
 ![ReduceLROnPlateauloss](https://user-images.githubusercontent.com/48018617/195511216-86b02053-24ef-4fb5-9982-ac9a40649da5.png)
+![ReduceLROnPlateaulr](https://user-images.githubusercontent.com/48018617/195512514-277a81ce-dbe6-40f6-87d1-2811d465b569.png)
 
+This method of reducing learning rate at epoch landmarks, as well as early stopping as a function of epochs and not steps makes the learning regime less discriminative to batch size, as we see batches of 128 performing excellently.
 ## Final model
 
 We aggregate all our runs and show graphs of the best examples from each combination of hyperparameters.
