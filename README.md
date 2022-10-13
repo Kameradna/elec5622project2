@@ -101,7 +101,8 @@ To summarise; the up to this point best model training scheme is batch size 256,
 
 ## Final model
 
-
+We aggregate all our runs and show graphs of the best examples from each combination of hyperparameters.
+https://tableconvert.com/csv-to-markdown
 
 | **run id** | **base_lr** | **batch_size** | **test_acc** | **stop_reason** | **step** |
 |------------|-------------|----------------|--------------|-----------------|----------|
