@@ -100,7 +100,9 @@ Based on this positive result of acheiving 96.44% accuracy with the same early s
 To summarise; the up to this point best model training scheme is batch size 256, learning rate 0.006 with no scheduling, and seemingly we should let the training go for longer with a more relaxed early stopping guideline of >3 epochs (>102 steps). 
 
 ## Final model
- |base\_lr|batch\_size|test\_acc|stop\_reason|step
+
+
+|base\_lr|batch\_size|test\_acc|stop\_reason|step
 :-----:|:-----:|:-----:|:-----:|:-----:|:-----:
 0|0.002|32|65.52|stagnate|104
 1|0.003|128|68.64|stagnate|75
