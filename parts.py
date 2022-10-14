@@ -57,17 +57,18 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
       #this section attributed to @ptrblck on pytorch forums
       _, preds = torch.max(logits, 1)
       for t, p in zip(y.view(-1), preds.view(-1)):
-              confusion_matrix[t.long(), p.long()] += 1
+        confusion_matrix[t.long(), p.long()] += 1
   
-  stats[f'{split}_mca'][step] = np.mean(confusion_matrix.diag()/confusion_matrix.sum(1))#new
-
+  per_class = confusion_matrix.diag()/confusion_matrix.sum(1)
+  stats[f'{split}_mca'][step] = 100.0*per_class.mean().numpy()
   stats[f'{split}_acc'][step] = np.mean(all_top1)
   stats[f'{split}_loss'][step] = np.mean(all_c)
 
   #close
   time_taken = time.perf_counter() - end
   if args.verbose:
-    print(f"{split.capitalize()}@{step}: loss {np.mean(all_c):.5f} : top1 {np.mean(all_top1):.2f}% : top2 {np.mean(all_top2):.2f}% : took {time_taken:.2f} seconds")
+    print(f"{split.capitalize()}@{step}: loss {np.mean(all_c):.5f} : top1 {np.mean(all_top1):.2f}% : top2 {np.mean(all_top2):.2f}% : mca {100.0*per_class.mean().numpy():.2f}% : took {time_taken:.2f} seconds")
+    print(f"Accuracies per class is {per_class.numpy()}")
   return stats
   
 #train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)

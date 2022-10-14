@@ -16,6 +16,12 @@ Batch size = 128 (use higher if you have access to more VRAM)
 Learning rate = 0.003 (optimal at batch size of 128, 0.006 better for higher batch sizes)
 Early stopping after 10 epochs of no improvement in validation accuracy (1 epoch = 8701/batch_size steps)
 Learning rate *= 0.1 after 5 epochs of no *significant* improvement in validation accuracy (significant defined by defaults of ReduceLROnPlateau scheduler)
+
+Known issues-
+- Mca adds 2x time per validation
+- Timing is not real
+
+
 """
 
 from torchvision.models import alexnet, AlexNet_Weights
@@ -37,8 +43,10 @@ def grid_search(args):
 
   best_acc = 0.0
   grid_dict = {
-    'base_lr': [0.003,0.006],
+    'base_lr': [0.003],
     'batch_size':[128],
+    'random_rotate':[True, False],
+    'random_flip':[True, False],
     'repeats':range(10)
   }
 
@@ -49,6 +57,10 @@ def grid_search(args):
     # args.lr_step_size = params['lr_step_size']
     # args.lr_gamma = params['lr_gamma']
     args.batch_size = params['batch_size']
+    args.random_flip = params['random_flip']
+    args.random_rotate = params['random_rotate']
+
+
     args.early_stop_steps = int(10*8701/128) #10 epochs for batch size 128, more for larger since they take a longer epoch time to converge, patience of lr scheduler is 5 epochs
     
     #run main
@@ -106,8 +118,6 @@ def main(args):
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
   # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
   optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2) #other items default
-  if args.early_stop_steps == 100: #if left at default
-    args.early_stop_steps = int(10*8701/args.batch_size)
   
   #move to GPU if present
   model = model.to(device)
@@ -137,6 +147,7 @@ def main(args):
   time_taken = time.perf_counter()-end
   print(f"Stats@{step}: valid loss {stats['valid_loss'][step]:.5f},",
                       f"valid accuracy {stats['valid_acc'][step]:.2f}%",
+                      f"valid per-class mean accuracy {stats[f'valid_mca'][step]:.2f}%",
                       f"time taken loading {time_taken:.2f}s"
                     )
 
@@ -189,6 +200,7 @@ def main(args):
                               f"train accuracy {stats['train_acc'][step]:.2f}%,",
                               f"valid loss {stats['valid_loss'][step]:.5f},",
                               f"valid accuracy {stats['valid_acc'][step]:.2f}%",
+                              f"valid mca {stats[f'valid_mca'][step]:.2f}%",
                               f"learning rate {stats['lr'][step]:.8f}",
                               f"time taken this step {time_taken:.2f}s",
                               f"{'(best)' if best_step == step else ''}"
@@ -197,6 +209,7 @@ def main(args):
         print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
                               f"valid loss {stats['valid_loss'][step]:.5f},",
                               f"valid accuracy {stats['valid_acc'][step]:.2f}%",
+                              f"valid mca {stats[f'valid_mca'][step]:.2f}%",
                               f"learning rate {stats['lr'][step]:.8f}",
                               f"time taken this step {time_taken:.2f}s",
                               f"{'(best)' if best_step == step else ''}"
@@ -232,32 +245,35 @@ def main(args):
                           f"train accuracy {stats['train_acc'][step]:.2f}%,",
                           f"valid loss {stats['valid_loss'][step]:.5f},",
                           f"valid accuracy {stats['valid_acc'][step]:.2f}%,",
+                          f"valid per-class mean accuracy {stats[f'valid_mca'][step]:.2f}%",
                           f"learning rate {stats['lr'][step]:.8f}"
                 )
   else:
     print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
                           f"valid loss {stats['valid_loss'][step]:.5f},",
                           f"valid accuracy {stats['valid_acc'][step]:.2f}%,",
+                          f"valid per-class mean accuracy {stats[f'valid_mca'][step]:.2f}%",
                           f"learning rate {stats['lr'][step]:.8f}"
                 )
 
   stats = parts.run_eval(args, model, step, stats, device, test_loader, 'test')
   print(f"Test stats@{step}: test loss {stats['test_loss'][step]:.5f},",
-                          f"test accuracy {stats['test_acc'][step]:.2f}%")
+                          f"test accuracy {stats['test_acc'][step]:.2f}%",
+                          f"test per-class mean accuracy {stats[f'test_mca'][step]:.2f}%")
 
   print(f"Training took {args.batch_size/8701*step:.2f} epochs")
 
   if args.savepth:
     if os.path.exists(args.savedir) != True:
       os.mkdir(args.savedir)
-    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}"]
+    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
     name = f"{'_'.join(name_args)}.pth"
     print(f"Saving model in {os.path.join(args.savedir,name)}")
     torch.save({"checkpoint":model.module.state_dict()},os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
   if args.savestats:
     if os.path.exists(args.savedir) != True:
       os.mkdir(args.savedir)
-    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}"]
+    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
     name = f"{'_'.join(name_args)}.csv"
     stat_df = pd.DataFrame(stats).to_csv(os.path.join(args.savedir,name))
 
@@ -283,7 +299,7 @@ if __name__ == "__main__":
                     help="Learning rate multiplier every step size")
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
-  parser.add_argument("--early_stop_steps", type=int, required=False, default=100,
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=680,
                     help="Number of epochs of no learning to terminate")
   parser.add_argument("--num_workers", type=int, required=False, default=8,
                     help="Number of workers for dataloading")
