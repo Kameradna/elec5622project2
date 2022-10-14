@@ -124,7 +124,10 @@ According to the Luping CVPR paper, rotation is a key data augmentation that can
 https://arxiv.org/abs/1712.02029v2
 We can try altering batch sizes on the fly to speed up convergence.
 
+2016 sota was ~84.63% (MCA?) https://qixianbiao.github.io/HEp2Cell/
 
+https://github.com/KaikaiZhao/HEp-2_cell_classification has strong VGG performance of 98%
+![image](https://user-images.githubusercontent.com/48018617/195846522-23f8b264-0277-49ab-9821-2971ec255bdf.png)
 
 
 ## Final model
