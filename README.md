@@ -106,6 +106,19 @@ When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gam
 ![ReduceLROnPlateaulr](https://user-images.githubusercontent.com/48018617/195512514-277a81ce-dbe6-40f6-87d1-2811d465b569.png)
 
 This method of reducing learning rate at epoch landmarks, as well as early stopping as a function of epochs and not steps makes the learning regime less discriminative to batch size, as we see batches of 128 performing excellently.
+
+
+
+
+https://arxiv.org/abs/1712.02029v2
+We can try altering batch sizes to speed up convergence.
+
+According to the Luping CVPR paper, rotation is a key data augmentation that can be useful. Luping CVPR paper uses the equivalent to ReduceLROnPlateau.
+
+Should report mean class accuracy as well as average classification accuracy.
+
+
+
 ## Final model
 
 We aggregate all our runs and show graphs of the best examples from each combination of hyperparameters.
