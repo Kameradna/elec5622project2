@@ -1,10 +1,11 @@
 import torch
-import torchvision
 from os import path
 from torch.utils.data import SubsetRandomSampler, DataLoader
 from torchvision.datasets import ImageFolder
+import torchvision.transforms as T
 import time
 import numpy as np
+from copy import deepcopy
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
@@ -33,6 +34,8 @@ def accuracy(output, target, topk=(1,)): #from pytorch/references/classification
 def run_eval(args, model, step, stats, device, data_loader, split): #also largely from Google Brain Team Big Transfer
   #setup
   all_c, all_top1, all_top2 = [], [], []
+  nb_classes = len(data_loader.dataset.classes)
+  confusion_matrix = torch.zeros(nb_classes, nb_classes)
   end = time.perf_counter()
 
   for b, (x, y) in enumerate(data_loader):
@@ -50,7 +53,14 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
       all_c.extend(c.cpu().numpy())  # Also ensures a sync point.
       all_top1.append(top1.cpu().numpy())
       all_top2.append(top2.cpu().numpy())
+
+      #this section attributed to @ptrblck on pytorch forums
+      _, preds = torch.max(logits, 1)
+      for t, p in zip(y.view(-1), preds.view(-1)):
+              confusion_matrix[t.long(), p.long()] += 1
   
+  stats[f'{split}_mca'][step] = np.mean(confusion_matrix.diag()/confusion_matrix.sum(1))#new
+
   stats[f'{split}_acc'][step] = np.mean(all_top1)
   stats[f'{split}_loss'][step] = np.mean(all_c)
 
@@ -63,6 +73,18 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
 #train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
 
 def mktrainval(args, preprocess):
+
+  if args.random_rotate:
+    preprocess = T.Compose([
+          deepcopy(preprocess),
+          T.RandomRotation(degrees=180, interpolation=T.InterpolationMode.BILINEAR)
+            ])
+  
+  if args.random_flip:
+    preprocess = T.Compose([
+          deepcopy(preprocess),
+          T.RandomHorizontalFlip()
+            ])
   
   train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
   valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)

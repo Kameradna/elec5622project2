@@ -14,7 +14,7 @@ Most interesting parts-
 Defaults are 
 Batch size = 128 (use higher if you have access to more VRAM)
 Learning rate = 0.003 (optimal at batch size of 128, 0.006 better for higher batch sizes)
-Early stopping after 10 epochs of no improvement in validation accuracy (1 epoch = 8707/batch_size steps)
+Early stopping after 10 epochs of no improvement in validation accuracy (1 epoch = 8701/batch_size steps)
 Learning rate *= 0.1 after 5 epochs of no *significant* improvement in validation accuracy (significant defined by defaults of ReduceLROnPlateau scheduler)
 """
 
@@ -49,7 +49,7 @@ def grid_search(args):
     # args.lr_step_size = params['lr_step_size']
     # args.lr_gamma = params['lr_gamma']
     args.batch_size = params['batch_size']
-    args.early_stop_steps = int(10*8707/args.batch_size) #10 epochs, patience of lr scheduler is 5 epochs
+    args.early_stop_steps = int(10*8701/128) #10 epochs for batch size 128, more for larger since they take a longer epoch time to converge, patience of lr scheduler is 5 epochs
     
     #run main
     stats, step, model, stop_reason, kill_flag = main(args)
@@ -107,7 +107,7 @@ def main(args):
   # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
   optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2) #other items default
   if args.early_stop_steps == 100: #if left at default
-    args.early_stop_steps = int(3*8707/args.batch_size)
+    args.early_stop_steps = int(10*8701/args.batch_size)
   
   #move to GPU if present
   model = model.to(device)
@@ -117,6 +117,9 @@ def main(args):
   stats = {"train_acc":{},
           "valid_acc":{},
           "test_acc":{},
+          "valid_mca":{},#new
+          "valid_mca":{},#new
+          "test_mca":{},#new
           "train_loss":{},
           "valid_loss":{},
           "test_loss":{},
@@ -199,8 +202,6 @@ def main(args):
                               f"{'(best)' if best_step == step else ''}"
                     )
 
-      
-      
       if step - args.early_stop_steps > best_step:
         print(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
         stop_reason = f'stagnatewithreduceonplateau@{step}'
@@ -243,6 +244,8 @@ def main(args):
   stats = parts.run_eval(args, model, step, stats, device, test_loader, 'test')
   print(f"Test stats@{step}: test loss {stats['test_loss'][step]:.5f},",
                           f"test accuracy {stats['test_acc'][step]:.2f}%")
+
+  print(f"Training took {args.batch_size/8701*step:.2f} epochs")
 
   if args.savepth:
     if os.path.exists(args.savedir) != True:
