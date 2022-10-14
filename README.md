@@ -99,6 +99,8 @@ Based on this positive result of acheiving 96.44% accuracy with the same early s
 
 To summarise; the up to this point best model training scheme is batch size 256, learning rate 0.006 with no scheduling, and seemingly we should let the training go for longer with a more relaxed early stopping guideline of >3 epochs (>102 steps). 
 
+Luping CVPR paper uses the equivalent to ReduceLROnPlateau. Therefore we implemented it.
+
 When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gamma when the validation accuracy stagnates for 5 epochs, and extending learning time with longer ten epoch early stopping, we get great results at batch size 128. We expect this trend to continue for final runs at batch size 256 or 512.
 
 ![ReduceLROnPlateau](https://user-images.githubusercontent.com/48018617/195511198-9e5c017a-e0e0-400e-9ac0-740db8cde399.png)
@@ -106,6 +108,25 @@ When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gam
 ![ReduceLROnPlateaulr](https://user-images.githubusercontent.com/48018617/195512514-277a81ce-dbe6-40f6-87d1-2811d465b569.png)
 
 This method of reducing learning rate at epoch landmarks, as well as early stopping as a function of epochs and not steps makes the learning regime less discriminative to batch size, as we see batches of 128 performing excellently.
+
+(report results of 128 vs 256 vs 512)
+
+We thought we should report mean class accuracy as well as average classification accuracy, so we implemented this into the statistics collection.
+
+(report correspondence between ACA (generic accuracy) vs MCA (mean per-class accuracy))
+
+
+According to the Luping CVPR paper, rotation is a key data augmentation that can be useful. We implemented it. The Luping paper sees MCA gains from MCA 88.58%, ACA 89.04% with no augmentation, to MCA 96.76%, ACA 97.24% with small rotational steps.
+
+(report results of random rotate, random horizontal flip)
+
+
+https://arxiv.org/abs/1712.02029v2
+We can try altering batch sizes on the fly to speed up convergence.
+
+
+
+
 ## Final model
 
 We aggregate all our runs and show graphs of the best examples from each combination of hyperparameters.
