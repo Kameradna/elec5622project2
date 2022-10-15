@@ -86,6 +86,8 @@ def mktrainval(args, preprocess):
           deepcopy(preprocess),
           T.RandomHorizontalFlip()
             ])
+
+  print(preprocess)
   
   train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
   valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)

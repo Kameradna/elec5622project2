@@ -52,7 +52,8 @@ def grid_search(args):
 
   grid = ParameterGrid(grid_dict)
   print(f"Grid searching across {len(grid)} combinations")
-  for params in grid:
+  for idx, params in enumerate(grid):
+    print(f"Run {idx} of {len(grid)} combinations")
     args.base_lr = params['base_lr']
     # args.lr_step_size = params['lr_step_size']
     # args.lr_gamma = params['lr_gamma']
@@ -94,7 +95,7 @@ def grid_search(args):
 def main(args):
   print("Loading model, weights and data")
   print(f"args = {args}")
-  end = time.perf_counter()
+  model_start = time.perf_counter()
   #getting transforms
   weights = AlexNet_Weights.DEFAULT
   preprocess = weights.transforms()
@@ -144,7 +145,7 @@ def main(args):
   if args.training_stats:
     stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
 
-  time_taken = time.perf_counter()-end
+  time_taken = time.perf_counter()-model_start
   print(f"Stats@{step}: valid loss {stats['valid_loss'][step]:.5f},",
                       f"valid accuracy {stats['valid_acc'][step]:.2f}%",
                       f"valid per-class mean accuracy {stats[f'valid_mca'][step]:.2f}%",
@@ -157,7 +158,7 @@ def main(args):
     kill_flag = False
     #main training loop
     for x, y in parts.recycle(train_loader):
-      end = time.perf_counter()
+      training_loop_start = time.perf_counter()
       step += 1 #so by design, the first trained epoch is 0, while the first initial starting point is at step -1
       if args.verbose:
         print(f"Training step {step}")
@@ -187,6 +188,8 @@ def main(args):
         stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
       stats['train_loss'][step] = float(c.data.cpu().numpy())
       stats['lr'][step] = optim.param_groups[0]['lr']
+        
+      optim_schedule.step(stats['valid_acc'][step])
 
       #grab the best model if it happens
       if stats['valid_acc'][step] > best_valid_acc:
@@ -194,7 +197,7 @@ def main(args):
         best_weights = deepcopy(model.state_dict())
         best_step = step
 
-      time_taken = time.perf_counter()-end
+      time_taken = time.perf_counter()-training_loop_start
       if args.training_stats:
         print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
                               f"train accuracy {stats['train_acc'][step]:.2f}%,",
@@ -223,8 +226,7 @@ def main(args):
         print(f"Learning has taken too long; {args.early_stop_steps*50} steps, terminating training and running test stats")
         stop_reason = f'too_slow@{step}'
         break
-        
-      optim_schedule.step(stats['valid_acc'][step])
+
       
       ######### end of training loop
   except KeyboardInterrupt:
@@ -261,7 +263,7 @@ def main(args):
                           f"test accuracy {stats['test_acc'][step]:.2f}%",
                           f"test per-class mean accuracy {stats[f'test_mca'][step]:.2f}%")
 
-  print(f"Training took {args.batch_size/8701*step:.2f} epochs")
+  print(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.time()-model_start)/3600:.2f} hours")
 
   if args.savepth:
     if os.path.exists(args.savedir) != True:
@@ -293,14 +295,14 @@ if __name__ == "__main__":
                     help="Save pth for every run?")
   parser.add_argument("--base_lr", type=float, required=False, default=0.003,
                     help="Base learning rate")
-  parser.add_argument("--lr_step_size", type=int, required=False, default=100,
-                    help="Learning rate schedule step size")
+  # parser.add_argument("--lr_step_size", type=int, required=False, default=100,
+  #                   help="Learning rate schedule step size")
   parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
                     help="Learning rate multiplier every step size")
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
   parser.add_argument("--early_stop_steps", type=int, required=False, default=680,
-                    help="Number of epochs of no learning to terminate")
+                    help="Number of steps of no learning to terminate")
   parser.add_argument("--num_workers", type=int, required=False, default=8,
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,
@@ -309,6 +311,12 @@ if __name__ == "__main__":
                     help="Calculate training stats?")
   parser.add_argument("--grid_search", required=False, action="store_true", default=False,
                     help="Run a grid search across some common hyperparameters?")
+  parser.add_argument("--random_flip", default=False, action="store_true", required=False,
+                    help="Random horizontal flips for data aug?")
+  parser.add_argument("--random_rotate", default=False, action="store_true", required=False,
+                    help="Random rotations for data aug?")
+  # args.random_flip = params['random_flip']
+  # args.random_rotate
   args = parser.parse_args()
   
   if args.grid_search:
