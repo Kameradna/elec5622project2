@@ -138,7 +138,8 @@ def main(args):
           "train_loss":{},
           "valid_loss":{},
           "test_loss":{},
-          'lr':{}}
+          'lr':{},
+          'batch_size':{}}
   step = -1
   best_valid_acc = 0.0
                                                    
@@ -192,6 +193,7 @@ def main(args):
         stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
       stats['train_loss'][step] = float(c.data.cpu().numpy())
       stats['lr'][step] = optim.param_groups[0]['lr']
+      stats['batch_size'][step] = args.batch_size
         
       optim_schedule.step(stats['valid_acc'][step])
 
@@ -209,6 +211,7 @@ def main(args):
                               f"valid accuracy {stats['valid_acc'][step]:.2f}%",
                               f"valid mca {stats[f'valid_mca'][step]:.2f}%",
                               f"learning rate {stats['lr'][step]:.8f}",
+                              f"batch size {stats['batch_size'][step]}",
                               f"time taken this step {time_taken:.2f}s",
                               f"{'(best)' if best_step == step else ''}"
                     )
@@ -218,10 +221,17 @@ def main(args):
                               f"valid accuracy {stats['valid_acc'][step]:.2f}%",
                               f"valid mca {stats[f'valid_mca'][step]:.2f}%",
                               f"learning rate {stats['lr'][step]:.8f}",
+                              f"batch size {stats['batch_size'][step]}",
                               f"time taken this step {time_taken:.2f}s",
                               f"{'(best)' if best_step == step else ''}"
                     )
 
+      if args.ada_steps < step and args.batch_size < 2048:
+        current_batch_size = train_loader.batch_size
+        args.batch_size = int(current_batch_size*2)
+        train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
+        print(f"Doubling batch size to {args.batch_size}")
+        args.ada_steps += args.ada_steps*args.batch_size
       if step - args.early_stop_steps > best_step:
         print(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
         stop_reason = f'stagnatewithreduceonplateau@{step}'
@@ -299,16 +309,18 @@ if __name__ == "__main__":
                     help="Save stats for every run?")
   parser.add_argument("--savepth", default=False, action="store_true", required=False,
                     help="Save pth for every run?")
-  parser.add_argument("--base_lr", type=float, required=False, default=0.003,
+  parser.add_argument("--base_lr", type=float, required=False, default=0.006,
                     help="Base learning rate")
   # parser.add_argument("--lr_step_size", type=int, required=False, default=100,
   #                   help="Learning rate schedule step size")
   parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
                     help="Learning rate multiplier every step size")
-  parser.add_argument("--batch_size", type=int, required=False, default=128,
+  parser.add_argument("--batch_size", type=int, required=False, default=256,
                     help="Batch size for training")
-  parser.add_argument("--early_stop_steps", type=int, required=False, default=680,
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=800,
                     help="Number of steps of no learning to terminate")
+  parser.add_argument("--ada_steps", type=int, required=False, default=200,
+                    help="Number of steps of no learning to double batch size")
   parser.add_argument("--num_workers", type=int, required=False, default=8,
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,

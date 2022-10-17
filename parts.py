@@ -74,6 +74,10 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
 #train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
 
 def mktrainval(args, preprocess):
+  valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)
+  valid_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
+  test_set = ImageFolder(path.join(args.datadir,'test'),transform=preprocess)
+  test_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
 
   if args.random_rotate:
     preprocess = T.Compose([
@@ -90,11 +94,6 @@ def mktrainval(args, preprocess):
     print(preprocess)
   
   train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
-  valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)
-  test_set = ImageFolder(path.join(args.datadir,'test'),transform=preprocess)
-  
   train_loader = DataLoader(train_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
-  valid_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
-  test_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
-  
+
   return train_loader, valid_loader, test_loader, train_set, valid_set, test_set
