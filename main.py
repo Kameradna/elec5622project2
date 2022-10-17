@@ -18,7 +18,7 @@ Early stopping after 10 epochs of no improvement in validation accuracy (1 epoch
 Learning rate *= 0.1 after 5 epochs of no *significant* improvement in validation accuracy (significant defined by defaults of ReduceLROnPlateau scheduler)
 
 Known issues-
-- Mca adds 2x time per validation
+- Random rotate adds 2x time per validation
 - Timing is not real
 
 
@@ -46,7 +46,7 @@ def grid_search(args):
     'base_lr': [0.003],
     'batch_size':[128],
     'random_rotate':[True, False],
-    'random_flip':[True, False],
+    'random_flip':[False],
     'repeats':range(10)
   }
 
@@ -54,6 +54,9 @@ def grid_search(args):
   print(f"Grid searching across {len(grid)} combinations")
   for idx, params in enumerate(grid):
     print(f"Run {idx} of {len(grid)} combinations")
+    if params['random_rotate'] == True and params['random_flip'] == True:
+      print("Skipping this run based on already having this data")
+      continue
     args.base_lr = params['base_lr']
     # args.lr_step_size = params['lr_step_size']
     # args.lr_gamma = params['lr_gamma']
@@ -84,7 +87,7 @@ def grid_search(args):
       os.mkdir(args.savedir)
 
   args = best_args
-  name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", best_stop_reason]
+  name_args = ['alexnet', f"baselr{args.base_lr}", "", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", best_stop_reason]
   name = f"{'_'.join(name_args)}_best_{best_acc}.pth"
   torch.save(best_model.module.state_dict(),os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
 
@@ -110,6 +113,7 @@ def main(args):
   model = alexnet(weights=weights)
   num_features = model.classifier[-1].in_features
   model.classifier[-1] = torch.nn.Linear(num_features, len(valid_set.classes),bias=True)
+  print(f"Classes are {valid_set.classes}")
 
   #model to dataparallel
   model = torch.nn.DataParallel(model)
@@ -177,7 +181,7 @@ def main(args):
       #the backward pass
       c.backward()
       
-      #apply optimisation and reset grads to 0 for next pass                                               
+      #apply optimisation and reset grads to None for next pass                                               
       optim.step()
       optim.zero_grad(set_to_none=True)
       
@@ -227,7 +231,8 @@ def main(args):
         stop_reason = f'too_slow@{step}'
         break
 
-      
+      if args.verbose:
+        print(f"Training step took {time.perf_counter()-training_loop_start:.2f} seconds")
       ######### end of training loop
   except KeyboardInterrupt:
     print(f"Keyboard interrupted training, calculating test accuracy!")
@@ -263,19 +268,20 @@ def main(args):
                           f"test accuracy {stats['test_acc'][step]:.2f}%",
                           f"test per-class mean accuracy {stats[f'test_mca'][step]:.2f}%")
 
-  print(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.time()-model_start)/3600:.2f} hours")
+  print(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
 
   if args.savepth:
     if os.path.exists(args.savedir) != True:
       os.mkdir(args.savedir)
-    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
+    #spaces to maintain interworking with process_output
+    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
     name = f"{'_'.join(name_args)}.pth"
     print(f"Saving model in {os.path.join(args.savedir,name)}")
     torch.save({"checkpoint":model.module.state_dict()},os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
   if args.savestats:
     if os.path.exists(args.savedir) != True:
       os.mkdir(args.savedir)
-    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrstep{args.lr_step_size}", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
+    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
     name = f"{'_'.join(name_args)}.csv"
     stat_df = pd.DataFrame(stats).to_csv(os.path.join(args.savedir,name))
 
