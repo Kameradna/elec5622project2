@@ -110,24 +110,30 @@ When we add on ReduceLROnPlateau sheduling, ie lowering the learning rate by gam
 This method of reducing learning rate at epoch landmarks, as well as early stopping as a function of epochs and not steps makes the learning regime less discriminative to batch size, as we see batches of 128 performing excellently.
 
 According to the Luping CVPR paper, rotation is a key data augmentation that can be useful. We implemented it. The Luping paper sees MCA gains from MCA 88.58%, ACA 89.04% with no augmentation, to MCA 96.76%, ACA 97.24% with small rotational steps. We do not see such radical gains. In the best of 10 runs each, randomly rotating and flipping improves scores by less than 0.3% at most. The variance of all schemes is high, with all data augmentation schemes having runs with failed learning, getting caught in local minima at <93%.
+
 ![Data aug](https://user-images.githubusercontent.com/48018617/196410142-2bb8f1ef-34ad-4525-a79b-0ed0b9f9d75e.png)
 
 The caveat here is that random rotation doubles the step time to ~4s per iteration, which doubles training time to 4 hours per run.
 
-We thought we should report mean class accuracy as well as average classification accuracy, so we implemented this into the statistics collection. 
+We thought we should report mean class accuracy as well as average classification accuracy, so we implemented this into the statistics collection.
 
 ![ACAMCA](https://user-images.githubusercontent.com/48018617/196411174-f1e09262-2a7e-4946-bf75-023913002888.png)
 
 We see very little difference between the metrics, but notice in our implemented verbose output of per class accuracies reported for each class that the Golgi cell class seems the most problematic to train for. The class accuracy of Golgi generally lags behind the other classes, and for a majority of the training is is much less than 20% even while the other classes have accuracies above 95%.
 
-The results at batch sizes of 256 and 512 is not more impressive, and we think that this is because of slower convergence at larger batch sizes.
+The results at batch sizes of 256 and 512 is not more impressive, and we think that this is because of slower convergence at larger batch sizes. To remedy this we can try altering batch sizes on the fly to speed up convergence. https://arxiv.org/abs/1712.02029v2
 
-https://arxiv.org/abs/1712.02029v2
-We can try altering batch sizes on the fly to speed up convergence.
+
+
+
+
 
 2016 sota was ~84.63% (MCA?) https://qixianbiao.github.io/HEp2Cell/
 
 https://github.com/KaikaiZhao/HEp-2_cell_classification has strong VGG performance of 98%
+
+
+
 
 We can take inspiration from KaikaiZhao for simplifying the 4096-4096 fc layers in the classifier, potentially have a drop+relu-9216-6 or a drop+relu-9216-4096-6
 
