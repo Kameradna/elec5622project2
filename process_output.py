@@ -9,7 +9,8 @@ stats = {
     'batch_size':[],
     'test_acc':[],
     'stop_reason':[],
-    'step':[]
+    'step':[],
+    'special_sauce':[]
 }
 
 for root, dir, files in os.walk('save'):
@@ -26,6 +27,10 @@ for root, dir, files in os.walk('save'):
         stats['test_acc'].append(float(fileinfo[7].strip('.csv')))
         stats['stop_reason'].append(str(fileinfo[6].split('@')[0]))
         stats['step'].append(int(fileinfo[6].split('@')[1]))
+        try:
+            stats['special_sauce'].append(str(fileinfo[8:12]).strip('.csv'))
+        except:
+            print('"Forget about it!"')
 
 print(stats)
 stats_df = pd.DataFrame(stats)
