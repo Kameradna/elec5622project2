@@ -123,7 +123,7 @@ We see very little difference between the metrics, but notice in our implemented
 
 The results at batch sizes of 256 and 512 is not more impressive, and we think that this is because of slower convergence at larger batch sizes. To remedy this we can try altering batch sizes on the fly to speed up convergence. https://arxiv.org/abs/1712.02029v2
 
-
+When we implemented this via accumulating gradients in the original paper, we reached 98% accuracy and will report the final accuracy once the run concludes. Another attempt was run in parallel when we got access to more computation at a starting batch size of 2048.
 
 
 
