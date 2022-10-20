@@ -3,6 +3,10 @@
 ## Other files
 https://drive.google.com/drive/folders/1gHLaMCayQtvR7viV-2_0TC8H8Fdv6n70?usp=sharing
 
+## Prerequisites
+
+Install a conda env or your choice of sandboxed environment, yml files will be included.
+
 ## Datasets
 ```shell
 gdown https://drive.google.com/file/d/1reoKyZ3SwNDcZlNmT_031VgvQSI4dkhU/view?usp=sharing --fuzzy
@@ -13,10 +17,6 @@ unzip data/validation.zip -d data
 gdown https://drive.google.com/file/d/1yzqHghT9M0G4BHhz_gDTB0Ml7DXPM3BF/view?usp=sharing --fuzzy -O data/data.csv
 rm -v "Three Datasets for Training, Validation and Test.zip" data/test.zip data/training.zip data/validation.zip
 ```
-## Prerequisites
-
-Install a conda env or your choice of sandboxed environment, yml files will be included.
-We just need python=3.x, pip, pytorch, torchvision, maybe some numpy and pandas.
 
 ## How to use
 
