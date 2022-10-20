@@ -1,5 +1,7 @@
 # elec5622project2
 
+## Other files
+https://drive.google.com/drive/folders/1gHLaMCayQtvR7viV-2_0TC8H8Fdv6n70?usp=sharing
 
 ## Datasets
 ```shell
