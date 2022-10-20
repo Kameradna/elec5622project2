@@ -127,6 +127,8 @@ The results at batch sizes of 256 and 512 is not more impressive, and we think t
 
 When we implemented this via accumulating gradients in the original paper, we reached 98% accuracy and will report the final accuracy once the run concludes. Another attempt was run in parallel when we got access to more computation at a starting batch size of 2048.
 
+![best98 02](https://user-images.githubusercontent.com/48018617/196847875-b12bc460-59ab-45b7-86f1-45fda978a7a6.png)
+
 As an extension, we used Big Transfer; a version of a ResNet-50 with included Group Normalisation trained on ImageNet21k and the BiT hyperule of batch size 512, 500 steps with learning rate warmup to 0.003 and then specific cooldown; achieved similar performance to our best every run in around 2 mins.
 
 
