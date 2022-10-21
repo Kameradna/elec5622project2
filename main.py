@@ -116,12 +116,12 @@ def main(args):
     model = alexnet(weights=weights)
     #getting input sizes and altering the final output layer
     num_features = model.classifier[-1].in_features
-    model.classifier[-1] = torch.nn.Linear(num_features, len(args.classes),bias=True)
+    model.classifier[-1] = torch.nn.Linear(num_features, args.classes,bias=True)
   elif args.feature_extractor == 'resnet101':
     weights = ResNet101_Weights.IMAGENET1K_V2
     model = resnet101(weights=weights)
     num_features = model.fc.in_features
-    model.fc = torch.nn.Linear(num_features, len(args.classes),bias=True)
+    model.fc = torch.nn.Linear(num_features, args.classes,bias=True)
   else:
     print(f"{args.feature_extractor} not implemented yet. Please retype or implement here. Exiting...")
 
@@ -352,7 +352,7 @@ if __name__ == "__main__":
                     help="Path to the data folder, preprocessed for torchvision.")
   parser.add_argument("--dataset", default="hep2", required=False,
                     help="What dataset should we use?")
-  parser.add_argument("--classes", default="hep2", required=False,
+  parser.add_argument("--classes", default=6, type=int, required=False,
                     help="How many output classes are there?")
   parser.add_argument("--feature_extractor", default="alexnet", required=False,
                     help="What feature extractor should we use?")
@@ -384,7 +384,7 @@ if __name__ == "__main__":
   # parser.add_argument("--epochs", type=int, required=False, default=100,
   #                   help="Run how many epochs before terminating?")
   ################################################################################
-  parser.add_argument("--num_workers", type=int, required=False, default=16,
+  parser.add_argument("--num_workers", type=int, required=False, default=4,
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,
                     help="Print data all the time?")
