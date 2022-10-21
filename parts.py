@@ -94,16 +94,30 @@ def mktrainval(args, preprocess):
   valid_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
   test_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
 
+  if args.aggressive:
+    preprocess = T.Compose([
+          T.AugMix(),
+          deepcopy(preprocess)
+            ])
+
+
+  if args.gaussian:
+    preprocess = T.Compose([
+          T.GaussianBlur(kernel_size=3, sigma=(0.1,2)),
+          deepcopy(preprocess)
+          
+            ])
+
   if args.random_rotate:
     preprocess = T.Compose([
-          deepcopy(preprocess),
-          T.RandomRotation(degrees=180, interpolation=T.InterpolationMode.BILINEAR)
+          T.RandomRotation(degrees=180, interpolation=T.InterpolationMode.BILINEAR),
+          deepcopy(preprocess)
             ])
   
   if args.random_flip:
     preprocess = T.Compose([
-          deepcopy(preprocess),
-          T.RandomHorizontalFlip()
+          T.RandomHorizontalFlip(),
+          deepcopy(preprocess)
             ])
   if args.verbose:
     print(preprocess)

@@ -29,7 +29,9 @@ python main.py --early_stop_steps 1000 --lr_gamma 0.5 --adabatch
 Todo:
 Write up amp implement, test on Dickies computer
 Talk about Implement cuda benchmarking
-Implement DistribDataParallel for multi-processing and avoiding python GIL
+Implement DistribDataParallel for multi-processing and avoiding python GIL (low pri)
+
+
 Use more aggressive (or progressively more aggressive) dataloading transforms for augmentations
 """
 
@@ -52,30 +54,27 @@ def grid_search(args):
 
   best_acc = 0.0
   grid_dict = {
-    'base_lr': [0.003],
-    'batch_size':[128],
+    'use_amp':[True, False],
     'random_rotate':[True, False],
-    'random_flip':[False],
-    'repeats':range(10)
+    'random_flip':[True, False],
+    'gaussian':[True, False],
+    'aggressive':[True, False],
+    # 'repeats':range(10)
   }
+
+  args.eval_every = 1
+  args.early_stop_steps = 0
 
   grid = ParameterGrid(grid_dict)
   print(f"Grid searching across {len(grid)} combinations")
   for idx, params in enumerate(grid):
     print(f"Run {idx} of {len(grid)} combinations")
-    if params['random_rotate'] == True and params['random_flip'] == True:
-      print("Skipping this run based on already having this data")
-      continue
-    args.base_lr = params['base_lr']
-    # args.lr_step_size = params['lr_step_size']
-    # args.lr_gamma = params['lr_gamma']
-    args.batch_size = params['batch_size']
     args.random_flip = params['random_flip']
     args.random_rotate = params['random_rotate']
+    args.use_amp = params['use_amp']
+    args.gaussian = params['gaussian']
+    args.aggressive = params['aggressive']
 
-
-    args.early_stop_steps = int(10*8701/128) #10 epochs for batch size 128, more for larger since they take a longer epoch time to converge, patience of lr scheduler is 5 epochs
-    
     #run main
     stats, step, model, stop_reason, kill_flag = main(args)
 
@@ -154,10 +153,9 @@ def main(args):
           'lr':{},
           'batch_size':{},
           'batch_split':{}}
+  
   step = -1
   accum_step = 0
-  best_valid_acc = 0.0
-  best_step = -1
                                                    
   #initial validation
   print("Running initial validation")
@@ -172,6 +170,11 @@ def main(args):
                       f"valid per-class mean accuracy {stats[f'valid_mca'][step]:.2f}%",
                       f"time taken loading {time_taken:.2f}s"
                     )
+
+  best_valid_acc = stats['valid_acc'][step]
+  best_weights = deepcopy(model.state_dict())
+  best_step = step
+
   step += 1 #so by design, the first trained epoch is 0, while the first initial starting point is at step -1
   last_eval_time = time.perf_counter()
   
@@ -308,18 +311,22 @@ def main(args):
 
   print(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
 
+  name_args = ['alexnet', f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '',
+      #spaces to maintain interworking with process_output
+      "gaussian" if args.gaussian else '',
+      "aggressive" if args.aggressive else '',
+      'amp' if args.use_amp else ''
+      ]
+
   if args.savepth:
     if os.path.exists(args.savedir) != True:
       os.mkdir(args.savedir)
-    #spaces to maintain interworking with process_output
-    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
     name = f"{'_'.join(name_args)}.pth"
     print(f"Saving model in {os.path.join(args.savedir,name)}")
     torch.save({"checkpoint":model.module.state_dict()},os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
   if args.savestats:
     if os.path.exists(args.savedir) != True:
       os.mkdir(args.savedir)
-    name_args = ['alexnet', f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '']
     name = f"{'_'.join(name_args)}.csv"
     stat_df = pd.DataFrame(stats).to_csv(os.path.join(args.savedir,name))
 
@@ -343,7 +350,7 @@ if __name__ == "__main__":
                     help="Base learning rate")
   # parser.add_argument("--lr_step_size", type=int, required=False, default=100,
   #                   help="Learning rate schedule step size")
-  parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
+  parser.add_argument("--lr_gamma", type=float, required=False, default=0.75,
                     help="Learning rate multiplier every step size")
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
@@ -351,7 +358,7 @@ if __name__ == "__main__":
                     help="Repeat the run how many times?")
   parser.add_argument("--eval_every", type=int, required=False, default=20,
                     help="Eval_every so many steps")
-  parser.add_argument("--early_stop_steps", type=int, required=False, default=800,
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=4000,
                     help="Number of steps of no learning to terminate")
   ################################################################################ under dev
   # parser.add_argument("--ada_steps", type=int, required=False, default=9999,
@@ -361,13 +368,13 @@ if __name__ == "__main__":
   # parser.add_argument("--epochs", type=int, required=False, default=100,
   #                   help="Run how many epochs before terminating?")
   ################################################################################
-  parser.add_argument("--num_workers", type=int, required=False, default=8,
+  parser.add_argument("--num_workers", type=int, required=False, default=16,
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,
                     help="Print data all the time?")
   parser.add_argument("--use_amp", required=False, action="store_true", default=False,
                     help="Use automated mixed precision?")
-  parser.add_argument("--adabatch", required=False, action="store_true", default=False,
+  parser.add_argument("--adabatch", required=False, action="store_true", default=True,
                     help="Adaptively increase the batch size when training stagnates to get better performance?")
   parser.add_argument("--training_stats", required=False, action="store_true", default=False,
                     help="Calculate training stats?")
@@ -377,6 +384,10 @@ if __name__ == "__main__":
                     help="Random horizontal flips for data aug?")
   parser.add_argument("--random_rotate", default=False, action="store_true", required=False,
                     help="Random rotations for data aug?")
+  parser.add_argument("--gaussian", default=False, action="store_true", required=False,
+                    help="Random gaussian blurs for data aug?")
+  parser.add_argument("--aggressive", default=False, action="store_true", required=False,
+                    help="Random extra aggressive data aug?")                  
   # args.random_flip = params['random_flip']
   # args.random_rotate
   args = parser.parse_args()
