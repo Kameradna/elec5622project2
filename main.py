@@ -35,7 +35,7 @@ Implement DistribDataParallel for multi-processing and avoiding python GIL (low 
 Use more aggressive (or progressively more aggressive) dataloading transforms for augmentations
 """
 
-from torchvision.models import alexnet, AlexNet_Weights
+from torchvision.models import alexnet, AlexNet_Weights, efficientnet_v2_s, EfficientNet_V2_S_Weights
 import argparse
 import torch
 from sklearn.model_selection import ParameterGrid
@@ -111,7 +111,15 @@ def main(args):
 
   model_start = time.perf_counter()
   #getting transforms
-  weights = AlexNet_Weights.DEFAULT
+  if args.feature_extractor == 'alexnet':
+    weights = AlexNet_Weights.DEFAULT
+    model = alexnet(weights=weights)
+  elif args.feature_extractor == 'efficientnet_v2_s':
+    weights = EfficientNet_V2_S_Weights.DEFAULT
+    model = efficientnet_v2_s(weights=weights)
+  else:
+    print(f"{args.feature_extractor} not implemented yet. Please retype or implement here. Exiting...")
+
   preprocess = weights.transforms()
   
   #setting up training and validation data
@@ -120,10 +128,10 @@ def main(args):
   #misc dataparallel
   device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-  #getting alexnet and altering the final output layer
-  model = alexnet(weights=weights)
+  #getting input sizes and altering the final output layer
   num_features = model.classifier[-1].in_features
   model.classifier[-1] = torch.nn.Linear(num_features, len(valid_set.classes),bias=True)
+
   print(f"Classes are {valid_set.classes}")
 
   #model to dataparallel
@@ -341,6 +349,8 @@ if __name__ == "__main__":
                     help="Path to the data folder, preprocessed for torchvision.")
   parser.add_argument("--dataset", default="hep2", required=False,
                     help="What dataset should we use?")
+  parser.add_argument("--feature_extractor", default="alexnet", required=False,
+                    help="What feature extractor should we use?")
   parser.add_argument("--savedir", default="save", required=False,
                     help="Path to the save folder, for placement of csv and pth files.")
   parser.add_argument("--savestats", default=True, action="store_true", required=False,
