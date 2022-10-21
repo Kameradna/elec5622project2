@@ -59,11 +59,12 @@ def grid_search(args):
     'random_flip':[True, False],
     'gaussian':[True, False],
     'aggressive':[True, False],
-    # 'repeats':range(10)
+    'repeats':range(10)
   }
 
-  args.eval_every = 1
-  args.early_stop_steps = 0
+  #for testing combos quickly to ensure no issues
+  # args.eval_every = 1
+  # args.early_stop_steps = 0
 
   grid = ParameterGrid(grid_dict)
   print(f"Grid searching across {len(grid)} combinations")
