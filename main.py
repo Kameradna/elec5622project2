@@ -35,7 +35,7 @@ Implement DistribDataParallel for multi-processing and avoiding python GIL (low 
 Use more aggressive (or progressively more aggressive) dataloading transforms for augmentations
 """
 
-from torchvision.models import alexnet, AlexNet_Weights, efficientnet_v2_s, EfficientNet_V2_S_Weights
+from torchvision.models import alexnet, AlexNet_Weights, resnet101, ResNet101_Weights
 import argparse
 import torch
 from sklearn.model_selection import ParameterGrid
@@ -115,8 +115,8 @@ def main(args):
     weights = AlexNet_Weights.DEFAULT
     model = alexnet(weights=weights)
   elif args.feature_extractor == 'efficientnet_v2_s':
-    weights = EfficientNet_V2_S_Weights.DEFAULT
-    model = efficientnet_v2_s(weights=weights)
+    weights = ResNet101_Weights.IMAGENET1K_V2
+    model = resnet101(weights=weights)
   else:
     print(f"{args.feature_extractor} not implemented yet. Please retype or implement here. Exiting...")
 
