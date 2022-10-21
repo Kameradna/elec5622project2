@@ -114,9 +114,16 @@ def main(args):
   if args.feature_extractor == 'alexnet':
     weights = AlexNet_Weights.DEFAULT
     model = alexnet(weights=weights)
-  elif args.feature_extractor == 'efficientnet_v2_s':
+    #getting input sizes and altering the final output layer
+    num_features = model.classifier[-1].in_features
+    model.classifier[-1] = torch.nn.Linear(num_features, len(args.classes),bias=True)
+  elif args.feature_extractor == 'resnet101':
     weights = ResNet101_Weights.IMAGENET1K_V2
     model = resnet101(weights=weights)
+    num_features = model.fc.in_features
+    model.fc = torch.nn.Linear(num_features, len(args.classes),bias=True)
+    print(model)
+    exit()
   else:
     print(f"{args.feature_extractor} not implemented yet. Please retype or implement here. Exiting...")
 
@@ -128,9 +135,7 @@ def main(args):
   #misc dataparallel
   device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-  #getting input sizes and altering the final output layer
-  num_features = model.classifier[-1].in_features
-  model.classifier[-1] = torch.nn.Linear(num_features, len(valid_set.classes),bias=True)
+  
 
   print(f"Classes are {valid_set.classes}")
 
@@ -349,6 +354,8 @@ if __name__ == "__main__":
                     help="Path to the data folder, preprocessed for torchvision.")
   parser.add_argument("--dataset", default="hep2", required=False,
                     help="What dataset should we use?")
+  parser.add_argument("--classes", default="hep2", required=False,
+                    help="How many output classes are there?")
   parser.add_argument("--feature_extractor", default="alexnet", required=False,
                     help="What feature extractor should we use?")
   parser.add_argument("--savedir", default="save", required=False,
