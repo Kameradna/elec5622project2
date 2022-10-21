@@ -122,8 +122,6 @@ def main(args):
     model = resnet101(weights=weights)
     num_features = model.fc.in_features
     model.fc = torch.nn.Linear(num_features, len(args.classes),bias=True)
-    print(model)
-    exit()
   else:
     print(f"{args.feature_extractor} not implemented yet. Please retype or implement here. Exiting...")
 
