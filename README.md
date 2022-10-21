@@ -1,5 +1,11 @@
 # elec5622project2
 
+## Other files
+https://drive.google.com/drive/folders/1gHLaMCayQtvR7viV-2_0TC8H8Fdv6n70?usp=sharing
+
+## Prerequisites
+
+Install a conda env or your choice of sandboxed environment, yml files will be included.
 
 ## Datasets
 ```shell
@@ -11,10 +17,6 @@ unzip data/validation.zip -d data
 gdown https://drive.google.com/file/d/1yzqHghT9M0G4BHhz_gDTB0Ml7DXPM3BF/view?usp=sharing --fuzzy -O data/data.csv
 rm -v "Three Datasets for Training, Validation and Test.zip" data/test.zip data/training.zip data/validation.zip
 ```
-## Prerequisites
-
-Install a conda env or your choice of sandboxed environment, yml files will be included.
-We just need python=3.x, pip, pytorch, torchvision, maybe some numpy and pandas.
 
 ## How to use
 
@@ -123,9 +125,11 @@ We see very little difference between the metrics, but notice in our implemented
 
 The results at batch sizes of 256 and 512 is not more impressive, and we think that this is because of slower convergence at larger batch sizes. To remedy this we can try altering batch sizes on the fly to speed up convergence. https://arxiv.org/abs/1712.02029v2
 
+When we implemented this via accumulating gradients in the original paper, we reached 98% accuracy and will report the final accuracy once the run concludes. Another attempt was run in parallel when we got access to more computation at a starting batch size of 2048.
 
+![best98 02](https://user-images.githubusercontent.com/48018617/196847875-b12bc460-59ab-45b7-86f1-45fda978a7a6.png)
 
-
+As an extension, we used Big Transfer; a version of a ResNet-50 with included Group Normalisation trained on ImageNet21k and the BiT hyperule of batch size 512, 500 steps with learning rate warmup to 0.003 and then specific cooldown; achieved similar performance to our best every run in around 2 mins.
 
 
 2016 sota was ~84.63% (MCA?) https://qixianbiao.github.io/HEp2Cell/
