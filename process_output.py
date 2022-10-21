@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 stats = {
+    'extractor':[],
     'base_lr':[],
     # 'lr_step_size':[],
     # 'lr_gamma':[],
@@ -20,6 +21,7 @@ for root, dir, files in os.walk('save'):
             continue
         print(file)
         fileinfo = file.split('_')
+        stats['extractor'].append(str(fileinfo[0]))
         stats['base_lr'].append(float(fileinfo[1].strip('baselr')))
         # stats['lr_step_size'].append(int(fileinfo[2].strip('lrstep')))
         # stats['lr_gamma'].append(float(fileinfo[3].strip('lrgam')))
@@ -28,7 +30,7 @@ for root, dir, files in os.walk('save'):
         stats['stop_reason'].append(str(fileinfo[6].split('@')[0]))
         stats['step'].append(int(fileinfo[6].split('@')[1]))
         try:
-            stats['special_sauce'].append(str(fileinfo[8:12]).strip('.csv'))
+            stats['special_sauce'].append(str(fileinfo[8:]).strip('.csv'))
         except:
             print('"Forget about it!"')
 

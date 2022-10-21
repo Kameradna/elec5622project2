@@ -96,7 +96,7 @@ def grid_search(args):
       os.mkdir(args.savedir)
 
   args = best_args
-  name_args = ['alexnet', f"baselr{args.base_lr}", "", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", best_stop_reason]
+  name_args = [args.feature_extractor, f"baselr{args.base_lr}", "", f"lrgam{args.lr_gamma}", f"bat{args.batch_size}", f"step{step}", best_stop_reason]
   name = f"{'_'.join(name_args)}_best_{best_acc}.pth"
   torch.save(best_model.module.state_dict(),os.path.join(args.savedir,name)) #.module to deencapsulate the statedict from DataParallel
 
@@ -323,7 +323,7 @@ def main(args):
 
   print(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
 
-  name_args = ['alexnet', f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '',
+  name_args = [args.feature_extractor, f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '',
       #spaces to maintain interworking with process_output
       "gaussian" if args.gaussian else '',
       "aggressive" if args.aggressive else '',
