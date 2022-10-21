@@ -4,12 +4,13 @@ including main training loop and entry point for users to run the project.
 
 Most interesting parts-
 
-- Using batch size to dictate patience of early stopping and ReduceLROnPlateau scheduler
+- Patience of early stopping and ReduceLROnPlateau scheduler and adaptive gradient accumulation (adabatch analogue)
 - Grid search using sklearn.model_selection.ParameterGrid
 - Using updated pytorch weights API to apply transforms to data
 - Saving non-DataParallel state_dict() for easier reloading
 - Friendly interface to run different combinations of parameters from the command line
 - Terminating long training via keyboard will still execute testing phase and report stats
+- Amp implemented
 
 Defaults are 
 Batch size = 128 (use higher if you have access to more VRAM)
@@ -24,6 +25,11 @@ To run with escalating accumulating sizes for the grads
 
 python main.py --early_stop_steps 1000 --lr_gamma 0.5 --adabatch
 
+
+Todo:
+Write up amp implement, test on Dickies computer
+Talk about Implement cuda benchmarking
+Implement DistribDataParallel for multi-processing and avoiding python GIL
 """
 
 from torchvision.models import alexnet, AlexNet_Weights
@@ -100,6 +106,8 @@ def grid_search(args):
 def main(args):
   print("Loading model, weights and data")
   print(f"args = {args}")
+  torch.backends.cuda.benchmarking = True
+
   model_start = time.perf_counter()
   #getting transforms
   weights = AlexNet_Weights.DEFAULT
@@ -124,8 +132,10 @@ def main(args):
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
   # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
-  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2) #other items default
-  
+  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2//args.eval_every) #other items default
+  scaler = torch.cuda.amp.GradScaler(enabled=args.use_amp)
+
+
   #move to GPU if present
   model = model.to(device)
   optim.zero_grad(set_to_none=True)
@@ -146,6 +156,7 @@ def main(args):
   step = -1
   accum_step = 0
   best_valid_acc = 0.0
+  best_step = -1
                                                    
   #initial validation
   print("Running initial validation")
@@ -161,30 +172,36 @@ def main(args):
                       f"time taken loading {time_taken:.2f}s"
                     )
   step += 1 #so by design, the first trained epoch is 0, while the first initial starting point is at step -1
-
+  last_eval_time = time.perf_counter()
   
   print("Beginning training")
   try:
     kill_flag = False
+    training_loop_start = time.perf_counter()
     #main training loop
     for x, y in parts.recycle(train_loader):
-      training_loop_start = time.perf_counter()
       if args.verbose:
         print(f"Training step {step}")
 
       #onto training
       model.train()
-      #move to device
-      x = x.to(device, non_blocking=True)
-      y = y.to(device, non_blocking=True)
+      with torch.autocast(device_type='cuda', dtype=torch.float16, enabled = args.use_amp): #use amp if enabled
+        #move to device
+        x = x.to(device, non_blocking=True)
+        y = y.to(device, non_blocking=True)
 
-      #the forward pass
-      logits = model(x)
-      logits.clamp_(0,1)
-      c = criterion(logits, y)
+        #the forward pass
+        logits = model(x)
+        logits.clamp_(0,1)
+        c = criterion(logits, y)
 
-      #the backward pass. with gradient accumulation
-      (c/args.batch_split).backward()
+      #the backward pass with gradient accumulation
+      scaler.scale(c/args.batch_split).backward() #wrapped with special amp stuff, becomes no-op if disabled
+      scaler.step(optim)
+      scaler.update()
+
+
+
       accum_step += 1
       
       #apply optimisation and reset grads to None for next pass
@@ -194,56 +211,55 @@ def main(args):
         optim.step()
         optim.zero_grad(set_to_none=True)
 
-        #run validation
-        model.eval()
-        stats = parts.run_eval(args, model, step, stats, device, valid_loader, 'valid')
-        if args.training_stats:
-          stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
+
         stats['train_loss'][step] = float(c.data.cpu().numpy())
-        stats['lr'][step] = optim.param_groups[0]['lr']
-        stats['batch_size'][step] = args.batch_size
-        stats['batch_split'][step] = args.batch_split
-          
-        optim_schedule.step(stats['valid_acc'][step])
-        if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
-          args.batch_split = int(args.batch_split*2)
-          print(f"Accumulating grads over {args.batch_split} steps")
+        #run validation
+        if step % args.eval_every == 0:
+            
+          model.eval()
+          stats = parts.run_eval(args, model, step, stats, device, valid_loader, 'valid')
+          if args.training_stats:
+            stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train')
+          stats['train_loss'][step] = float(c.data.cpu().numpy())
+          stats['lr'][step] = optim.param_groups[0]['lr']
+          stats['batch_size'][step] = args.batch_size
+          stats['batch_split'][step] = args.batch_split
+            
+          optim_schedule.step(stats['valid_acc'][step])
+          if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
+            args.batch_split = int(args.batch_split*2)
+            print(f"Accumulating grads over {args.batch_split} steps")
 
-        #grab the best model if it happens
-        if stats['valid_acc'][step] > best_valid_acc:
-          best_valid_acc = stats['valid_acc'][step]
-          best_weights = deepcopy(model.state_dict())
-          best_step = step
+          #grab the best model if it happens
+          if stats['valid_acc'][step] > best_valid_acc:
+            best_valid_acc = stats['valid_acc'][step]
+            best_weights = deepcopy(model.state_dict())
+            best_step = step
 
-        time_taken = time.perf_counter()-training_loop_start
-        if args.training_stats:
-          print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
-                                f"train accuracy {stats['train_acc'][step]:.2f}%,",
-                                f"valid loss {stats['valid_loss'][step]:.5f},",
-                                f"valid accuracy {stats['valid_acc'][step]:.2f}%",
-                                f"valid mca {stats[f'valid_mca'][step]:.2f}%",
-                                f"learning rate {stats['lr'][step]:.8f}",
-                                f"eff batch size {int(args.batch_split*stats['batch_size'][step])}",
-                                f"time taken this step {time_taken:.2f}s",
-                                f"{'(best)' if best_step == step else ''}"
-                      )
-        else:
-          print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
-                                f"valid loss {stats['valid_loss'][step]:.5f},",
-                                f"valid accuracy {stats['valid_acc'][step]:.2f}%",
-                                f"valid mca {stats[f'valid_mca'][step]:.2f}%",
-                                f"learning rate {stats['lr'][step]:.8f}",
-                                f"eff batch size {int(args.batch_split*stats['batch_size'][step])}",
-                                f"time taken this step {time_taken:.2f}s",
-                                f"{'(best)' if best_step == step else ''}"
-                      )
+          time_taken = (time.perf_counter()-last_eval_time)/args.eval_every
+          last_eval_time = time.perf_counter()
+          if args.training_stats:
+            print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
+                                  f"train accuracy {stats['train_acc'][step]:.2f}%,",
+                                  f"valid loss {stats['valid_loss'][step]:.5f},",
+                                  f"valid accuracy {stats['valid_acc'][step]:.2f}%",
+                                  f"valid mca {stats[f'valid_mca'][step]:.2f}%",
+                                  f"learning rate {stats['lr'][step]:.8f}",
+                                  f"eff batch size {int(args.batch_split*stats['batch_size'][step])}",
+                                  f"time taken avg/step {time_taken:.2f}s",
+                                  f"{'(best)' if best_step == step else ''}"
+                        )
+          else:
+            print(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f},",
+                                  f"valid loss {stats['valid_loss'][step]:.5f},",
+                                  f"valid accuracy {stats['valid_acc'][step]:.2f}%",
+                                  f"valid mca {stats[f'valid_mca'][step]:.2f}%",
+                                  f"learning rate {stats['lr'][step]:.8f}",
+                                  f"eff batch size {int(args.batch_split*stats['batch_size'][step])}",
+                                  f"time taken avg/step {time_taken:.2f}s",
+                                  f"{'(best)' if best_step == step else ''}"
+                        )
 
-        # if args.ada_steps < step and args.batch_size < 2048:
-        #   current_batch_size = train_loader.batch_size
-        #   args.batch_size = int(current_batch_size*2)
-        #   train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
-        #   print(f"Doubling batch size to {args.batch_size}")
-        #   args.ada_steps += args.ada_steps*args.batch_size
         if step - args.early_stop_steps > best_step:
           print(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
           stop_reason = f'stagnatewithreduceonplateau@{step}'
@@ -286,10 +302,11 @@ def main(args):
                           f"learning rate {stats['lr'][step]:.8f}"
                 )
 
-  stats = parts.run_eval(args, model, step, stats, device, test_loader, 'test')
-  print(f"Test stats@{step}: test loss {stats['test_loss'][step]:.5f},",
-                          f"test accuracy {stats['test_acc'][step]:.2f}%",
-                          f"test per-class mean accuracy {stats[f'test_mca'][step]:.2f}%")
+  if test_loader is not None:
+    stats = parts.run_eval(args, model, step, stats, device, test_loader, 'test')
+    print(f"Test stats@{step}: test loss {stats['test_loss'][step]:.5f},",
+                            f"test accuracy {stats['test_acc'][step]:.2f}%",
+                            f"test per-class mean accuracy {stats[f'test_mca'][step]:.2f}%")
 
   print(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
 
@@ -316,6 +333,8 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--datadir", default="data", required=False,
                     help="Path to the data folder, preprocessed for torchvision.")
+  parser.add_argument("--dataset", default="hep2", required=False,
+                    help="What dataset should we use?")
   parser.add_argument("--savedir", default="save", required=False,
                     help="Path to the save folder, for placement of csv and pth files.")
   parser.add_argument("--savestats", default=True, action="store_true", required=False,
@@ -330,6 +349,10 @@ if __name__ == "__main__":
                     help="Learning rate multiplier every step size")
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
+  parser.add_argument("--repeats", type=int, required=False, default=1,
+                    help="Repeat the run how many times?")
+  parser.add_argument("--eval_every", type=int, required=False, default=20,
+                    help="Eval_every so many steps")
   parser.add_argument("--early_stop_steps", type=int, required=False, default=800,
                     help="Number of steps of no learning to terminate")
   ################################################################################ under dev
@@ -344,6 +367,8 @@ if __name__ == "__main__":
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,
                     help="Print data all the time?")
+  parser.add_argument("--use_amp", required=False, action="store_true", default=False,
+                    help="Use automated mixed precision?")
   parser.add_argument("--adabatch", required=False, action="store_true", default=False,
                     help="Adaptively increase the batch size when training stagnates to get better performance?")
   parser.add_argument("--training_stats", required=False, action="store_true", default=False,
@@ -361,4 +386,5 @@ if __name__ == "__main__":
   if args.grid_search:
     grid_search(args)
   else:
-    main(args)
+    for idx in range(args.repeats):
+      main(args)

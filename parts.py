@@ -1,7 +1,7 @@
 import torch
 from os import path
 from torch.utils.data import SubsetRandomSampler, DataLoader
-from torchvision.datasets import ImageFolder
+from torchvision.datasets import ImageFolder, FashionMNIST
 import torchvision.transforms as T
 import time
 import numpy as np
@@ -40,11 +40,12 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
 
   for b, (x, y) in enumerate(data_loader):
     with torch.no_grad():
-      x = x.to(device, non_blocking=True)
-      y = y.to(device, non_blocking=True)
+      with torch.autocast(device_type='cuda', dtype=torch.float16, enabled = args.use_amp): #use amp if enabled
+        x = x.to(device, non_blocking=True)
+        y = y.to(device, non_blocking=True)
 
-      logits = model(x)
-      c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
+        logits = model(x)
+        c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
 
       #get stats
       top1, top2 = accuracy(logits, y, topk=(1, 2))
@@ -74,9 +75,23 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
 #train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
 
 def mktrainval(args, preprocess):
-  valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)
+  if args.dataset == 'hep2':
+    valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)
+    test_set = ImageFolder(path.join(args.datadir,'test'),transform=preprocess)
+  elif args.dataset == 'fashion':
+    preprocess = T.Compose([
+          T.Grayscale(num_output_channels=3),
+          deepcopy(preprocess)
+            ])
+    valid_set = FashionMNIST(path.join(args.datadir),train=True,transform=preprocess,download=True)
+    test_set = None
+    test_loader = None
+  else:
+    print(f"{args.dataset} not implemented, please check spelling or implement it yourself. Exiting...")
+    exit()
+
+
   valid_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
-  test_set = ImageFolder(path.join(args.datadir,'test'),transform=preprocess)
   test_loader = DataLoader(valid_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
 
   if args.random_rotate:
@@ -93,7 +108,11 @@ def mktrainval(args, preprocess):
   if args.verbose:
     print(preprocess)
   
-  train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
-  train_loader = DataLoader(train_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
+  if args.dataset == 'hep2':
+    train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
+    train_loader = DataLoader(train_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
+  else:
+    train_set = FashionMNIST(path.join(args.datadir),train=True,transform=preprocess,download=True)
+    train_loader = DataLoader(train_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
 
   return train_loader, valid_loader, test_loader, train_set, valid_set, test_set
