@@ -30,6 +30,7 @@ Todo:
 Write up amp implement, test on Dickies computer
 Talk about Implement cuda benchmarking
 Implement DistribDataParallel for multi-processing and avoiding python GIL
+Use more aggressive (or progressively more aggressive) dataloading transforms for augmentations
 """
 
 from torchvision.models import alexnet, AlexNet_Weights
@@ -192,15 +193,11 @@ def main(args):
 
         #the forward pass
         logits = model(x)
-        logits.clamp_(0,1)
+        logits.clamp_(0,1) #actually forced nans in amp scenario
         c = criterion(logits, y)
 
       #the backward pass with gradient accumulation
       scaler.scale(c/args.batch_split).backward() #wrapped with special amp stuff, becomes no-op if disabled
-      scaler.step(optim)
-      scaler.update()
-
-
 
       accum_step += 1
       
@@ -208,7 +205,8 @@ def main(args):
       if accum_step % args.batch_split == 0:
         step += 1
         accum_step = 0                                               
-        optim.step()
+        scaler.step(optim) #equivalent to optim.step()
+        scaler.update()
         optim.zero_grad(set_to_none=True)
 
 
