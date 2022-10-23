@@ -142,7 +142,7 @@ def main(args):
   
   #optimiser, loss function, lr scheduler
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
-  optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9)
+  optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9, weight_decay=args.weight_decay)
   # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
   optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2//args.eval_every) #other items default
   scaler = torch.cuda.amp.GradScaler(enabled=args.use_amp)
@@ -327,7 +327,8 @@ def main(args):
       #spaces to maintain interworking with process_output
       "gaussian" if args.gaussian else '',
       "aggressive" if args.aggressive else '',
-      'amp' if args.use_amp else ''
+      'amp' if args.use_amp else '',
+      'weight_decay' if args.weight_decay is not None else ''
       ]
 
   if args.savepth:
@@ -368,6 +369,13 @@ if __name__ == "__main__":
   #                   help="Learning rate schedule step size")
   parser.add_argument("--lr_gamma", type=float, required=False, default=0.75,
                     help="Learning rate multiplier every step size")
+                    ################################################################################ under dev
+  parser.add_argument("--weight_decay", type=float, required=False, default=0.0005,
+                    help="Learning rate multiplier every step size")
+                #add the sgdr parts, with probably some extra spice with batch size increases
+    # parser.add_argument("--epochs", type=int, required=False, default=100,
+  #                   help="Run how many epochs before terminating?")
+  ################################################################################
   parser.add_argument("--batch_size", type=int, required=False, default=128,
                     help="Batch size for training")
   parser.add_argument("--repeats", type=int, required=False, default=1,
@@ -376,14 +384,12 @@ if __name__ == "__main__":
                     help="Eval_every so many steps")
   parser.add_argument("--early_stop_steps", type=int, required=False, default=4000,
                     help="Number of steps of no learning to terminate")
-  ################################################################################ under dev
+  
   # parser.add_argument("--ada_steps", type=int, required=False, default=9999,
   #                   help="Number of steps at the initial batch size before doubling")
   parser.add_argument("--batch_split", type=int, required=False, default=1,
                     help="Number of batches to accumulate grads initially, before adaptive batch sizing begins")
-  # parser.add_argument("--epochs", type=int, required=False, default=100,
-  #                   help="Run how many epochs before terminating?")
-  ################################################################################
+
   parser.add_argument("--num_workers", type=int, required=False, default=4,
                     help="Number of workers for dataloading")
   parser.add_argument("--verbose", required=False, action="store_true", default=False,
