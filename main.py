@@ -396,7 +396,7 @@ if __name__ == "__main__":
                     help="Print data all the time?")
   parser.add_argument("--use_amp", required=False, action="store_true", default=False,
                     help="Use automated mixed precision?")
-  parser.add_argument("--adabatch", required=False, action="store_true", default=True,
+  parser.add_argument("--adabatch", required=False, action="store_true", default=False,
                     help="Adaptively increase the batch size when training stagnates to get better performance?")
   parser.add_argument("--training_stats", required=False, action="store_true", default=False,
                     help="Calculate training stats?")
