@@ -1,0 +1,671 @@
+2022-10-26 22:09:07,680 [INFO] parts: Namespace(name='unnamed', datadir='data', dataset='hep2', classes=6, feature_extractor='alexnet', savedir='save', logdir='log', savestats=True, savepth=False, base_lr=0.003, lr_gamma=0.75, weight_decay=0.0005, batch_size=128, repeats=1, eval_every=20, early_stop_steps=4000, batch_split=1, num_workers=4, verbose=False, use_amp=False, adabatch=False, training_stats=False, grid_search=False, random_flip=False, random_rotate=False, gaussian=False, aggressive=False)
+2022-10-26 22:09:07,680 [INFO] parts: Loading model, weights and data
+2022-10-26 22:09:07,680 [INFO] parts: args = Namespace(name='unnamed', datadir='data', dataset='hep2', classes=6, feature_extractor='alexnet', savedir='save', logdir='log', savestats=True, savepth=False, base_lr=0.003, lr_gamma=0.75, weight_decay=0.0005, batch_size=128, repeats=1, eval_every=20, early_stop_steps=4000, batch_split=1, num_workers=4, verbose=False, use_amp=False, adabatch=False, training_stats=False, grid_search=False, random_flip=False, random_rotate=False, gaussian=False, aggressive=False)
+2022-10-26 22:09:09,599 [INFO] parts: Running initial validation
+2022-10-26 22:09:13,215 [INFO] parts: Stats@-1: valid loss 1.92853, valid accuracy 20.73% valid mca 16.54%
+2022-10-26 22:09:13,217 [INFO] parts: Beginning training
+2022-10-26 22:09:19,517 [INFO] parts: Stats@20: train loss 1.45330, valid loss 1.06637, valid accuracy 62.07% valid mca 57.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.32s (best)
+2022-10-26 22:09:24,839 [INFO] parts: Stats@40: train loss 1.37383, valid loss 1.37028, valid accuracy 59.93% valid mca 53.64% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:09:29,798 [INFO] parts: Stats@60: train loss 1.35963, valid loss 0.96731, valid accuracy 69.35% valid mca 62.23% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s (best)
+2022-10-26 22:09:34,988 [INFO] parts: Stats@80: train loss 1.28484, valid loss 1.23724, valid accuracy 65.88% valid mca 57.40% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:09:40,037 [INFO] parts: Stats@100: train loss 1.28269, valid loss 0.89539, valid accuracy 76.42% valid mca 68.01% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s (best)
+2022-10-26 22:09:44,934 [INFO] parts: Stats@120: train loss 1.24176, valid loss 1.36773, valid accuracy 72.79% valid mca 72.49% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:09:50,573 [INFO] parts: Stats@140: train loss 1.18850, valid loss 0.58641, valid accuracy 82.02% valid mca 82.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s (best)
+2022-10-26 22:09:55,463 [INFO] parts: Stats@160: train loss 1.21041, valid loss 0.75144, valid accuracy 84.47% valid mca 84.79% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:10:00,239 [INFO] parts: Stats@180: train loss 1.26739, valid loss 0.65877, valid accuracy 83.41% valid mca 83.84% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:10:04,439 [INFO] parts: Stats@200: train loss 1.17333, valid loss 0.58827, valid accuracy 83.77% valid mca 83.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:10:09,997 [INFO] parts: Stats@220: train loss 1.16422, valid loss 0.65597, valid accuracy 83.96% valid mca 83.83% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:10:14,507 [INFO] parts: Stats@240: train loss 1.19203, valid loss 0.61899, valid accuracy 84.51% valid mca 84.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:10:19,034 [INFO] parts: Stats@260: train loss 1.15731, valid loss 0.67995, valid accuracy 85.52% valid mca 84.79% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:10:24,223 [INFO] parts: Stats@280: train loss 1.15589, valid loss 0.50072, valid accuracy 86.95% valid mca 87.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 22:10:28,892 [INFO] parts: Stats@300: train loss 1.19484, valid loss 0.54857, valid accuracy 86.17% valid mca 86.15% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:10:33,431 [INFO] parts: Stats@320: train loss 1.17097, valid loss 0.42380, valid accuracy 87.22% valid mca 87.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:10:37,778 [INFO] parts: Stats@340: train loss 1.12579, valid loss 0.46521, valid accuracy 87.78% valid mca 88.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 22:10:43,391 [INFO] parts: Stats@360: train loss 1.16369, valid loss 0.52915, valid accuracy 87.04% valid mca 87.11% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:10:48,276 [INFO] parts: Stats@380: train loss 1.12778, valid loss 0.46538, valid accuracy 88.74% valid mca 89.10% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:10:52,862 [INFO] parts: Stats@400: train loss 1.15743, valid loss 0.50299, valid accuracy 87.77% valid mca 87.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:10:58,228 [INFO] parts: Stats@420: train loss 1.15953, valid loss 0.47023, valid accuracy 86.67% valid mca 86.76% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:11:02,774 [INFO] parts: Stats@440: train loss 1.13347, valid loss 0.45608, valid accuracy 89.25% valid mca 89.79% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:11:07,622 [INFO] parts: Stats@460: train loss 1.14148, valid loss 0.65303, valid accuracy 86.17% valid mca 87.01% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:11:13,336 [INFO] parts: Stats@480: train loss 1.15777, valid loss 0.40873, valid accuracy 87.12% valid mca 87.49% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:11:18,065 [INFO] parts: Stats@500: train loss 1.14422, valid loss 0.43067, valid accuracy 87.68% valid mca 87.80% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:11:22,817 [INFO] parts: Stats@520: train loss 1.14765, valid loss 0.44435, valid accuracy 87.59% valid mca 88.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:11:27,526 [INFO] parts: Stats@540: train loss 1.15716, valid loss 0.33984, valid accuracy 88.92% valid mca 89.75% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:11:32,908 [INFO] parts: Stats@560: train loss 1.11783, valid loss 0.49851, valid accuracy 87.27% valid mca 87.53% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:11:38,782 [INFO] parts: Stats@580: train loss 1.13983, valid loss 0.29414, valid accuracy 89.98% valid mca 90.02% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s (best)
+2022-10-26 22:11:43,420 [INFO] parts: Stats@600: train loss 1.12554, valid loss 0.32816, valid accuracy 89.61% valid mca 89.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:11:49,208 [INFO] parts: Stats@620: train loss 1.08988, valid loss 0.23914, valid accuracy 92.00% valid mca 92.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s (best)
+2022-10-26 22:11:53,807 [INFO] parts: Stats@640: train loss 1.12901, valid loss 0.28773, valid accuracy 91.04% valid mca 90.85% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:11:58,364 [INFO] parts: Stats@660: train loss 1.13163, valid loss 0.26711, valid accuracy 91.68% valid mca 91.62% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:12:04,340 [INFO] parts: Stats@680: train loss 1.15885, valid loss 0.31735, valid accuracy 90.03% valid mca 89.75% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:12:10,275 [INFO] parts: Stats@700: train loss 1.10317, valid loss 0.26037, valid accuracy 91.77% valid mca 92.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:12:16,591 [INFO] parts: Stats@720: train loss 1.09683, valid loss 0.25437, valid accuracy 92.19% valid mca 92.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.32s (best)
+2022-10-26 22:12:21,406 [INFO] parts: Stats@740: train loss 1.12436, valid loss 0.23478, valid accuracy 92.55% valid mca 92.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:12:26,482 [INFO] parts: Stats@760: train loss 1.11098, valid loss 0.25160, valid accuracy 91.91% valid mca 92.05% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:12:31,226 [INFO] parts: Stats@780: train loss 1.12277, valid loss 0.36538, valid accuracy 88.65% valid mca 88.66% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:12:35,738 [INFO] parts: Stats@800: train loss 1.09745, valid loss 0.25291, valid accuracy 91.31% valid mca 91.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:12:40,793 [INFO] parts: Stats@820: train loss 1.12404, valid loss 0.22489, valid accuracy 93.06% valid mca 92.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s (best)
+2022-10-26 22:12:45,353 [INFO] parts: Stats@840: train loss 1.10204, valid loss 0.27965, valid accuracy 91.08% valid mca 90.95% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:12:50,089 [INFO] parts: Stats@860: train loss 1.13603, valid loss 0.25386, valid accuracy 92.23% valid mca 92.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:12:54,372 [INFO] parts: Stats@880: train loss 1.11137, valid loss 0.20704, valid accuracy 92.78% valid mca 93.09% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:12:59,680 [INFO] parts: Stats@900: train loss 1.07024, valid loss 0.21757, valid accuracy 92.92% valid mca 92.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:13:04,499 [INFO] parts: Stats@920: train loss 1.12400, valid loss 0.28792, valid accuracy 90.99% valid mca 90.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:13:09,306 [INFO] parts: Stats@940: train loss 1.10866, valid loss 0.19996, valid accuracy 93.52% valid mca 93.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:13:14,662 [INFO] parts: Stats@960: train loss 1.09843, valid loss 0.21366, valid accuracy 92.83% valid mca 92.49% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:13:19,196 [INFO] parts: Stats@980: train loss 1.07003, valid loss 0.19603, valid accuracy 93.66% valid mca 93.76% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:13:24,006 [INFO] parts: Stats@1000: train loss 1.07938, valid loss 0.19218, valid accuracy 93.79% valid mca 93.85% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:13:28,550 [INFO] parts: Stats@1020: train loss 1.10877, valid loss 0.19117, valid accuracy 93.24% valid mca 93.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:13:34,148 [INFO] parts: Stats@1040: train loss 1.11536, valid loss 0.19448, valid accuracy 94.30% valid mca 94.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s (best)
+2022-10-26 22:13:38,597 [INFO] parts: Stats@1060: train loss 1.08322, valid loss 0.23806, valid accuracy 92.97% valid mca 93.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:13:43,153 [INFO] parts: Stats@1080: train loss 1.07896, valid loss 0.21286, valid accuracy 93.11% valid mca 93.06% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:13:48,438 [INFO] parts: Stats@1100: train loss 1.09426, valid loss 0.18269, valid accuracy 93.98% valid mca 93.98% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:13:52,882 [INFO] parts: Stats@1120: train loss 1.11124, valid loss 0.23894, valid accuracy 91.22% valid mca 91.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:13:57,525 [INFO] parts: Stats@1140: train loss 1.10631, valid loss 0.21152, valid accuracy 93.75% valid mca 93.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:14:02,854 [INFO] parts: Stats@1160: train loss 1.11142, valid loss 0.19088, valid accuracy 93.43% valid mca 93.65% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:14:08,027 [INFO] parts: Stats@1180: train loss 1.07393, valid loss 0.17310, valid accuracy 94.39% valid mca 93.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 22:14:13,144 [INFO] parts: Stats@1200: train loss 1.06857, valid loss 0.19438, valid accuracy 93.47% valid mca 93.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:14:19,036 [INFO] parts: Stats@1220: train loss 1.09331, valid loss 0.15817, valid accuracy 95.22% valid mca 95.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s (best)
+2022-10-26 22:14:24,819 [INFO] parts: Stats@1240: train loss 1.10266, valid loss 0.18170, valid accuracy 94.53% valid mca 94.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:14:29,567 [INFO] parts: Stats@1260: train loss 1.09787, valid loss 0.21556, valid accuracy 93.61% valid mca 94.10% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:14:34,161 [INFO] parts: Stats@1280: train loss 1.07579, valid loss 0.15270, valid accuracy 95.31% valid mca 95.23% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:14:39,363 [INFO] parts: Stats@1300: train loss 1.08196, valid loss 0.15596, valid accuracy 94.76% valid mca 94.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:14:43,783 [INFO] parts: Stats@1320: train loss 1.07364, valid loss 0.18692, valid accuracy 94.25% valid mca 94.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:14:48,248 [INFO] parts: Stats@1340: train loss 1.08467, valid loss 0.18926, valid accuracy 93.88% valid mca 93.84% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:14:52,723 [INFO] parts: Stats@1360: train loss 1.13252, valid loss 0.19587, valid accuracy 93.20% valid mca 93.56% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:14:59,746 [INFO] parts: Stats@1380: train loss 1.06802, valid loss 0.16209, valid accuracy 94.62% valid mca 94.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.35s 
+2022-10-26 22:15:04,313 [INFO] parts: Stats@1400: train loss 1.08576, valid loss 0.18881, valid accuracy 94.21% valid mca 94.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:15:08,923 [INFO] parts: Stats@1420: train loss 1.08072, valid loss 0.20831, valid accuracy 93.75% valid mca 93.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:15:14,256 [INFO] parts: Stats@1440: train loss 1.08942, valid loss 0.16622, valid accuracy 95.04% valid mca 95.10% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:15:18,831 [INFO] parts: Stats@1460: train loss 1.08957, valid loss 0.16039, valid accuracy 95.22% valid mca 95.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:15:23,712 [INFO] parts: Stats@1480: train loss 1.08748, valid loss 0.17791, valid accuracy 94.25% valid mca 93.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:15:29,000 [INFO] parts: Stats@1500: train loss 1.06993, valid loss 0.17555, valid accuracy 94.16% valid mca 94.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:15:33,641 [INFO] parts: Stats@1520: train loss 1.07792, valid loss 0.16022, valid accuracy 95.17% valid mca 95.13% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:15:38,607 [INFO] parts: Stats@1540: train loss 1.06919, valid loss 0.15500, valid accuracy 95.45% valid mca 95.52% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s (best)
+2022-10-26 22:15:43,274 [INFO] parts: Stats@1560: train loss 1.06295, valid loss 0.14852, valid accuracy 95.45% valid mca 95.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:15:49,280 [INFO] parts: Stats@1580: train loss 1.07073, valid loss 0.14844, valid accuracy 95.08% valid mca 95.04% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:15:53,953 [INFO] parts: Stats@1600: train loss 1.07681, valid loss 0.14637, valid accuracy 95.77% valid mca 95.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:15:58,467 [INFO] parts: Stats@1620: train loss 1.08826, valid loss 0.18175, valid accuracy 94.35% valid mca 94.07% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:16:03,763 [INFO] parts: Stats@1640: train loss 1.08310, valid loss 0.14619, valid accuracy 95.22% valid mca 95.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:16:08,131 [INFO] parts: Stats@1660: train loss 1.08656, valid loss 0.17211, valid accuracy 94.12% valid mca 93.99% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:16:12,729 [INFO] parts: Stats@1680: train loss 1.06794, valid loss 0.16278, valid accuracy 94.90% valid mca 94.85% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:16:16,997 [INFO] parts: Stats@1700: train loss 1.10123, valid loss 0.19433, valid accuracy 94.07% valid mca 94.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:16:22,379 [INFO] parts: Stats@1720: train loss 1.05846, valid loss 0.17054, valid accuracy 94.71% valid mca 94.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:16:27,069 [INFO] parts: Stats@1740: train loss 1.07699, valid loss 0.17492, valid accuracy 94.85% valid mca 94.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:16:31,599 [INFO] parts: Stats@1760: train loss 1.06410, valid loss 0.14387, valid accuracy 95.77% valid mca 95.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:16:37,118 [INFO] parts: Stats@1780: train loss 1.06001, valid loss 0.15254, valid accuracy 95.91% valid mca 95.85% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s (best)
+2022-10-26 22:16:41,620 [INFO] parts: Stats@1800: train loss 1.09150, valid loss 0.15045, valid accuracy 95.17% valid mca 94.77% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:16:46,204 [INFO] parts: Stats@1820: train loss 1.07715, valid loss 0.15925, valid accuracy 95.04% valid mca 95.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:16:51,606 [INFO] parts: Stats@1840: train loss 1.06968, valid loss 0.14875, valid accuracy 95.86% valid mca 95.74% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:16:56,200 [INFO] parts: Stats@1860: train loss 1.06425, valid loss 0.15643, valid accuracy 94.99% valid mca 94.96% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:17:01,063 [INFO] parts: Stats@1880: train loss 1.05590, valid loss 0.15954, valid accuracy 95.08% valid mca 94.75% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:17:05,291 [INFO] parts: Stats@1900: train loss 1.06012, valid loss 0.14989, valid accuracy 95.95% valid mca 95.94% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s (best)
+2022-10-26 22:17:10,676 [INFO] parts: Stats@1920: train loss 1.08112, valid loss 0.18691, valid accuracy 94.26% valid mca 94.38% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:17:15,083 [INFO] parts: Stats@1940: train loss 1.08673, valid loss 0.14183, valid accuracy 95.68% valid mca 95.62% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:17:19,620 [INFO] parts: Stats@1960: train loss 1.05392, valid loss 0.14944, valid accuracy 95.59% valid mca 95.26% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:17:24,893 [INFO] parts: Stats@1980: train loss 1.06562, valid loss 0.14137, valid accuracy 95.68% valid mca 95.69% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:17:29,273 [INFO] parts: Stats@2000: train loss 1.08548, valid loss 0.14842, valid accuracy 94.62% valid mca 94.40% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:17:33,719 [INFO] parts: Stats@2020: train loss 1.07680, valid loss 0.13572, valid accuracy 95.68% valid mca 95.40% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:17:37,921 [INFO] parts: Stats@2040: train loss 1.07065, valid loss 0.15187, valid accuracy 95.45% valid mca 95.23% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:17:43,544 [INFO] parts: Stats@2060: train loss 1.07669, valid loss 0.15570, valid accuracy 94.90% valid mca 94.95% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:17:48,007 [INFO] parts: Stats@2080: train loss 1.05464, valid loss 0.14643, valid accuracy 95.54% valid mca 95.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:17:52,605 [INFO] parts: Stats@2100: train loss 1.08328, valid loss 0.14502, valid accuracy 95.73% valid mca 95.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:17:57,900 [INFO] parts: Stats@2120: train loss 1.06977, valid loss 0.13677, valid accuracy 95.77% valid mca 95.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:18:02,354 [INFO] parts: Stats@2140: train loss 1.07453, valid loss 0.16081, valid accuracy 95.36% valid mca 95.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:18:06,755 [INFO] parts: Stats@2160: train loss 1.08369, valid loss 0.15728, valid accuracy 95.45% valid mca 95.37% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:18:11,670 [INFO] parts: Stats@2180: train loss 1.06009, valid loss 0.15289, valid accuracy 95.54% valid mca 95.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:18:16,273 [INFO] parts: Stats@2200: train loss 1.09173, valid loss 0.16007, valid accuracy 94.62% valid mca 94.52% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:18:21,123 [INFO] parts: Stats@2220: train loss 1.06282, valid loss 0.18494, valid accuracy 93.52% valid mca 93.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:18:26,011 [INFO] parts: Stats@2240: train loss 1.06525, valid loss 0.14023, valid accuracy 96.00% valid mca 96.24% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:18:32,397 [INFO] parts: Stats@2260: train loss 1.05284, valid loss 0.13234, valid accuracy 95.77% valid mca 95.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.32s 
+2022-10-26 22:18:38,126 [INFO] parts: Stats@2280: train loss 1.06430, valid loss 0.13877, valid accuracy 95.82% valid mca 95.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:18:42,886 [INFO] parts: Stats@2300: train loss 1.06706, valid loss 0.13057, valid accuracy 96.09% valid mca 95.86% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 22:18:48,383 [INFO] parts: Stats@2320: train loss 1.05574, valid loss 0.13914, valid accuracy 95.91% valid mca 95.89% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:18:52,928 [INFO] parts: Stats@2340: train loss 1.06133, valid loss 0.13488, valid accuracy 95.95% valid mca 95.77% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:18:57,445 [INFO] parts: Stats@2360: train loss 1.05828, valid loss 0.13585, valid accuracy 95.86% valid mca 95.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:19:01,739 [INFO] parts: Stats@2380: train loss 1.09211, valid loss 0.14810, valid accuracy 95.17% valid mca 95.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:19:07,240 [INFO] parts: Stats@2400: train loss 1.06198, valid loss 0.15178, valid accuracy 95.40% valid mca 95.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:19:11,975 [INFO] parts: Stats@2420: train loss 1.06214, valid loss 0.13089, valid accuracy 95.96% valid mca 95.89% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:19:16,597 [INFO] parts: Stats@2440: train loss 1.05409, valid loss 0.14854, valid accuracy 95.17% valid mca 94.77% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:19:22,181 [INFO] parts: Stats@2460: train loss 1.05631, valid loss 0.14601, valid accuracy 96.05% valid mca 95.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:19:26,920 [INFO] parts: Stats@2480: train loss 1.07645, valid loss 0.15551, valid accuracy 95.04% valid mca 94.91% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:19:31,856 [INFO] parts: Stats@2500: train loss 1.06106, valid loss 0.15527, valid accuracy 95.72% valid mca 95.91% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:19:37,112 [INFO] parts: Stats@2520: train loss 1.05550, valid loss 0.13847, valid accuracy 95.91% valid mca 95.93% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:19:41,808 [INFO] parts: Stats@2540: train loss 1.06460, valid loss 0.15439, valid accuracy 95.36% valid mca 95.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:19:46,152 [INFO] parts: Stats@2560: train loss 1.04817, valid loss 0.15116, valid accuracy 95.36% valid mca 95.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:19:50,544 [INFO] parts: Stats@2580: train loss 1.06938, valid loss 0.14934, valid accuracy 95.22% valid mca 95.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:19:55,894 [INFO] parts: Stats@2600: train loss 1.06247, valid loss 0.13639, valid accuracy 96.14% valid mca 95.76% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s (best)
+2022-10-26 22:20:00,464 [INFO] parts: Stats@2620: train loss 1.05565, valid loss 0.13955, valid accuracy 95.91% valid mca 96.02% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:20:04,990 [INFO] parts: Stats@2640: train loss 1.06441, valid loss 0.12121, valid accuracy 96.46% valid mca 96.11% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:20:10,205 [INFO] parts: Stats@2660: train loss 1.05408, valid loss 0.12276, valid accuracy 96.46% valid mca 96.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:20:14,808 [INFO] parts: Stats@2680: train loss 1.06357, valid loss 0.14032, valid accuracy 95.77% valid mca 95.74% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:20:19,230 [INFO] parts: Stats@2700: train loss 1.04948, valid loss 0.12093, valid accuracy 96.51% valid mca 96.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 22:20:23,412 [INFO] parts: Stats@2720: train loss 1.06199, valid loss 0.12517, valid accuracy 96.28% valid mca 96.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:20:28,744 [INFO] parts: Stats@2740: train loss 1.05779, valid loss 0.13633, valid accuracy 96.14% valid mca 96.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:20:33,241 [INFO] parts: Stats@2760: train loss 1.05691, valid loss 0.12646, valid accuracy 96.28% valid mca 96.14% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:20:37,672 [INFO] parts: Stats@2780: train loss 1.05468, valid loss 0.13473, valid accuracy 95.91% valid mca 95.86% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:20:42,799 [INFO] parts: Stats@2800: train loss 1.06394, valid loss 0.15119, valid accuracy 95.26% valid mca 95.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:20:47,292 [INFO] parts: Stats@2820: train loss 1.04494, valid loss 0.12255, valid accuracy 96.78% valid mca 96.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 22:20:51,970 [INFO] parts: Stats@2840: train loss 1.05833, valid loss 0.12378, valid accuracy 96.46% valid mca 96.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:20:57,211 [INFO] parts: Stats@2860: train loss 1.04866, valid loss 0.13467, valid accuracy 96.05% valid mca 95.70% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:21:01,690 [INFO] parts: Stats@2880: train loss 1.07958, valid loss 0.14706, valid accuracy 95.72% valid mca 95.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:21:06,243 [INFO] parts: Stats@2900: train loss 1.05669, valid loss 0.13650, valid accuracy 96.18% valid mca 95.96% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:21:10,460 [INFO] parts: Stats@2920: train loss 1.08246, valid loss 0.12747, valid accuracy 96.74% valid mca 96.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:21:15,703 [INFO] parts: Stats@2940: train loss 1.05932, valid loss 0.13060, valid accuracy 95.86% valid mca 95.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:21:20,164 [INFO] parts: Stats@2960: train loss 1.04505, valid loss 0.13389, valid accuracy 96.41% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:21:24,663 [INFO] parts: Stats@2980: train loss 1.04780, valid loss 0.15646, valid accuracy 95.36% valid mca 95.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:21:29,795 [INFO] parts: Stats@3000: train loss 1.05541, valid loss 0.13899, valid accuracy 96.05% valid mca 96.11% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:21:34,328 [INFO] parts: Stats@3020: train loss 1.08836, valid loss 0.13024, valid accuracy 96.51% valid mca 96.40% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:21:38,810 [INFO] parts: Stats@3040: train loss 1.04827, valid loss 0.13548, valid accuracy 96.18% valid mca 95.98% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:21:43,134 [INFO] parts: Stats@3060: train loss 1.06257, valid loss 0.14908, valid accuracy 95.22% valid mca 95.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:21:48,629 [INFO] parts: Stats@3080: train loss 1.06695, valid loss 0.12374, valid accuracy 96.28% valid mca 96.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:21:53,095 [INFO] parts: Stats@3100: train loss 1.07011, valid loss 0.14661, valid accuracy 95.08% valid mca 95.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:21:57,475 [INFO] parts: Stats@3120: train loss 1.05247, valid loss 0.15516, valid accuracy 95.13% valid mca 94.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:22:02,736 [INFO] parts: Stats@3140: train loss 1.05501, valid loss 0.12828, valid accuracy 96.23% valid mca 95.96% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:22:07,191 [INFO] parts: Stats@3160: train loss 1.05982, valid loss 0.12918, valid accuracy 96.46% valid mca 96.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:22:11,884 [INFO] parts: Stats@3180: train loss 1.05444, valid loss 0.13084, valid accuracy 96.05% valid mca 96.07% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:22:17,141 [INFO] parts: Stats@3200: train loss 1.04538, valid loss 0.14282, valid accuracy 95.45% valid mca 95.23% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:22:21,783 [INFO] parts: Stats@3220: train loss 1.05996, valid loss 0.13655, valid accuracy 96.09% valid mca 95.94% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:22:26,234 [INFO] parts: Stats@3240: train loss 1.07924, valid loss 0.13221, valid accuracy 96.14% valid mca 95.75% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:22:30,468 [INFO] parts: Stats@3260: train loss 1.06062, valid loss 0.12373, valid accuracy 96.37% valid mca 96.29% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:22:35,760 [INFO] parts: Stats@3280: train loss 1.05277, valid loss 0.12532, valid accuracy 96.55% valid mca 95.98% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:22:40,568 [INFO] parts: Stats@3300: train loss 1.08208, valid loss 0.13075, valid accuracy 96.14% valid mca 96.13% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:22:45,198 [INFO] parts: Stats@3320: train loss 1.05155, valid loss 0.13190, valid accuracy 95.82% valid mca 95.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:22:50,650 [INFO] parts: Stats@3340: train loss 1.04706, valid loss 0.12838, valid accuracy 96.46% valid mca 96.52% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:22:55,442 [INFO] parts: Stats@3360: train loss 1.05759, valid loss 0.13326, valid accuracy 96.37% valid mca 96.09% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:23:00,174 [INFO] parts: Stats@3380: train loss 1.05611, valid loss 0.13463, valid accuracy 96.23% valid mca 96.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:23:04,335 [INFO] parts: Stats@3400: train loss 1.05791, valid loss 0.13000, valid accuracy 96.46% valid mca 96.37% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:23:09,627 [INFO] parts: Stats@3420: train loss 1.05467, valid loss 0.12071, valid accuracy 96.32% valid mca 96.06% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:23:14,237 [INFO] parts: Stats@3440: train loss 1.06118, valid loss 0.12704, valid accuracy 96.74% valid mca 96.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:23:18,679 [INFO] parts: Stats@3460: train loss 1.04559, valid loss 0.12240, valid accuracy 96.51% valid mca 96.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:23:24,020 [INFO] parts: Stats@3480: train loss 1.04998, valid loss 0.13442, valid accuracy 95.95% valid mca 95.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:23:28,450 [INFO] parts: Stats@3500: train loss 1.04697, valid loss 0.12609, valid accuracy 96.60% valid mca 96.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:23:32,939 [INFO] parts: Stats@3520: train loss 1.07029, valid loss 0.14795, valid accuracy 95.63% valid mca 95.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:23:38,322 [INFO] parts: Stats@3540: train loss 1.05133, valid loss 0.13423, valid accuracy 96.00% valid mca 95.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:23:42,953 [INFO] parts: Stats@3560: train loss 1.04863, valid loss 0.11938, valid accuracy 96.69% valid mca 96.52% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:23:47,362 [INFO] parts: Stats@3580: train loss 1.05640, valid loss 0.13279, valid accuracy 96.18% valid mca 96.12% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:23:51,552 [INFO] parts: Stats@3600: train loss 1.05926, valid loss 0.12209, valid accuracy 96.64% valid mca 96.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:23:56,937 [INFO] parts: Stats@3620: train loss 1.05277, valid loss 0.12440, valid accuracy 96.14% valid mca 96.08% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:24:01,420 [INFO] parts: Stats@3640: train loss 1.05403, valid loss 0.12486, valid accuracy 96.37% valid mca 96.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:05,836 [INFO] parts: Stats@3660: train loss 1.05576, valid loss 0.12607, valid accuracy 96.41% valid mca 96.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:11,109 [INFO] parts: Stats@3680: train loss 1.05014, valid loss 0.12382, valid accuracy 96.69% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:24:15,547 [INFO] parts: Stats@3700: train loss 1.05176, valid loss 0.11519, valid accuracy 96.74% valid mca 96.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:19,956 [INFO] parts: Stats@3720: train loss 1.06308, valid loss 0.12599, valid accuracy 96.28% valid mca 96.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:24,198 [INFO] parts: Stats@3740: train loss 1.04820, valid loss 0.12548, valid accuracy 96.51% valid mca 96.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:24:29,600 [INFO] parts: Stats@3760: train loss 1.05045, valid loss 0.13235, valid accuracy 96.14% valid mca 96.04% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:24:33,960 [INFO] parts: Stats@3780: train loss 1.04853, valid loss 0.11507, valid accuracy 96.69% valid mca 96.46% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:38,565 [INFO] parts: Stats@3800: train loss 1.04728, valid loss 0.11613, valid accuracy 96.97% valid mca 96.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:24:43,699 [INFO] parts: Stats@3820: train loss 1.04586, valid loss 0.11362, valid accuracy 96.69% valid mca 96.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:24:48,191 [INFO] parts: Stats@3840: train loss 1.05850, valid loss 0.12622, valid accuracy 96.14% valid mca 96.07% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:52,681 [INFO] parts: Stats@3860: train loss 1.06324, valid loss 0.12695, valid accuracy 96.46% valid mca 96.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:24:57,626 [INFO] parts: Stats@3880: train loss 1.04415, valid loss 0.12080, valid accuracy 96.69% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:25:02,126 [INFO] parts: Stats@3900: train loss 1.05257, valid loss 0.12415, valid accuracy 96.55% valid mca 96.44% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:25:06,530 [INFO] parts: Stats@3920: train loss 1.05154, valid loss 0.13571, valid accuracy 96.05% valid mca 95.70% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:25:10,832 [INFO] parts: Stats@3940: train loss 1.05193, valid loss 0.12595, valid accuracy 96.09% valid mca 96.04% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:25:16,398 [INFO] parts: Stats@3960: train loss 1.04808, valid loss 0.12400, valid accuracy 96.51% valid mca 96.38% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:25:20,778 [INFO] parts: Stats@3980: train loss 1.05413, valid loss 0.13404, valid accuracy 96.14% valid mca 96.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:25:25,239 [INFO] parts: Stats@4000: train loss 1.05036, valid loss 0.13798, valid accuracy 96.05% valid mca 95.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:25:30,359 [INFO] parts: Stats@4020: train loss 1.05490, valid loss 0.14362, valid accuracy 95.95% valid mca 95.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:25:34,790 [INFO] parts: Stats@4040: train loss 1.05285, valid loss 0.12697, valid accuracy 96.92% valid mca 96.65% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:25:39,229 [INFO] parts: Stats@4060: train loss 1.06089, valid loss 0.14073, valid accuracy 95.95% valid mca 95.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:25:43,507 [INFO] parts: Stats@4080: train loss 1.05965, valid loss 0.13114, valid accuracy 95.96% valid mca 95.86% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:25:49,025 [INFO] parts: Stats@4100: train loss 1.04654, valid loss 0.12749, valid accuracy 96.46% valid mca 96.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:25:53,650 [INFO] parts: Stats@4120: train loss 1.04584, valid loss 0.12856, valid accuracy 96.55% valid mca 96.27% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:25:58,227 [INFO] parts: Stats@4140: train loss 1.05236, valid loss 0.12880, valid accuracy 96.23% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:26:03,691 [INFO] parts: Stats@4160: train loss 1.05678, valid loss 0.13010, valid accuracy 96.55% valid mca 96.49% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:26:08,044 [INFO] parts: Stats@4180: train loss 1.04949, valid loss 0.12953, valid accuracy 96.69% valid mca 96.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:26:12,480 [INFO] parts: Stats@4200: train loss 1.04914, valid loss 0.12741, valid accuracy 96.46% valid mca 96.24% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:26:17,517 [INFO] parts: Stats@4220: train loss 1.05506, valid loss 0.12083, valid accuracy 96.74% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:26:22,090 [INFO] parts: Stats@4240: train loss 1.05411, valid loss 0.11993, valid accuracy 96.60% valid mca 96.46% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:26:26,516 [INFO] parts: Stats@4260: train loss 1.05411, valid loss 0.12284, valid accuracy 96.87% valid mca 96.68% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:26:30,990 [INFO] parts: Stats@4280: train loss 1.04992, valid loss 0.12351, valid accuracy 96.51% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:26:36,505 [INFO] parts: Stats@4300: train loss 1.04805, valid loss 0.12042, valid accuracy 96.37% valid mca 96.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:26:41,544 [INFO] parts: Stats@4320: train loss 1.05694, valid loss 0.13280, valid accuracy 96.18% valid mca 96.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:26:46,619 [INFO] parts: Stats@4340: train loss 1.04917, valid loss 0.12617, valid accuracy 96.46% valid mca 96.29% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:26:51,942 [INFO] parts: Stats@4360: train loss 1.05372, valid loss 0.12677, valid accuracy 96.32% valid mca 96.27% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:26:56,565 [INFO] parts: Stats@4380: train loss 1.04990, valid loss 0.11822, valid accuracy 96.78% valid mca 96.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:27:01,243 [INFO] parts: Stats@4400: train loss 1.05140, valid loss 0.11266, valid accuracy 97.06% valid mca 96.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:27:05,749 [INFO] parts: Stats@4420: train loss 1.06679, valid loss 0.12666, valid accuracy 96.60% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:27:11,284 [INFO] parts: Stats@4440: train loss 1.05013, valid loss 0.14668, valid accuracy 95.96% valid mca 95.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:27:15,759 [INFO] parts: Stats@4460: train loss 1.04694, valid loss 0.12386, valid accuracy 96.51% valid mca 96.29% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:27:20,640 [INFO] parts: Stats@4480: train loss 1.05255, valid loss 0.13119, valid accuracy 96.14% valid mca 96.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:27:25,871 [INFO] parts: Stats@4500: train loss 1.05892, valid loss 0.12059, valid accuracy 96.69% valid mca 96.59% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:27:30,334 [INFO] parts: Stats@4520: train loss 1.06136, valid loss 0.13946, valid accuracy 95.36% valid mca 95.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:27:34,863 [INFO] parts: Stats@4540: train loss 1.05196, valid loss 0.11958, valid accuracy 96.83% valid mca 96.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:27:40,071 [INFO] parts: Stats@4560: train loss 1.05304, valid loss 0.12182, valid accuracy 96.51% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:27:44,482 [INFO] parts: Stats@4580: train loss 1.06071, valid loss 0.12172, valid accuracy 96.46% valid mca 96.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:27:49,096 [INFO] parts: Stats@4600: train loss 1.05511, valid loss 0.12745, valid accuracy 96.60% valid mca 96.62% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:27:53,452 [INFO] parts: Stats@4620: train loss 1.04359, valid loss 0.12662, valid accuracy 96.32% valid mca 96.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:27:58,897 [INFO] parts: Stats@4640: train loss 1.05193, valid loss 0.12969, valid accuracy 96.00% valid mca 95.83% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:28:03,306 [INFO] parts: Stats@4660: train loss 1.04617, valid loss 0.12458, valid accuracy 96.46% valid mca 96.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:28:07,787 [INFO] parts: Stats@4680: train loss 1.05410, valid loss 0.12160, valid accuracy 96.46% valid mca 96.10% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:28:13,069 [INFO] parts: Stats@4700: train loss 1.07023, valid loss 0.11923, valid accuracy 96.60% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:28:17,771 [INFO] parts: Stats@4720: train loss 1.05295, valid loss 0.13009, valid accuracy 95.86% valid mca 95.79% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:28:22,340 [INFO] parts: Stats@4740: train loss 1.05305, valid loss 0.12445, valid accuracy 96.69% valid mca 96.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:28:26,739 [INFO] parts: Stats@4760: train loss 1.05117, valid loss 0.13615, valid accuracy 96.14% valid mca 95.99% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:28:32,411 [INFO] parts: Stats@4780: train loss 1.05065, valid loss 0.11500, valid accuracy 97.01% valid mca 96.84% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:28:37,108 [INFO] parts: Stats@4800: train loss 1.04553, valid loss 0.12299, valid accuracy 96.32% valid mca 96.14% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:28:41,646 [INFO] parts: Stats@4820: train loss 1.05329, valid loss 0.12012, valid accuracy 96.87% valid mca 96.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:28:47,014 [INFO] parts: Stats@4840: train loss 1.05821, valid loss 0.13186, valid accuracy 96.32% valid mca 96.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:28:51,628 [INFO] parts: Stats@4860: train loss 1.04380, valid loss 0.12164, valid accuracy 96.46% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:28:56,354 [INFO] parts: Stats@4880: train loss 1.05502, valid loss 0.13365, valid accuracy 96.05% valid mca 96.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:29:01,602 [INFO] parts: Stats@4900: train loss 1.04874, valid loss 0.11243, valid accuracy 97.06% valid mca 96.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:29:06,322 [INFO] parts: Stats@4920: train loss 1.04438, valid loss 0.12017, valid accuracy 96.74% valid mca 96.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:29:10,867 [INFO] parts: Stats@4940: train loss 1.04703, valid loss 0.12802, valid accuracy 96.23% valid mca 96.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:29:15,038 [INFO] parts: Stats@4960: train loss 1.07509, valid loss 0.12403, valid accuracy 96.28% valid mca 96.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:29:20,437 [INFO] parts: Stats@4980: train loss 1.06504, valid loss 0.11745, valid accuracy 96.83% valid mca 96.69% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:29:24,896 [INFO] parts: Stats@5000: train loss 1.05175, valid loss 0.11496, valid accuracy 96.74% valid mca 96.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:29:29,438 [INFO] parts: Stats@5020: train loss 1.05350, valid loss 0.13952, valid accuracy 95.54% valid mca 95.55% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:29:34,699 [INFO] parts: Stats@5040: train loss 1.05012, valid loss 0.12053, valid accuracy 96.64% valid mca 96.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:29:39,186 [INFO] parts: Stats@5060: train loss 1.05802, valid loss 0.12032, valid accuracy 96.97% valid mca 96.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:29:43,693 [INFO] parts: Stats@5080: train loss 1.06168, valid loss 0.13311, valid accuracy 96.32% valid mca 96.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:29:48,059 [INFO] parts: Stats@5100: train loss 1.05563, valid loss 0.11944, valid accuracy 96.69% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:29:53,433 [INFO] parts: Stats@5120: train loss 1.05230, valid loss 0.12558, valid accuracy 96.55% valid mca 96.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:29:57,983 [INFO] parts: Stats@5140: train loss 1.04696, valid loss 0.12046, valid accuracy 96.55% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:30:02,482 [INFO] parts: Stats@5160: train loss 1.04417, valid loss 0.12980, valid accuracy 96.37% valid mca 96.38% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:30:07,698 [INFO] parts: Stats@5180: train loss 1.04540, valid loss 0.13106, valid accuracy 96.14% valid mca 95.97% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:30:12,290 [INFO] parts: Stats@5200: train loss 1.04604, valid loss 0.12164, valid accuracy 96.74% valid mca 96.69% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:30:16,623 [INFO] parts: Stats@5220: train loss 1.05466, valid loss 0.11969, valid accuracy 96.78% valid mca 96.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:30:21,739 [INFO] parts: Stats@5240: train loss 1.04810, valid loss 0.12145, valid accuracy 96.55% valid mca 96.46% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:30:26,253 [INFO] parts: Stats@5260: train loss 1.05206, valid loss 0.12017, valid accuracy 96.64% valid mca 96.33% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:30:30,705 [INFO] parts: Stats@5280: train loss 1.04465, valid loss 0.12263, valid accuracy 96.83% valid mca 96.95% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:30:34,964 [INFO] parts: Stats@5300: train loss 1.04622, valid loss 0.12433, valid accuracy 96.41% valid mca 96.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:30:40,304 [INFO] parts: Stats@5320: train loss 1.06185, valid loss 0.12446, valid accuracy 96.37% valid mca 95.94% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:30:44,849 [INFO] parts: Stats@5340: train loss 1.04546, valid loss 0.12375, valid accuracy 96.87% valid mca 96.86% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:30:49,280 [INFO] parts: Stats@5360: train loss 1.04469, valid loss 0.11920, valid accuracy 96.60% valid mca 96.29% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:30:54,509 [INFO] parts: Stats@5380: train loss 1.04369, valid loss 0.12064, valid accuracy 96.74% valid mca 96.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:30:58,980 [INFO] parts: Stats@5400: train loss 1.04470, valid loss 0.12523, valid accuracy 96.60% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:31:03,519 [INFO] parts: Stats@5420: train loss 1.05253, valid loss 0.12528, valid accuracy 96.41% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:31:07,797 [INFO] parts: Stats@5440: train loss 1.05426, valid loss 0.12118, valid accuracy 96.37% valid mca 95.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:31:13,352 [INFO] parts: Stats@5460: train loss 1.04719, valid loss 0.12085, valid accuracy 96.55% valid mca 96.45% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:31:17,847 [INFO] parts: Stats@5480: train loss 1.04663, valid loss 0.11696, valid accuracy 96.69% valid mca 96.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:31:22,292 [INFO] parts: Stats@5500: train loss 1.04443, valid loss 0.12257, valid accuracy 96.69% valid mca 96.70% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:31:27,509 [INFO] parts: Stats@5520: train loss 1.04696, valid loss 0.11823, valid accuracy 96.60% valid mca 96.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:31:32,122 [INFO] parts: Stats@5540: train loss 1.05103, valid loss 0.11875, valid accuracy 96.83% valid mca 96.66% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:31:36,791 [INFO] parts: Stats@5560: train loss 1.05085, valid loss 0.11708, valid accuracy 96.92% valid mca 96.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:31:41,995 [INFO] parts: Stats@5580: train loss 1.05311, valid loss 0.12489, valid accuracy 96.64% valid mca 96.59% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:31:46,452 [INFO] parts: Stats@5600: train loss 1.04580, valid loss 0.12189, valid accuracy 96.69% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:31:50,903 [INFO] parts: Stats@5620: train loss 1.04728, valid loss 0.12231, valid accuracy 96.97% valid mca 96.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:31:55,069 [INFO] parts: Stats@5640: train loss 1.05318, valid loss 0.12688, valid accuracy 96.55% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:32:00,222 [INFO] parts: Stats@5660: train loss 1.04386, valid loss 0.11838, valid accuracy 96.87% valid mca 96.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:32:04,560 [INFO] parts: Stats@5680: train loss 1.05899, valid loss 0.12437, valid accuracy 96.28% valid mca 96.06% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:32:08,929 [INFO] parts: Stats@5700: train loss 1.04423, valid loss 0.14210, valid accuracy 95.73% valid mca 95.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:32:14,399 [INFO] parts: Stats@5720: train loss 1.04592, valid loss 0.12784, valid accuracy 96.00% valid mca 96.07% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:32:19,258 [INFO] parts: Stats@5740: train loss 1.04761, valid loss 0.13094, valid accuracy 96.28% valid mca 95.89% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:32:23,878 [INFO] parts: Stats@5760: train loss 1.05445, valid loss 0.13752, valid accuracy 95.59% valid mca 95.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:32:28,086 [INFO] parts: Stats@5780: train loss 1.05376, valid loss 0.12905, valid accuracy 96.60% valid mca 96.48% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:32:33,771 [INFO] parts: Stats@5800: train loss 1.05275, valid loss 0.13145, valid accuracy 96.55% valid mca 96.39% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:32:38,382 [INFO] parts: Stats@5820: train loss 1.05192, valid loss 0.12125, valid accuracy 96.83% valid mca 96.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:32:42,943 [INFO] parts: Stats@5840: train loss 1.04409, valid loss 0.12604, valid accuracy 96.37% valid mca 96.05% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:32:48,162 [INFO] parts: Stats@5860: train loss 1.04418, valid loss 0.12326, valid accuracy 96.78% valid mca 96.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:32:52,790 [INFO] parts: Stats@5880: train loss 1.05303, valid loss 0.12757, valid accuracy 96.55% valid mca 96.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:32:57,348 [INFO] parts: Stats@5900: train loss 1.05215, valid loss 0.11984, valid accuracy 96.78% valid mca 96.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:33:02,845 [INFO] parts: Stats@5920: train loss 1.05200, valid loss 0.12297, valid accuracy 96.60% valid mca 96.48% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:33:07,844 [INFO] parts: Stats@5940: train loss 1.04383, valid loss 0.12019, valid accuracy 96.83% valid mca 96.59% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:33:12,446 [INFO] parts: Stats@5960: train loss 1.05915, valid loss 0.11880, valid accuracy 97.20% valid mca 97.02% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 22:33:16,736 [INFO] parts: Stats@5980: train loss 1.05038, valid loss 0.11337, valid accuracy 97.10% valid mca 96.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:33:22,235 [INFO] parts: Stats@6000: train loss 1.05146, valid loss 0.12172, valid accuracy 96.87% valid mca 96.76% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:33:26,599 [INFO] parts: Stats@6020: train loss 1.05308, valid loss 0.12731, valid accuracy 96.28% valid mca 96.08% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:33:31,324 [INFO] parts: Stats@6040: train loss 1.04798, valid loss 0.12688, valid accuracy 96.69% valid mca 96.68% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:33:36,712 [INFO] parts: Stats@6060: train loss 1.04975, valid loss 0.11924, valid accuracy 96.64% valid mca 96.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:33:41,241 [INFO] parts: Stats@6080: train loss 1.05762, valid loss 0.13220, valid accuracy 96.18% valid mca 96.12% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:33:45,758 [INFO] parts: Stats@6100: train loss 1.04363, valid loss 0.12707, valid accuracy 96.87% valid mca 96.62% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:33:50,076 [INFO] parts: Stats@6120: train loss 1.04819, valid loss 0.12860, valid accuracy 96.64% valid mca 96.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:33:55,649 [INFO] parts: Stats@6140: train loss 1.05418, valid loss 0.11809, valid accuracy 97.01% valid mca 96.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:34:00,155 [INFO] parts: Stats@6160: train loss 1.04444, valid loss 0.12000, valid accuracy 96.74% valid mca 96.49% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:34:04,552 [INFO] parts: Stats@6180: train loss 1.05490, valid loss 0.12164, valid accuracy 96.92% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:34:10,012 [INFO] parts: Stats@6200: train loss 1.04634, valid loss 0.12477, valid accuracy 96.60% valid mca 96.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:34:14,730 [INFO] parts: Stats@6220: train loss 1.04427, valid loss 0.12168, valid accuracy 96.64% valid mca 96.62% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:34:19,467 [INFO] parts: Stats@6240: train loss 1.06103, valid loss 0.12781, valid accuracy 96.69% valid mca 96.55% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:34:24,697 [INFO] parts: Stats@6260: train loss 1.04385, valid loss 0.13384, valid accuracy 96.41% valid mca 96.44% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:34:29,174 [INFO] parts: Stats@6280: train loss 1.05942, valid loss 0.11991, valid accuracy 97.01% valid mca 96.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:34:33,569 [INFO] parts: Stats@6300: train loss 1.05740, valid loss 0.11975, valid accuracy 96.74% valid mca 96.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:34:37,801 [INFO] parts: Stats@6320: train loss 1.04415, valid loss 0.12401, valid accuracy 96.74% valid mca 96.59% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:34:43,189 [INFO] parts: Stats@6340: train loss 1.05140, valid loss 0.12867, valid accuracy 96.23% valid mca 96.13% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:34:47,623 [INFO] parts: Stats@6360: train loss 1.05152, valid loss 0.11577, valid accuracy 97.33% valid mca 97.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 22:34:52,252 [INFO] parts: Stats@6380: train loss 1.04991, valid loss 0.12261, valid accuracy 96.83% valid mca 96.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:34:57,540 [INFO] parts: Stats@6400: train loss 1.04496, valid loss 0.12279, valid accuracy 96.87% valid mca 96.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:35:01,863 [INFO] parts: Stats@6420: train loss 1.05666, valid loss 0.12157, valid accuracy 96.87% valid mca 96.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:35:06,385 [INFO] parts: Stats@6440: train loss 1.04393, valid loss 0.12323, valid accuracy 96.64% valid mca 96.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:35:10,794 [INFO] parts: Stats@6460: train loss 1.05500, valid loss 0.11853, valid accuracy 96.69% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:35:16,886 [INFO] parts: Stats@6480: train loss 1.04502, valid loss 0.12014, valid accuracy 97.10% valid mca 96.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:35:21,583 [INFO] parts: Stats@6500: train loss 1.05249, valid loss 0.12841, valid accuracy 96.46% valid mca 96.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:35:26,484 [INFO] parts: Stats@6520: train loss 1.05155, valid loss 0.12502, valid accuracy 96.60% valid mca 96.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:35:32,284 [INFO] parts: Stats@6540: train loss 1.04434, valid loss 0.12659, valid accuracy 96.55% valid mca 96.45% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:35:37,048 [INFO] parts: Stats@6560: train loss 1.04521, valid loss 0.12015, valid accuracy 96.51% valid mca 96.23% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:35:41,830 [INFO] parts: Stats@6580: train loss 1.05100, valid loss 0.12540, valid accuracy 96.37% valid mca 96.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:35:47,555 [INFO] parts: Stats@6600: train loss 1.04359, valid loss 0.12723, valid accuracy 96.18% valid mca 95.74% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:35:52,554 [INFO] parts: Stats@6620: train loss 1.04566, valid loss 0.11743, valid accuracy 96.83% valid mca 96.64% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:35:57,452 [INFO] parts: Stats@6640: train loss 1.04385, valid loss 0.12617, valid accuracy 96.46% valid mca 96.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:36:01,980 [INFO] parts: Stats@6660: train loss 1.04410, valid loss 0.12351, valid accuracy 96.74% valid mca 96.56% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:36:07,605 [INFO] parts: Stats@6680: train loss 1.04391, valid loss 0.12310, valid accuracy 96.46% valid mca 95.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:36:12,330 [INFO] parts: Stats@6700: train loss 1.04542, valid loss 0.12295, valid accuracy 96.55% valid mca 96.40% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:36:17,232 [INFO] parts: Stats@6720: train loss 1.04791, valid loss 0.13048, valid accuracy 96.46% valid mca 96.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:36:22,787 [INFO] parts: Stats@6740: train loss 1.04364, valid loss 0.12639, valid accuracy 96.19% valid mca 96.02% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:36:27,597 [INFO] parts: Stats@6760: train loss 1.04486, valid loss 0.11888, valid accuracy 96.60% valid mca 96.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:36:32,414 [INFO] parts: Stats@6780: train loss 1.04404, valid loss 0.12217, valid accuracy 96.41% valid mca 96.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:36:36,987 [INFO] parts: Stats@6800: train loss 1.04427, valid loss 0.12025, valid accuracy 96.74% valid mca 96.69% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:36:42,600 [INFO] parts: Stats@6820: train loss 1.04359, valid loss 0.11855, valid accuracy 96.78% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:36:47,391 [INFO] parts: Stats@6840: train loss 1.04631, valid loss 0.12916, valid accuracy 96.32% valid mca 96.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:36:51,940 [INFO] parts: Stats@6860: train loss 1.05140, valid loss 0.11964, valid accuracy 96.46% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:36:57,598 [INFO] parts: Stats@6880: train loss 1.04820, valid loss 0.13322, valid accuracy 95.86% valid mca 95.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:37:02,206 [INFO] parts: Stats@6900: train loss 1.05379, valid loss 0.13329, valid accuracy 95.77% valid mca 95.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:37:06,911 [INFO] parts: Stats@6920: train loss 1.05321, valid loss 0.12020, valid accuracy 96.60% valid mca 96.53% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:37:12,251 [INFO] parts: Stats@6940: train loss 1.04382, valid loss 0.12517, valid accuracy 96.23% valid mca 96.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:37:17,013 [INFO] parts: Stats@6960: train loss 1.05204, valid loss 0.11994, valid accuracy 97.15% valid mca 97.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:37:21,984 [INFO] parts: Stats@6980: train loss 1.04784, valid loss 0.12544, valid accuracy 96.46% valid mca 96.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:37:26,489 [INFO] parts: Stats@7000: train loss 1.05117, valid loss 0.12353, valid accuracy 96.41% valid mca 96.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:37:32,117 [INFO] parts: Stats@7020: train loss 1.05108, valid loss 0.11816, valid accuracy 96.64% valid mca 96.26% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:37:36,775 [INFO] parts: Stats@7040: train loss 1.04581, valid loss 0.12552, valid accuracy 96.28% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:37:41,448 [INFO] parts: Stats@7060: train loss 1.04550, valid loss 0.11764, valid accuracy 96.87% valid mca 96.83% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:37:46,868 [INFO] parts: Stats@7080: train loss 1.04517, valid loss 0.12332, valid accuracy 96.83% valid mca 96.64% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:37:51,526 [INFO] parts: Stats@7100: train loss 1.05970, valid loss 0.11612, valid accuracy 96.74% valid mca 96.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:37:56,294 [INFO] parts: Stats@7120: train loss 1.05032, valid loss 0.13189, valid accuracy 96.64% valid mca 96.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:38:00,701 [INFO] parts: Stats@7140: train loss 1.05451, valid loss 0.12689, valid accuracy 96.41% valid mca 95.96% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:38:06,593 [INFO] parts: Stats@7160: train loss 1.04364, valid loss 0.11928, valid accuracy 96.60% valid mca 96.56% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:38:11,256 [INFO] parts: Stats@7180: train loss 1.04632, valid loss 0.11727, valid accuracy 96.97% valid mca 96.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:38:16,050 [INFO] parts: Stats@7200: train loss 1.04386, valid loss 0.11894, valid accuracy 96.87% valid mca 96.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:38:21,556 [INFO] parts: Stats@7220: train loss 1.04527, valid loss 0.11701, valid accuracy 96.97% valid mca 96.80% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:38:26,392 [INFO] parts: Stats@7240: train loss 1.04359, valid loss 0.12986, valid accuracy 96.23% valid mca 96.07% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:38:31,070 [INFO] parts: Stats@7260: train loss 1.04404, valid loss 0.12329, valid accuracy 96.60% valid mca 96.26% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:38:36,551 [INFO] parts: Stats@7280: train loss 1.04602, valid loss 0.11934, valid accuracy 97.15% valid mca 96.93% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:38:41,297 [INFO] parts: Stats@7300: train loss 1.04563, valid loss 0.12963, valid accuracy 96.14% valid mca 96.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:38:45,971 [INFO] parts: Stats@7320: train loss 1.04706, valid loss 0.12800, valid accuracy 96.28% valid mca 96.09% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:38:50,377 [INFO] parts: Stats@7340: train loss 1.05972, valid loss 0.12590, valid accuracy 96.32% valid mca 96.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:38:56,087 [INFO] parts: Stats@7360: train loss 1.05720, valid loss 0.14075, valid accuracy 95.91% valid mca 95.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:39:00,840 [INFO] parts: Stats@7380: train loss 1.04391, valid loss 0.12449, valid accuracy 96.55% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:39:05,552 [INFO] parts: Stats@7400: train loss 1.05526, valid loss 0.11770, valid accuracy 96.92% valid mca 96.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:39:10,911 [INFO] parts: Stats@7420: train loss 1.04370, valid loss 0.11866, valid accuracy 96.78% valid mca 96.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:39:15,658 [INFO] parts: Stats@7440: train loss 1.04365, valid loss 0.11714, valid accuracy 96.78% valid mca 96.60% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:39:20,291 [INFO] parts: Stats@7460: train loss 1.04391, valid loss 0.12563, valid accuracy 96.78% valid mca 96.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:39:24,632 [INFO] parts: Stats@7480: train loss 1.05758, valid loss 0.13117, valid accuracy 96.00% valid mca 95.66% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:39:30,371 [INFO] parts: Stats@7500: train loss 1.04625, valid loss 0.12773, valid accuracy 96.46% valid mca 96.33% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:39:35,232 [INFO] parts: Stats@7520: train loss 1.05454, valid loss 0.14478, valid accuracy 95.36% valid mca 95.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:39:40,045 [INFO] parts: Stats@7540: train loss 1.04911, valid loss 0.13456, valid accuracy 95.96% valid mca 95.99% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:39:45,710 [INFO] parts: Stats@7560: train loss 1.04527, valid loss 0.13095, valid accuracy 96.18% valid mca 95.86% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:39:50,484 [INFO] parts: Stats@7580: train loss 1.06018, valid loss 0.12747, valid accuracy 96.00% valid mca 95.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:39:55,128 [INFO] parts: Stats@7600: train loss 1.05425, valid loss 0.12274, valid accuracy 96.37% valid mca 96.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:40:00,638 [INFO] parts: Stats@7620: train loss 1.04453, valid loss 0.12933, valid accuracy 96.32% valid mca 96.13% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:40:05,374 [INFO] parts: Stats@7640: train loss 1.05898, valid loss 0.12172, valid accuracy 96.97% valid mca 96.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:40:09,991 [INFO] parts: Stats@7660: train loss 1.05671, valid loss 0.11789, valid accuracy 96.92% valid mca 96.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:40:14,389 [INFO] parts: Stats@7680: train loss 1.04449, valid loss 0.12503, valid accuracy 96.55% valid mca 96.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:40:20,165 [INFO] parts: Stats@7700: train loss 1.05125, valid loss 0.12257, valid accuracy 96.55% valid mca 96.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:40:24,884 [INFO] parts: Stats@7720: train loss 1.05244, valid loss 0.12188, valid accuracy 97.10% valid mca 96.84% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:40:29,561 [INFO] parts: Stats@7740: train loss 1.04376, valid loss 0.11998, valid accuracy 96.64% valid mca 96.38% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:40:35,124 [INFO] parts: Stats@7760: train loss 1.05222, valid loss 0.12755, valid accuracy 96.41% valid mca 96.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:40:39,770 [INFO] parts: Stats@7780: train loss 1.05186, valid loss 0.12268, valid accuracy 96.55% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:40:44,485 [INFO] parts: Stats@7800: train loss 1.04563, valid loss 0.13023, valid accuracy 96.09% valid mca 95.91% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:40:49,217 [INFO] parts: Stats@7820: train loss 1.04411, valid loss 0.12925, valid accuracy 96.37% valid mca 96.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:40:55,032 [INFO] parts: Stats@7840: train loss 1.04414, valid loss 0.12825, valid accuracy 96.92% valid mca 96.68% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:40:59,878 [INFO] parts: Stats@7860: train loss 1.05934, valid loss 0.11880, valid accuracy 96.83% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:41:04,664 [INFO] parts: Stats@7880: train loss 1.04561, valid loss 0.11733, valid accuracy 96.87% valid mca 96.52% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:41:10,276 [INFO] parts: Stats@7900: train loss 1.05203, valid loss 0.12845, valid accuracy 96.55% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:41:14,976 [INFO] parts: Stats@7920: train loss 1.04381, valid loss 0.12308, valid accuracy 96.92% valid mca 96.78% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:41:19,732 [INFO] parts: Stats@7940: train loss 1.04563, valid loss 0.12541, valid accuracy 96.46% valid mca 96.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:41:25,230 [INFO] parts: Stats@7960: train loss 1.04407, valid loss 0.13140, valid accuracy 96.32% valid mca 96.26% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:41:30,062 [INFO] parts: Stats@7980: train loss 1.04376, valid loss 0.12400, valid accuracy 96.55% valid mca 96.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:41:34,973 [INFO] parts: Stats@8000: train loss 1.04383, valid loss 0.12523, valid accuracy 96.60% valid mca 96.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:41:39,397 [INFO] parts: Stats@8020: train loss 1.04568, valid loss 0.14299, valid accuracy 95.36% valid mca 95.33% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:41:45,256 [INFO] parts: Stats@8040: train loss 1.06181, valid loss 0.12294, valid accuracy 96.37% valid mca 96.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:41:50,024 [INFO] parts: Stats@8060: train loss 1.04393, valid loss 0.12734, valid accuracy 96.46% valid mca 96.27% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:41:54,709 [INFO] parts: Stats@8080: train loss 1.04465, valid loss 0.12461, valid accuracy 96.87% valid mca 96.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:42:00,214 [INFO] parts: Stats@8100: train loss 1.04391, valid loss 0.11789, valid accuracy 97.20% valid mca 97.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:42:04,971 [INFO] parts: Stats@8120: train loss 1.04537, valid loss 0.12765, valid accuracy 96.46% valid mca 96.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:42:09,665 [INFO] parts: Stats@8140: train loss 1.05900, valid loss 0.11915, valid accuracy 97.06% valid mca 96.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:42:14,155 [INFO] parts: Stats@8160: train loss 1.07481, valid loss 0.12604, valid accuracy 96.92% valid mca 96.89% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:42:20,255 [INFO] parts: Stats@8180: train loss 1.04580, valid loss 0.12341, valid accuracy 96.87% valid mca 96.50% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:42:24,922 [INFO] parts: Stats@8200: train loss 1.04394, valid loss 0.12341, valid accuracy 97.06% valid mca 97.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:42:29,531 [INFO] parts: Stats@8220: train loss 1.05048, valid loss 0.11974, valid accuracy 96.87% valid mca 96.37% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:42:35,173 [INFO] parts: Stats@8240: train loss 1.04419, valid loss 0.12830, valid accuracy 96.55% valid mca 96.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:42:39,864 [INFO] parts: Stats@8260: train loss 1.05297, valid loss 0.12524, valid accuracy 96.92% valid mca 96.63% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:42:44,734 [INFO] parts: Stats@8280: train loss 1.04510, valid loss 0.12180, valid accuracy 96.97% valid mca 96.77% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:42:50,052 [INFO] parts: Stats@8300: train loss 1.04461, valid loss 0.12519, valid accuracy 96.97% valid mca 96.83% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:42:54,754 [INFO] parts: Stats@8320: train loss 1.05854, valid loss 0.12570, valid accuracy 96.64% valid mca 96.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:42:59,645 [INFO] parts: Stats@8340: train loss 1.04988, valid loss 0.11997, valid accuracy 96.83% valid mca 96.57% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:43:04,082 [INFO] parts: Stats@8360: train loss 1.04664, valid loss 0.12305, valid accuracy 96.55% valid mca 96.18% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:43:09,925 [INFO] parts: Stats@8380: train loss 1.04606, valid loss 0.13109, valid accuracy 96.41% valid mca 96.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:43:14,789 [INFO] parts: Stats@8400: train loss 1.04362, valid loss 0.12862, valid accuracy 96.64% valid mca 96.40% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:43:19,582 [INFO] parts: Stats@8420: train loss 1.05128, valid loss 0.11861, valid accuracy 97.06% valid mca 96.78% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:43:25,225 [INFO] parts: Stats@8440: train loss 1.05088, valid loss 0.12084, valid accuracy 96.87% valid mca 96.69% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:43:30,074 [INFO] parts: Stats@8460: train loss 1.04376, valid loss 0.12184, valid accuracy 96.83% valid mca 96.76% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:43:34,825 [INFO] parts: Stats@8480: train loss 1.04599, valid loss 0.11930, valid accuracy 96.83% valid mca 96.66% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:43:39,228 [INFO] parts: Stats@8500: train loss 1.04398, valid loss 0.12070, valid accuracy 96.97% valid mca 96.76% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:43:45,114 [INFO] parts: Stats@8520: train loss 1.05898, valid loss 0.11864, valid accuracy 96.83% valid mca 96.66% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:43:49,902 [INFO] parts: Stats@8540: train loss 1.04359, valid loss 0.11891, valid accuracy 96.92% valid mca 96.72% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:43:54,722 [INFO] parts: Stats@8560: train loss 1.04997, valid loss 0.11834, valid accuracy 97.06% valid mca 96.85% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:44:00,139 [INFO] parts: Stats@8580: train loss 1.04571, valid loss 0.12180, valid accuracy 96.83% valid mca 96.54% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:44:05,151 [INFO] parts: Stats@8600: train loss 1.04385, valid loss 0.12096, valid accuracy 96.78% valid mca 96.50% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:44:09,735 [INFO] parts: Stats@8620: train loss 1.04405, valid loss 0.11914, valid accuracy 96.83% valid mca 96.70% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:44:15,805 [INFO] parts: Stats@8640: train loss 1.05011, valid loss 0.12807, valid accuracy 96.37% valid mca 96.39% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:44:20,626 [INFO] parts: Stats@8660: train loss 1.04388, valid loss 0.12209, valid accuracy 97.24% valid mca 97.06% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:44:25,684 [INFO] parts: Stats@8680: train loss 1.04510, valid loss 0.12120, valid accuracy 96.87% valid mca 96.63% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:44:30,158 [INFO] parts: Stats@8700: train loss 1.04427, valid loss 0.12375, valid accuracy 96.78% valid mca 96.48% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:44:36,110 [INFO] parts: Stats@8720: train loss 1.04437, valid loss 0.12347, valid accuracy 96.92% valid mca 96.87% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:44:40,905 [INFO] parts: Stats@8740: train loss 1.04359, valid loss 0.12351, valid accuracy 96.92% valid mca 96.67% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:44:45,648 [INFO] parts: Stats@8760: train loss 1.04417, valid loss 0.12527, valid accuracy 96.92% valid mca 96.77% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:44:51,011 [INFO] parts: Stats@8780: train loss 1.04752, valid loss 0.13072, valid accuracy 96.14% valid mca 95.95% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:44:55,613 [INFO] parts: Stats@8800: train loss 1.06607, valid loss 0.12215, valid accuracy 96.64% valid mca 96.51% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:45:00,537 [INFO] parts: Stats@8820: train loss 1.04377, valid loss 0.11809, valid accuracy 97.01% valid mca 96.83% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:45:04,820 [INFO] parts: Stats@8840: train loss 1.04369, valid loss 0.12484, valid accuracy 96.83% valid mca 96.58% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.21s 
+2022-10-26 22:45:10,888 [INFO] parts: Stats@8860: train loss 1.04385, valid loss 0.12387, valid accuracy 96.97% valid mca 96.79% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:45:15,886 [INFO] parts: Stats@8880: train loss 1.04901, valid loss 0.12570, valid accuracy 96.69% valid mca 96.46% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:45:20,931 [INFO] parts: Stats@8900: train loss 1.04944, valid loss 0.11871, valid accuracy 96.87% valid mca 96.73% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:45:26,693 [INFO] parts: Stats@8920: train loss 1.04359, valid loss 0.13617, valid accuracy 96.46% valid mca 96.35% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:45:31,417 [INFO] parts: Stats@8940: train loss 1.05256, valid loss 0.12242, valid accuracy 96.92% valid mca 96.78% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:45:36,186 [INFO] parts: Stats@8960: train loss 1.04417, valid loss 0.12122, valid accuracy 96.78% valid mca 96.50% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:45:41,836 [INFO] parts: Stats@8980: train loss 1.04401, valid loss 0.12385, valid accuracy 96.83% valid mca 96.65% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:45:46,497 [INFO] parts: Stats@9000: train loss 1.05006, valid loss 0.12680, valid accuracy 96.78% valid mca 96.51% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:45:51,191 [INFO] parts: Stats@9020: train loss 1.04435, valid loss 0.12417, valid accuracy 97.24% valid mca 96.81% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:45:55,636 [INFO] parts: Stats@9040: train loss 1.04983, valid loss 0.12847, valid accuracy 96.55% valid mca 96.40% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:46:01,128 [INFO] parts: Stats@9060: train loss 1.04488, valid loss 0.12727, valid accuracy 96.60% valid mca 96.41% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:46:05,822 [INFO] parts: Stats@9080: train loss 1.04427, valid loss 0.12581, valid accuracy 96.97% valid mca 96.94% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:46:10,568 [INFO] parts: Stats@9100: train loss 1.04395, valid loss 0.12158, valid accuracy 97.06% valid mca 96.99% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:46:15,939 [INFO] parts: Stats@9120: train loss 1.05609, valid loss 0.12573, valid accuracy 96.64% valid mca 96.59% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:46:20,729 [INFO] parts: Stats@9140: train loss 1.04390, valid loss 0.12483, valid accuracy 97.15% valid mca 97.09% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:46:25,412 [INFO] parts: Stats@9160: train loss 1.04524, valid loss 0.12917, valid accuracy 96.55% valid mca 96.25% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:46:29,979 [INFO] parts: Stats@9180: train loss 1.05159, valid loss 0.12538, valid accuracy 97.10% valid mca 96.83% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:46:35,609 [INFO] parts: Stats@9200: train loss 1.04376, valid loss 0.12664, valid accuracy 96.69% valid mca 96.66% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:46:40,414 [INFO] parts: Stats@9220: train loss 1.04375, valid loss 0.12084, valid accuracy 96.97% valid mca 96.69% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:46:45,176 [INFO] parts: Stats@9240: train loss 1.04412, valid loss 0.12423, valid accuracy 97.06% valid mca 96.67% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:46:50,556 [INFO] parts: Stats@9260: train loss 1.04413, valid loss 0.12881, valid accuracy 96.51% valid mca 96.60% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:46:55,524 [INFO] parts: Stats@9280: train loss 1.04554, valid loss 0.12583, valid accuracy 96.97% valid mca 96.92% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:47:00,327 [INFO] parts: Stats@9300: train loss 1.05450, valid loss 0.13002, valid accuracy 96.64% valid mca 96.51% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:47:05,850 [INFO] parts: Stats@9320: train loss 1.04484, valid loss 0.12834, valid accuracy 96.78% valid mca 96.64% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:47:10,542 [INFO] parts: Stats@9340: train loss 1.04563, valid loss 0.12854, valid accuracy 96.83% valid mca 96.69% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:47:15,384 [INFO] parts: Stats@9360: train loss 1.04445, valid loss 0.12152, valid accuracy 97.01% valid mca 96.84% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:47:20,128 [INFO] parts: Stats@9380: train loss 1.04509, valid loss 0.13075, valid accuracy 96.37% valid mca 96.38% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:47:25,862 [INFO] parts: Stats@9400: train loss 1.05225, valid loss 0.12472, valid accuracy 96.64% valid mca 96.52% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:47:30,696 [INFO] parts: Stats@9420: train loss 1.05204, valid loss 0.12229, valid accuracy 96.78% valid mca 96.73% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:47:35,562 [INFO] parts: Stats@9440: train loss 1.05933, valid loss 0.12575, valid accuracy 96.51% valid mca 96.29% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:47:41,217 [INFO] parts: Stats@9460: train loss 1.05147, valid loss 0.12871, valid accuracy 96.37% valid mca 96.14% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:47:46,118 [INFO] parts: Stats@9480: train loss 1.04383, valid loss 0.12418, valid accuracy 96.78% valid mca 96.50% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:47:50,921 [INFO] parts: Stats@9500: train loss 1.04452, valid loss 0.12340, valid accuracy 96.92% valid mca 96.76% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:47:55,414 [INFO] parts: Stats@9520: train loss 1.04382, valid loss 0.12497, valid accuracy 96.92% valid mca 96.79% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:48:01,317 [INFO] parts: Stats@9540: train loss 1.04359, valid loss 0.12578, valid accuracy 96.69% valid mca 96.55% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:48:06,135 [INFO] parts: Stats@9560: train loss 1.04383, valid loss 0.12642, valid accuracy 96.87% valid mca 96.59% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:48:10,794 [INFO] parts: Stats@9580: train loss 1.04542, valid loss 0.12792, valid accuracy 96.69% valid mca 96.54% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:48:16,170 [INFO] parts: Stats@9600: train loss 1.04602, valid loss 0.12219, valid accuracy 96.74% valid mca 96.58% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:48:20,908 [INFO] parts: Stats@9620: train loss 1.04379, valid loss 0.12424, valid accuracy 96.74% valid mca 96.49% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:48:25,792 [INFO] parts: Stats@9640: train loss 1.04359, valid loss 0.12301, valid accuracy 96.83% valid mca 96.55% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:48:31,373 [INFO] parts: Stats@9660: train loss 1.04359, valid loss 0.12417, valid accuracy 96.51% valid mca 96.28% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:48:36,107 [INFO] parts: Stats@9680: train loss 1.04603, valid loss 0.12497, valid accuracy 97.06% valid mca 96.90% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:48:40,815 [INFO] parts: Stats@9700: train loss 1.04438, valid loss 0.13278, valid accuracy 96.28% valid mca 96.05% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:48:45,206 [INFO] parts: Stats@9720: train loss 1.05189, valid loss 0.12609, valid accuracy 96.92% valid mca 96.64% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:48:50,996 [INFO] parts: Stats@9740: train loss 1.04401, valid loss 0.12514, valid accuracy 96.74% valid mca 96.46% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:48:55,852 [INFO] parts: Stats@9760: train loss 1.04584, valid loss 0.12102, valid accuracy 97.01% valid mca 96.70% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:49:00,519 [INFO] parts: Stats@9780: train loss 1.04426, valid loss 0.13981, valid accuracy 96.60% valid mca 96.56% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:49:06,223 [INFO] parts: Stats@9800: train loss 1.04415, valid loss 0.12105, valid accuracy 96.92% valid mca 96.88% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:49:10,953 [INFO] parts: Stats@9820: train loss 1.05073, valid loss 0.12449, valid accuracy 96.41% valid mca 96.40% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:49:15,865 [INFO] parts: Stats@9840: train loss 1.04359, valid loss 0.12067, valid accuracy 97.06% valid mca 97.00% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:49:20,396 [INFO] parts: Stats@9860: train loss 1.05085, valid loss 0.12163, valid accuracy 96.83% valid mca 96.65% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:49:26,081 [INFO] parts: Stats@9880: train loss 1.04360, valid loss 0.12897, valid accuracy 96.51% valid mca 96.54% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:49:30,852 [INFO] parts: Stats@9900: train loss 1.04569, valid loss 0.12377, valid accuracy 96.74% valid mca 96.46% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:49:35,701 [INFO] parts: Stats@9920: train loss 1.04431, valid loss 0.12610, valid accuracy 96.92% valid mca 96.77% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:49:41,241 [INFO] parts: Stats@9940: train loss 1.04972, valid loss 0.12400, valid accuracy 97.06% valid mca 97.01% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:49:45,763 [INFO] parts: Stats@9960: train loss 1.04359, valid loss 0.12492, valid accuracy 97.15% valid mca 96.96% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:49:50,810 [INFO] parts: Stats@9980: train loss 1.05101, valid loss 0.12907, valid accuracy 96.74% valid mca 96.72% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:49:56,388 [INFO] parts: Stats@10000: train loss 1.04435, valid loss 0.12035, valid accuracy 96.83% valid mca 96.66% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 22:50:01,525 [INFO] parts: Stats@10020: train loss 1.05140, valid loss 0.12037, valid accuracy 97.01% valid mca 96.82% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:50:05,939 [INFO] parts: Stats@10040: train loss 1.05731, valid loss 0.12620, valid accuracy 96.97% valid mca 96.66% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:50:10,820 [INFO] parts: Stats@10060: train loss 1.05140, valid loss 0.12364, valid accuracy 96.78% valid mca 96.60% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:50:16,806 [INFO] parts: Stats@10080: train loss 1.04359, valid loss 0.12690, valid accuracy 96.55% valid mca 96.29% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:50:21,547 [INFO] parts: Stats@10100: train loss 1.04359, valid loss 0.12797, valid accuracy 96.92% valid mca 96.89% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:50:26,321 [INFO] parts: Stats@10120: train loss 1.04394, valid loss 0.12471, valid accuracy 96.69% valid mca 96.55% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:50:32,048 [INFO] parts: Stats@10140: train loss 1.04389, valid loss 0.12507, valid accuracy 96.78% valid mca 96.56% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:50:36,990 [INFO] parts: Stats@10160: train loss 1.04359, valid loss 0.13015, valid accuracy 96.41% valid mca 96.15% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:50:42,426 [INFO] parts: Stats@10180: train loss 1.04459, valid loss 0.12343, valid accuracy 96.97% valid mca 96.80% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:50:47,372 [INFO] parts: Stats@10200: train loss 1.04377, valid loss 0.12161, valid accuracy 96.92% valid mca 96.62% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 22:50:53,224 [INFO] parts: Stats@10220: train loss 1.04364, valid loss 0.12645, valid accuracy 96.46% valid mca 96.18% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 22:50:57,884 [INFO] parts: Stats@10240: train loss 1.04369, valid loss 0.12561, valid accuracy 96.69% valid mca 96.54% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:51:02,680 [INFO] parts: Stats@10260: train loss 1.05358, valid loss 0.12224, valid accuracy 96.97% valid mca 96.79% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 22:51:08,611 [INFO] parts: Stats@10280: train loss 1.04421, valid loss 0.12625, valid accuracy 96.60% valid mca 96.46% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 22:51:13,000 [INFO] parts: Stats@10300: train loss 1.04359, valid loss 0.12482, valid accuracy 96.83% valid mca 96.65% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 22:51:17,509 [INFO] parts: Stats@10320: train loss 1.04410, valid loss 0.12507, valid accuracy 96.78% valid mca 96.55% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 22:51:22,890 [INFO] parts: Stats@10340: train loss 1.04359, valid loss 0.12327, valid accuracy 97.06% valid mca 96.91% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 22:51:28,116 [INFO] parts: Stats@10360: train loss 1.04491, valid loss 0.12335, valid accuracy 96.78% valid mca 96.62% learning rate 0.00225000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 22:51:28,221 [INFO] parts: Learning has stagnated for 4000 steps, terminating training and running test stats
+2022-10-26 22:51:28,525 [INFO] parts: Stats@6360: train loss 1.05152, valid loss 0.11577, valid accuracy 97.33% valid mca 97.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 22:51:30,976 [INFO] parts: Training took 93.56 epochs, 0.71 hours
+2022-10-26 23:10:03,723 [INFO] parts: Namespace(name='unnamed', datadir='data', dataset='hep2', classes=6, feature_extractor='alexnet', savedir='save', logdir='log', savestats=True, savepth=False, base_lr=0.003, lr_gamma=0.75, weight_decay=0.0005, batch_size=128, repeats=1, eval_every=20, early_stop_steps=5, batch_split=1, num_workers=4, verbose=False, use_amp=False, adabatch=False, training_stats=False, grid_search=False, random_flip=False, random_rotate=False, gaussian=False, aggressive=False)
+2022-10-26 23:10:03,723 [INFO] parts: Loading model, weights and data
+2022-10-26 23:10:05,758 [INFO] parts: Running initial validation
+2022-10-26 23:10:08,994 [INFO] parts: Stats@-1: valid loss 1.80800, valid accuracy 12.83% valid mca 12.62%
+2022-10-26 23:10:08,996 [INFO] parts: Beginning training
+2022-10-26 23:10:10,123 [INFO] parts: Learning has stagnated for 5 steps, terminating training and running test stats
+2022-10-26 23:10:34,999 [INFO] parts: Namespace(name='unnamed', datadir='data', dataset='hep2', classes=6, feature_extractor='alexnet', savedir='save', logdir='log', savestats=True, savepth=False, base_lr=0.003, lr_gamma=0.75, weight_decay=0.0005, batch_size=128, repeats=1, eval_every=20, early_stop_steps=50, batch_split=1, num_workers=4, verbose=False, use_amp=False, adabatch=False, training_stats=False, grid_search=False, random_flip=False, random_rotate=False, gaussian=False, aggressive=False)
+2022-10-26 23:10:35,000 [INFO] parts: Loading model, weights and data
+2022-10-26 23:10:36,527 [INFO] parts: Running initial validation
+2022-10-26 23:10:39,639 [INFO] parts: Stats@-1: valid loss 1.90771, valid accuracy 6.62% valid mca 17.92%
+2022-10-26 23:10:39,641 [INFO] parts: Beginning training
+2022-10-26 23:10:44,861 [INFO] parts: Stats@20: train loss 1.30421, valid loss 0.97101, valid accuracy 65.89% valid mca 57.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 23:10:49,221 [INFO] parts: Stats@40: train loss 1.22427, valid loss 0.73452, valid accuracy 75.59% valid mca 66.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 23:10:53,998 [INFO] parts: Stats@60: train loss 1.22611, valid loss 0.75984, valid accuracy 74.34% valid mca 65.44% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:10:59,606 [INFO] parts: Stats@80: train loss 1.28936, valid loss 0.93253, valid accuracy 71.76% valid mca 63.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:11:00,731 [INFO] parts: Learning has stagnated for 50 steps, terminating training and running test stats
+2022-10-26 23:11:01,139 [INFO] parts: Stats@40: train loss 1.22427, valid loss 0.73452, valid accuracy 75.59% valid mca 66.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s (best)
+2022-10-26 23:11:03,417 [INFO] parts: Test stats@40: test loss 0.75878, test accuracy 74.71% test per-class mean accuracy 65.93%
+2022-10-26 23:11:03,417 [INFO] parts: Training took 0.59 epochs, 0.01 hours
+2022-10-26 23:25:14,174 [INFO] parts: Namespace(name='unnamed', datadir='data', dataset='hep2', classes=6, feature_extractor='alexnet', savedir='save', logdir='log', savestats=True, savepth=False, base_lr=0.003, lr_gamma=0.75, weight_decay=0.0005, batch_size=128, repeats=1, eval_every=20, early_stop_steps=4000, batch_split=1, num_workers=4, verbose=False, use_amp=False, adabatch=True, training_stats=False, grid_search=False, random_flip=False, random_rotate=False, gaussian=False, aggressive=False)
+2022-10-26 23:25:14,174 [INFO] parts: Loading model, weights and data
+2022-10-26 23:25:15,738 [INFO] parts: Running initial validation
+2022-10-26 23:25:18,847 [INFO] parts: Stats@-1: valid loss 1.69846, valid accuracy 26.45% valid mca 23.81%
+2022-10-26 23:25:18,848 [INFO] parts: Beginning training
+2022-10-26 23:25:24,665 [INFO] parts: Stats@20: train loss 1.27902, valid loss 0.82141, valid accuracy 71.63% valid mca 63.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s (best)
+2022-10-26 23:25:29,731 [INFO] parts: Stats@40: train loss 1.26083, valid loss 0.94813, valid accuracy 70.01% valid mca 61.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:25:34,323 [INFO] parts: Stats@60: train loss 1.26027, valid loss 0.75365, valid accuracy 75.12% valid mca 66.45% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:25:39,848 [INFO] parts: Stats@80: train loss 1.30028, valid loss 0.86216, valid accuracy 75.91% valid mca 67.76% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s (best)
+2022-10-26 23:25:44,510 [INFO] parts: Stats@100: train loss 1.25593, valid loss 0.91948, valid accuracy 77.99% valid mca 68.93% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:25:49,196 [INFO] parts: Stats@120: train loss 1.21447, valid loss 0.75006, valid accuracy 80.33% valid mca 72.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:25:54,714 [INFO] parts: Stats@140: train loss 1.21070, valid loss 0.71044, valid accuracy 81.29% valid mca 74.48% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s (best)
+2022-10-26 23:25:59,446 [INFO] parts: Stats@160: train loss 1.16538, valid loss 0.67200, valid accuracy 81.02% valid mca 72.15% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:26:04,205 [INFO] parts: Stats@180: train loss 1.23589, valid loss 0.62041, valid accuracy 81.61% valid mca 74.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 23:26:08,693 [INFO] parts: Stats@200: train loss 1.21344, valid loss 0.73086, valid accuracy 82.12% valid mca 73.76% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 23:26:14,428 [INFO] parts: Stats@220: train loss 1.22408, valid loss 0.84542, valid accuracy 81.71% valid mca 74.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:26:19,224 [INFO] parts: Stats@240: train loss 1.21465, valid loss 0.63543, valid accuracy 81.94% valid mca 74.98% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:26:23,852 [INFO] parts: Stats@260: train loss 1.23274, valid loss 0.68640, valid accuracy 83.23% valid mca 76.37% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:26:29,097 [INFO] parts: Stats@280: train loss 1.18582, valid loss 0.58253, valid accuracy 85.85% valid mca 81.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 23:26:33,806 [INFO] parts: Stats@300: train loss 1.21915, valid loss 0.73287, valid accuracy 84.79% valid mca 82.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:26:38,399 [INFO] parts: Stats@320: train loss 1.17138, valid loss 0.44201, valid accuracy 88.55% valid mca 87.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:26:42,977 [INFO] parts: Stats@340: train loss 1.13304, valid loss 0.53370, valid accuracy 84.69% valid mca 82.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:26:48,574 [INFO] parts: Stats@360: train loss 1.10152, valid loss 0.47653, valid accuracy 86.30% valid mca 84.97% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:26:53,476 [INFO] parts: Stats@380: train loss 1.14527, valid loss 0.40934, valid accuracy 86.94% valid mca 86.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:26:58,635 [INFO] parts: Stats@400: train loss 1.16214, valid loss 0.38681, valid accuracy 87.26% valid mca 86.09% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:27:04,413 [INFO] parts: Stats@420: train loss 1.15226, valid loss 0.40237, valid accuracy 88.60% valid mca 88.39% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s (best)
+2022-10-26 23:27:09,534 [INFO] parts: Stats@440: train loss 1.13578, valid loss 0.31671, valid accuracy 89.56% valid mca 89.81% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 23:27:14,419 [INFO] parts: Stats@460: train loss 1.11966, valid loss 0.41915, valid accuracy 88.46% valid mca 88.41% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:27:19,918 [INFO] parts: Stats@480: train loss 1.18863, valid loss 0.37184, valid accuracy 88.31% valid mca 88.22% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:27:24,750 [INFO] parts: Stats@500: train loss 1.13595, valid loss 0.40944, valid accuracy 89.15% valid mca 88.84% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:27:29,670 [INFO] parts: Stats@520: train loss 1.12722, valid loss 0.36724, valid accuracy 88.92% valid mca 89.51% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:27:34,223 [INFO] parts: Stats@540: train loss 1.12490, valid loss 0.32439, valid accuracy 90.03% valid mca 89.89% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:27:40,049 [INFO] parts: Stats@560: train loss 1.14445, valid loss 0.37689, valid accuracy 88.65% valid mca 88.80% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:27:44,845 [INFO] parts: Stats@580: train loss 1.08088, valid loss 0.47949, valid accuracy 87.13% valid mca 87.67% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:27:49,368 [INFO] parts: Stats@600: train loss 1.12776, valid loss 0.30792, valid accuracy 90.67% valid mca 90.68% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:27:54,790 [INFO] parts: Stats@620: train loss 1.12488, valid loss 0.32259, valid accuracy 89.89% valid mca 89.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:27:59,475 [INFO] parts: Stats@640: train loss 1.09033, valid loss 0.27996, valid accuracy 90.76% valid mca 90.75% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:28:04,200 [INFO] parts: Stats@660: train loss 1.11410, valid loss 0.29722, valid accuracy 90.67% valid mca 90.81% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:28:08,676 [INFO] parts: Stats@680: train loss 1.12535, valid loss 0.29418, valid accuracy 91.36% valid mca 91.46% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s (best)
+2022-10-26 23:28:14,558 [INFO] parts: Stats@700: train loss 1.08650, valid loss 0.28750, valid accuracy 90.90% valid mca 90.94% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:28:19,405 [INFO] parts: Stats@720: train loss 1.11000, valid loss 0.24755, valid accuracy 91.82% valid mca 91.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 23:28:24,068 [INFO] parts: Stats@740: train loss 1.09115, valid loss 0.29980, valid accuracy 90.53% valid mca 90.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:28:29,835 [INFO] parts: Stats@760: train loss 1.08855, valid loss 0.28591, valid accuracy 91.31% valid mca 91.27% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:28:34,690 [INFO] parts: Stats@780: train loss 1.10718, valid loss 0.25223, valid accuracy 91.59% valid mca 91.58% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:28:39,406 [INFO] parts: Stats@800: train loss 1.11386, valid loss 0.24521, valid accuracy 91.82% valid mca 91.80% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:28:45,028 [INFO] parts: Stats@820: train loss 1.08943, valid loss 0.30273, valid accuracy 91.08% valid mca 91.10% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:28:50,018 [INFO] parts: Stats@840: train loss 1.09001, valid loss 0.29708, valid accuracy 91.54% valid mca 91.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:28:55,595 [INFO] parts: Stats@860: train loss 1.12153, valid loss 0.25686, valid accuracy 91.50% valid mca 91.26% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:29:00,402 [INFO] parts: Stats@880: train loss 1.10156, valid loss 0.19150, valid accuracy 93.70% valid mca 93.40% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 23:29:07,836 [INFO] parts: Stats@900: train loss 1.09583, valid loss 0.23819, valid accuracy 92.32% valid mca 92.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.37s 
+2022-10-26 23:29:13,790 [INFO] parts: Stats@920: train loss 1.06902, valid loss 0.21763, valid accuracy 92.55% valid mca 92.30% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 23:29:19,147 [INFO] parts: Stats@940: train loss 1.09026, valid loss 0.19799, valid accuracy 93.29% valid mca 93.27% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:29:24,900 [INFO] parts: Stats@960: train loss 1.08514, valid loss 0.18539, valid accuracy 93.70% valid mca 93.19% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s (best)
+2022-10-26 23:29:29,839 [INFO] parts: Stats@980: train loss 1.09567, valid loss 0.20922, valid accuracy 93.47% valid mca 93.16% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:29:34,567 [INFO] parts: Stats@1000: train loss 1.08491, valid loss 0.25369, valid accuracy 91.54% valid mca 91.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:29:39,288 [INFO] parts: Stats@1020: train loss 1.09527, valid loss 0.22517, valid accuracy 93.38% valid mca 93.23% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:29:46,422 [INFO] parts: Stats@1040: train loss 1.09688, valid loss 0.26426, valid accuracy 91.68% valid mca 91.61% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.36s 
+2022-10-26 23:29:51,641 [INFO] parts: Stats@1060: train loss 1.08864, valid loss 0.20430, valid accuracy 93.15% valid mca 92.82% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:29:56,570 [INFO] parts: Stats@1080: train loss 1.10818, valid loss 0.17628, valid accuracy 94.71% valid mca 94.43% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s (best)
+2022-10-26 23:30:02,441 [INFO] parts: Stats@1100: train loss 1.08304, valid loss 0.19384, valid accuracy 94.16% valid mca 93.41% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:30:07,226 [INFO] parts: Stats@1120: train loss 1.07500, valid loss 0.18304, valid accuracy 93.93% valid mca 93.64% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:30:12,065 [INFO] parts: Stats@1140: train loss 1.07960, valid loss 0.23436, valid accuracy 92.88% valid mca 92.79% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:30:17,549 [INFO] parts: Stats@1160: train loss 1.10066, valid loss 0.18708, valid accuracy 94.16% valid mca 94.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:30:22,637 [INFO] parts: Stats@1180: train loss 1.08978, valid loss 0.19701, valid accuracy 93.79% valid mca 93.21% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:30:27,544 [INFO] parts: Stats@1200: train loss 1.08399, valid loss 0.25368, valid accuracy 92.51% valid mca 92.42% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:30:32,448 [INFO] parts: Stats@1220: train loss 1.10644, valid loss 0.22678, valid accuracy 93.52% valid mca 92.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:30:38,083 [INFO] parts: Stats@1240: train loss 1.07572, valid loss 0.20142, valid accuracy 93.89% valid mca 93.62% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:30:42,695 [INFO] parts: Stats@1260: train loss 1.09235, valid loss 0.20068, valid accuracy 93.52% valid mca 93.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:30:47,653 [INFO] parts: Stats@1280: train loss 1.07920, valid loss 0.17488, valid accuracy 94.39% valid mca 94.20% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:30:53,231 [INFO] parts: Stats@1300: train loss 1.08473, valid loss 0.18576, valid accuracy 94.44% valid mca 94.07% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:30:58,409 [INFO] parts: Stats@1320: train loss 1.08722, valid loss 0.20902, valid accuracy 92.97% valid mca 92.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:31:03,483 [INFO] parts: Stats@1340: train loss 1.09149, valid loss 0.20076, valid accuracy 93.52% valid mca 93.33% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:31:08,381 [INFO] parts: Stats@1360: train loss 1.09357, valid loss 0.18011, valid accuracy 95.27% valid mca 95.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 23:31:14,257 [INFO] parts: Stats@1380: train loss 1.08339, valid loss 0.17378, valid accuracy 94.81% valid mca 94.34% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:31:19,154 [INFO] parts: Stats@1400: train loss 1.08230, valid loss 0.19184, valid accuracy 94.07% valid mca 93.98% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:31:24,170 [INFO] parts: Stats@1420: train loss 1.08656, valid loss 0.19840, valid accuracy 94.11% valid mca 93.97% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:31:30,370 [INFO] parts: Stats@1440: train loss 1.10945, valid loss 0.23949, valid accuracy 92.46% valid mca 92.29% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.31s 
+2022-10-26 23:31:35,530 [INFO] parts: Stats@1460: train loss 1.09490, valid loss 0.16794, valid accuracy 95.08% valid mca 94.71% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:31:40,344 [INFO] parts: Stats@1480: train loss 1.07333, valid loss 0.20188, valid accuracy 93.29% valid mca 92.87% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:31:46,012 [INFO] parts: Stats@1500: train loss 1.08466, valid loss 0.17865, valid accuracy 94.16% valid mca 94.18% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:31:50,923 [INFO] parts: Stats@1520: train loss 1.08440, valid loss 0.17695, valid accuracy 94.48% valid mca 94.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:31:55,505 [INFO] parts: Stats@1540: train loss 1.07165, valid loss 0.15613, valid accuracy 94.99% valid mca 94.45% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:31:59,818 [INFO] parts: Stats@1560: train loss 1.07294, valid loss 0.18182, valid accuracy 93.98% valid mca 93.54% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 23:32:05,220 [INFO] parts: Stats@1580: train loss 1.05684, valid loss 0.19437, valid accuracy 94.16% valid mca 94.02% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:32:10,047 [INFO] parts: Stats@1600: train loss 1.06919, valid loss 0.22398, valid accuracy 93.01% valid mca 92.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:32:14,785 [INFO] parts: Stats@1620: train loss 1.08112, valid loss 0.15549, valid accuracy 95.22% valid mca 94.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:32:20,569 [INFO] parts: Stats@1640: train loss 1.08396, valid loss 0.16008, valid accuracy 94.71% valid mca 94.25% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:32:25,403 [INFO] parts: Stats@1660: train loss 1.08543, valid loss 0.17219, valid accuracy 94.67% valid mca 93.92% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:32:30,384 [INFO] parts: Stats@1680: train loss 1.11405, valid loss 0.17305, valid accuracy 94.90% valid mca 94.26% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:32:34,925 [INFO] parts: Stats@1700: train loss 1.07608, valid loss 0.16222, valid accuracy 94.48% valid mca 94.32% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:32:41,165 [INFO] parts: Stats@1720: train loss 1.06382, valid loss 0.16522, valid accuracy 94.62% valid mca 94.37% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.31s 
+2022-10-26 23:32:46,314 [INFO] parts: Stats@1740: train loss 1.07939, valid loss 0.16440, valid accuracy 95.08% valid mca 94.56% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:32:51,164 [INFO] parts: Stats@1760: train loss 1.05566, valid loss 0.15965, valid accuracy 95.50% valid mca 95.18% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s (best)
+2022-10-26 23:32:57,136 [INFO] parts: Stats@1780: train loss 1.08857, valid loss 0.18898, valid accuracy 93.89% valid mca 93.83% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 23:33:02,222 [INFO] parts: Stats@1800: train loss 1.08557, valid loss 0.17786, valid accuracy 94.34% valid mca 94.03% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:33:06,737 [INFO] parts: Stats@1820: train loss 1.08004, valid loss 0.15366, valid accuracy 95.45% valid mca 94.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:33:11,896 [INFO] parts: Stats@1840: train loss 1.06723, valid loss 0.15142, valid accuracy 95.49% valid mca 95.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:33:16,517 [INFO] parts: Stats@1860: train loss 1.05611, valid loss 0.15141, valid accuracy 95.77% valid mca 95.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s (best)
+2022-10-26 23:33:21,367 [INFO] parts: Stats@1880: train loss 1.08587, valid loss 0.16453, valid accuracy 94.85% valid mca 94.70% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:33:26,163 [INFO] parts: Stats@1900: train loss 1.09544, valid loss 0.16133, valid accuracy 95.59% valid mca 95.59% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:33:32,255 [INFO] parts: Stats@1920: train loss 1.08417, valid loss 0.16292, valid accuracy 95.13% valid mca 94.83% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.30s 
+2022-10-26 23:33:37,169 [INFO] parts: Stats@1940: train loss 1.06935, valid loss 0.14806, valid accuracy 95.91% valid mca 95.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s (best)
+2022-10-26 23:33:42,020 [INFO] parts: Stats@1960: train loss 1.07733, valid loss 0.14769, valid accuracy 95.54% valid mca 94.73% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:33:47,613 [INFO] parts: Stats@1980: train loss 1.06268, valid loss 0.14967, valid accuracy 95.31% valid mca 95.00% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:33:52,683 [INFO] parts: Stats@2000: train loss 1.05791, valid loss 0.16969, valid accuracy 94.53% valid mca 94.31% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:33:58,287 [INFO] parts: Stats@2020: train loss 1.09307, valid loss 0.14874, valid accuracy 95.77% valid mca 95.66% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.28s 
+2022-10-26 23:34:03,469 [INFO] parts: Stats@2040: train loss 1.05772, valid loss 0.14062, valid accuracy 96.18% valid mca 95.72% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s (best)
+2022-10-26 23:34:09,213 [INFO] parts: Stats@2060: train loss 1.10867, valid loss 0.15719, valid accuracy 95.31% valid mca 94.90% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:34:13,940 [INFO] parts: Stats@2080: train loss 1.07380, valid loss 0.14537, valid accuracy 95.27% valid mca 94.74% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:34:18,684 [INFO] parts: Stats@2100: train loss 1.06092, valid loss 0.14315, valid accuracy 95.91% valid mca 95.52% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:34:24,109 [INFO] parts: Stats@2120: train loss 1.05800, valid loss 0.14127, valid accuracy 95.59% valid mca 95.45% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:34:29,107 [INFO] parts: Stats@2140: train loss 1.07316, valid loss 0.16945, valid accuracy 94.48% valid mca 94.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.25s 
+2022-10-26 23:34:34,273 [INFO] parts: Stats@2160: train loss 1.06512, valid loss 0.14040, valid accuracy 95.68% valid mca 95.12% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:34:40,035 [INFO] parts: Stats@2180: train loss 1.07661, valid loss 0.14350, valid accuracy 95.86% valid mca 95.66% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.29s 
+2022-10-26 23:34:44,797 [INFO] parts: Stats@2200: train loss 1.08265, valid loss 0.13961, valid accuracy 95.82% valid mca 95.35% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:34:49,519 [INFO] parts: Stats@2220: train loss 1.07380, valid loss 0.15275, valid accuracy 95.59% valid mca 95.36% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:34:54,101 [INFO] parts: Stats@2240: train loss 1.06387, valid loss 0.14154, valid accuracy 95.04% valid mca 94.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:34:59,599 [INFO] parts: Stats@2260: train loss 1.05570, valid loss 0.14807, valid accuracy 95.54% valid mca 95.15% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:35:04,065 [INFO] parts: Stats@2280: train loss 1.07421, valid loss 0.13960, valid accuracy 95.95% valid mca 95.59% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.22s 
+2022-10-26 23:35:08,686 [INFO] parts: Stats@2300: train loss 1.05447, valid loss 0.13691, valid accuracy 95.63% valid mca 95.17% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:35:13,895 [INFO] parts: Stats@2320: train loss 1.07475, valid loss 0.14959, valid accuracy 95.36% valid mca 95.14% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.26s 
+2022-10-26 23:35:18,702 [INFO] parts: Stats@2340: train loss 1.07168, valid loss 0.14488, valid accuracy 95.77% valid mca 95.37% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.24s 
+2022-10-26 23:35:24,025 [INFO] parts: Stats@2360: train loss 1.06911, valid loss 0.15566, valid accuracy 95.13% valid mca 94.47% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.27s 
+2022-10-26 23:35:28,714 [INFO] parts: Stats@2380: train loss 1.05860, valid loss 0.14721, valid accuracy 95.59% valid mca 95.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.23s 
+2022-10-26 23:35:34,823 [INFO] parts: Stats@2400: train loss 1.07162, valid loss 0.14158, valid accuracy 95.77% valid mca 95.28% learning rate 0.00300000 eff batch size 128 time taken avg/step 0.31s 

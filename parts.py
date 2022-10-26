@@ -1,4 +1,5 @@
 import torch
+import os
 from os import path
 from torch.utils.data import SubsetRandomSampler, DataLoader
 from torchvision.datasets import ImageFolder, FashionMNIST
@@ -6,6 +7,8 @@ import torchvision.transforms as T
 import time
 import numpy as np
 from copy import deepcopy
+import argparse
+import logging
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
@@ -31,7 +34,7 @@ def accuracy(output, target, topk=(1,)): #from pytorch/references/classification
             res.append(correct_k * (100.0 / batch_size))
         return res
       
-def run_eval(args, model, step, stats, device, data_loader, split): #also largely from Google Brain Team Big Transfer
+def run_eval(args, model, step, stats, device, data_loader, split, logger): #also largely from Google Brain Team Big Transfer
   #setup
   all_c, all_top1, all_top2 = [], [], []
   nb_classes = len(data_loader.dataset.classes)
@@ -68,13 +71,47 @@ def run_eval(args, model, step, stats, device, data_loader, split): #also largel
   #close
   time_taken = time.perf_counter() - end
   if args.verbose:
-    print(f"{split.capitalize()}@{step}: loss {np.mean(all_c):.5f} : top1 {np.mean(all_top1):.2f}% : top2 {np.mean(all_top2):.2f}% : mca {100.0*per_class.mean().numpy():.2f}% : took {time_taken:.2f} seconds")
-    print(f"Accuracies per class is {per_class.numpy()}")
+    logger.info(f"{split.capitalize()}@{step}: loss {np.mean(all_c):.5f} : top1 {np.mean(all_top1):.2f}% : top2 {np.mean(all_top2):.2f}% : mca {100.0*per_class.mean().numpy():.2f}% : took {time_taken:.2f} seconds")
+    logger.info(f"Accuracies per class is {per_class.numpy()}")
   return stats
   
-#train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess)
+def logstats(args, stats, logger, step, best_step, time_taken):
+  if best_step is None: #if this is the first epoch
+    logger.info(f"Stats@{step}: valid loss {stats['valid_loss'][step]:.5f}, \
+valid accuracy {stats['valid_acc'][step]:.2f}% \
+valid mca {stats[f'valid_mca'][step]:.2f}%")
+    return
 
-def mktrainval(args, preprocess):
+  if time_taken == 'end':#if this is the final testing step
+    logger.info(f"Test stats@{step}: test loss {stats['test_loss'][step]:.5f}, \
+test accuracy {stats['test_acc'][step]:.2f}% \
+test per-class mean accuracy {stats[f'test_mca'][step]:.2f}%")
+    return
+
+  if args.training_stats:
+    logger.info(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f}, \
+train accuracy {stats['train_acc'][step]:.2f}%, \
+valid loss {stats['valid_loss'][step]:.5f}, \
+valid accuracy {stats['valid_acc'][step]:.2f}% \
+valid mca {stats[f'valid_mca'][step]:.2f}% \
+learning rate {stats['lr'][step]:.8f} \
+eff batch size {int(args.batch_split*stats['batch_size'][step])} \
+time taken avg/step {time_taken:.2f}s \
+{'(best)' if best_step == step else ''}"
+                        )
+  else:
+    logger.info(f"Stats@{step}: train loss {stats['train_loss'][step]:.5f}, \
+valid loss {stats['valid_loss'][step]:.5f}, \
+valid accuracy {stats['valid_acc'][step]:.2f}% \
+valid mca {stats[f'valid_mca'][step]:.2f}% \
+learning rate {stats['lr'][step]:.8f} \
+eff batch size {int(args.batch_split*stats['batch_size'][step])} \
+time taken avg/step {time_taken:.2f}s \
+{'(best)' if best_step == step else ''}"
+                        )
+
+
+def mktrainval(args, preprocess, logger):
   if args.dataset == 'hep2':
     valid_set = ImageFolder(path.join(args.datadir,'validation'),transform=preprocess)
     test_set = ImageFolder(path.join(args.datadir,'test'),transform=preprocess)
@@ -87,7 +124,7 @@ def mktrainval(args, preprocess):
     test_set = None
     test_loader = None
   else:
-    print(f"{args.dataset} not implemented, please check spelling or implement it yourself. Exiting...")
+    logger.critical(f"{args.dataset} not implemented, please check spelling or implement it yourself. Exiting...")
     exit()
 
 
@@ -120,7 +157,7 @@ def mktrainval(args, preprocess):
           deepcopy(preprocess)
             ])
   if args.verbose:
-    print(preprocess)
+    logger.debug(preprocess)
   
   if args.dataset == 'hep2':
     train_set = ImageFolder(path.join(args.datadir,'training'),transform=preprocess)
@@ -130,3 +167,115 @@ def mktrainval(args, preprocess):
     train_loader = DataLoader(train_set, batch_size = args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
 
   return train_loader, valid_loader, test_loader, train_set, valid_set, test_set
+
+def parseargs():
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--name", default='unnamed', required=False,
+                    help="Name for this run, set by default by other args, but feel free to identify a specific run by name")
+  parser.add_argument("--datadir", default="data", required=False,
+                    help="Path to the data folder, preprocessed for torchvision.")
+  parser.add_argument("--dataset", default="hep2", required=False,
+                    help="What dataset should we use?")
+  parser.add_argument("--classes", default=6, type=int, required=False,
+                    help="How many output classes are there?")
+  parser.add_argument("--feature_extractor", default="alexnet", required=False,
+                    help="What feature extractor should we use?")
+  parser.add_argument("--savedir", default="save", required=False,
+                    help="Path to the save folder, for placement of csv and pth files.")
+  parser.add_argument("--logdir", default="log", required=False,
+                    help="Path to the logs folder.")
+  parser.add_argument("--savestats", default=True, action="store_true", required=False,
+                    help="Save stats for every run?")
+  parser.add_argument("--savepth", default=False, action="store_true", required=False,
+                    help="Save pth for every run?")
+  parser.add_argument("--base_lr", type=float, required=False, default=0.003,
+                    help="Base learning rate")
+  # parser.add_argument("--lr_step_size", type=int, required=False, default=100,
+  #                   help="Learning rate schedule step size")
+  parser.add_argument("--lr_gamma", type=float, required=False, default=0.75,
+                    help="Learning rate multiplier every step size")
+                    ################################################################################ under dev
+  parser.add_argument("--weight_decay", type=float, required=False, default=0.0005,
+                    help="Learning rate multiplier every step size")
+                #add the sgdr parts, with probably some extra spice with batch size increases
+    # parser.add_argument("--epochs", type=int, required=False, default=100,
+  #                   help="Run how many epochs before terminating?")
+  ################################################################################
+  parser.add_argument("--batch_size", type=int, required=False, default=128,
+                    help="Batch size for training")
+  parser.add_argument("--repeats", type=int, required=False, default=1,
+                    help="Repeat the run how many times?")
+  parser.add_argument("--eval_every", type=int, required=False, default=20,
+                    help="Eval_every so many steps")
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=4000,
+                    help="Number of steps of no learning to terminate")
+  
+  # parser.add_argument("--ada_steps", type=int, required=False, default=9999,
+  #                   help="Number of steps at the initial batch size before doubling")
+  parser.add_argument("--batch_split", type=int, required=False, default=1,
+                    help="Number of batches to accumulate grads initially, before adaptive batch sizing begins")
+
+  parser.add_argument("--num_workers", type=int, required=False, default=4,
+                    help="Number of workers for dataloading")
+  parser.add_argument("--verbose", required=False, action="store_true", default=False,
+                    help="Log data all the time?")
+  parser.add_argument("--use_amp", required=False, action="store_true", default=False,
+                    help="Use automated mixed precision?")
+  parser.add_argument("--adabatch", required=False, action="store_true", default=False,
+                    help="Adaptively increase the batch size when training stagnates to get better performance?")
+  parser.add_argument("--training_stats", required=False, action="store_true", default=False,
+                    help="Calculate training stats?")
+  parser.add_argument("--grid_search", required=False, action="store_true", default=False,
+                    help="Run a grid search across some common hyperparameters?")
+  parser.add_argument("--random_flip", default=False, action="store_true", required=False,
+                    help="Random horizontal flips for data aug?")
+  parser.add_argument("--random_rotate", default=False, action="store_true", required=False,
+                    help="Random rotations for data aug?")
+  parser.add_argument("--gaussian", default=False, action="store_true", required=False,
+                    help="Random gaussian blurs for data aug?")
+  parser.add_argument("--aggressive", default=False, action="store_true", required=False,
+                    help="Random extra aggressive data aug?")                  
+  # args.random_flip = params['random_flip']
+  # args.random_rotate
+  return parser.parse_args()
+
+def setup_logger(args):
+  """Creates and returns a fancy logger."""
+  # return logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(message)s")
+  # Why is setting up proper logging so !@?#! ugly?
+  os.makedirs(os.path.join(args.logdir, args.name), exist_ok=True)
+  logging.config.dictConfig({
+      "version": 1,
+      "disable_existing_loggers": False,
+      "formatters": {
+          "standard": {
+              "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+          },
+      },
+      "handlers": {
+          "stderr": {
+              "level": "INFO",
+              "formatter": "standard",
+              "class": "logging.StreamHandler",
+              "stream": "ext://sys.stderr",
+          },
+          "logfile": {
+              "level": "INFO",
+              "formatter": "standard",
+              "class": "logging.FileHandler",
+              "filename": os.path.join(args.logdir, args.name, "train.log"),
+              "mode": "a",
+          }
+      },
+      "loggers": {
+          "": {
+              "handlers": ["stderr", "logfile"],
+              "level": "DEBUG",
+              "propagate": True
+          },
+      }
+  })
+  logger = logging.getLogger(__name__)
+  logger.flush = lambda: [h.flush() for h in logger.handlers]
+  logger.info(args)
+  return logger
