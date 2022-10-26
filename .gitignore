@@ -13,3 +13,4 @@ output.txt
 *.png
 *csv*
 *.ods*
+log
