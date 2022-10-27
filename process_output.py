@@ -26,7 +26,11 @@ for root, dir, files in os.walk('save'):
         # stats['lr_step_size'].append(int(fileinfo[2].strip('lrstep')))
         # stats['lr_gamma'].append(float(fileinfo[3].strip('lrgam')))
         stats['batch_size'].append(int(fileinfo[4].strip('bat')))
-        stats['test_acc'].append(float(fileinfo[7].strip('.csv')))
+        try: #old way, no spice on the end
+            stats['test_acc'].append(float(fileinfo[7].strip('.csv')))
+        except: #new way, tolerant to additional details
+            stats['test_acc'].append(float(fileinfo[7].split('@')[1]))
+
         stats['stop_reason'].append(str(fileinfo[6].split('@')[0]))
         stats['step'].append(int(fileinfo[6].split('@')[1]))
         try:

@@ -9,6 +9,7 @@ import numpy as np
 from copy import deepcopy
 import argparse
 import logging
+import logging.config
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
@@ -34,7 +35,7 @@ def accuracy(output, target, topk=(1,)): #from pytorch/references/classification
             res.append(correct_k * (100.0 / batch_size))
         return res
       
-def run_eval(args, model, step, stats, device, data_loader, split, logger): #also largely from Google Brain Team Big Transfer
+def run_eval(args, model, step, stats, data_loader, split, logger): #also largely from Google Brain Team Big Transfer
   #setup
   all_c, all_top1, all_top2 = [], [], []
   nb_classes = len(data_loader.dataset.classes)
@@ -44,8 +45,8 @@ def run_eval(args, model, step, stats, device, data_loader, split, logger): #als
   for b, (x, y) in enumerate(data_loader):
     with torch.no_grad():
       with torch.autocast(device_type='cuda', dtype=torch.float16, enabled = args.use_amp): #use amp if enabled
-        x = x.to(device, non_blocking=True)
-        y = y.to(device, non_blocking=True)
+        # x = x.to(device, non_blocking=True)
+        # y = y.to(device, non_blocking=True)
 
         logits = model(x)
         c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
@@ -182,6 +183,8 @@ def parseargs():
                     help="What feature extractor should we use?")
   parser.add_argument("--savedir", default="save", required=False,
                     help="Path to the save folder, for placement of csv and pth files.")
+  parser.add_argument("--loaddir", default="save", required=False,
+                    help="Path to the model you want to load for either continued training or some testing.")
   parser.add_argument("--logdir", default="log", required=False,
                     help="Path to the logs folder.")
   parser.add_argument("--savestats", default=True, action="store_true", required=False,

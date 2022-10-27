@@ -13,4 +13,6 @@ output.txt
 *.png
 *csv*
 *.ods*
-log
+log/
+*.log
+log/unnamed/train.log

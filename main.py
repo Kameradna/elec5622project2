@@ -28,10 +28,9 @@ python run.py --early_stop_steps 1000 --lr_gamma 0.5 --adabatch
 
 
 Todo:
-Implement DistribDataParallel for multi-processing and avoiding python GIL (low pri)
+Use HuggingFace Accelerate with Deepspeed, maybe fsdp see if there is a speedup on me vs old mate
 Cosine Annealing with warm restarts
 Learning rate warmup
-
 
 Future plans-
 I plan to use this as the basis for any future versions of a training loop, or I could use Accelerate from HuggingFace
@@ -42,19 +41,17 @@ import torch
 from sklearn.model_selection import ParameterGrid
 import os
 
-#for DistributedDataParallel
-import torch.distributed as dist
-import torch.multiprocessing as mp
-from torch.nn.parallel import DistributedDataParallel as DDP
+# #for DistributedDataParallel
+# import torch.distributed as dist
+# import torch.multiprocessing as mp
+# from torch.nn.parallel import DistributedDataParallel as DDP
+from accelerate import Accelerator
 
 #more boilerplate stuff
 import pandas as pd
 import numpy as np
 from copy import deepcopy
 import time
-
-import logging
-import logging.config
 
 #other companion code
 import parts
@@ -114,7 +111,7 @@ def grid_search(args, logger):
   best_stat_df.to_csv(os.path.join(args.savedir,name))
 
 def run(args, logger):
-
+  accelerator = Accelerator()
 
   logger.info("Loading model, weights and data")
   torch.backends.cuda.benchmarking = True
@@ -140,15 +137,15 @@ def run(args, logger):
   #setting up training and validation data
   train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess, logger)
   
-  #misc dataparallel
-  device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+  # #misc dataparallel
+  # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
   
 
   logger.debug(f"Classes are {valid_set.classes}")
 
-  #model to dataparallel
-  model = torch.nn.DataParallel(model)
+  # #model to dataparallel
+  # model = torch.nn.DataParallel(model)
   
   #optimiser, loss function, lr scheduler
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
@@ -157,9 +154,10 @@ def run(args, logger):
   optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2//args.eval_every) #other items default
   scaler = torch.cuda.amp.GradScaler(enabled=args.use_amp)
 
+  model, optim, train_loader, valid_loader, test_loader = accelerator.prepare(model, optim, train_loader, valid_loader, test_loader)
 
-  #move to GPU if present
-  model = model.to(device)
+  # #move to GPU if present
+  # model = model.to(device)
   optim.zero_grad(set_to_none=True)
   
   #statbuilding
@@ -182,9 +180,9 @@ def run(args, logger):
   #initial validation
   logger.info("Running initial validation")
   model.eval()
-  stats = parts.run_eval(args, model, step, stats, device, valid_loader, 'valid', logger)
+  stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger)
   if args.training_stats:
-    stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train', logger)
+    stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger)
 
   time_taken = time.perf_counter()-model_start
 
@@ -211,8 +209,8 @@ def run(args, logger):
       model.train()
       with torch.autocast(device_type='cuda', dtype=torch.float16, enabled = args.use_amp): #use amp if enabled
         #move to device
-        x = x.to(device, non_blocking=True)
-        y = y.to(device, non_blocking=True)
+        # x = x.to(device, non_blocking=True)
+        # y = y.to(device, non_blocking=True)
 
         #the forward pass
         logits = model(x)
@@ -220,7 +218,7 @@ def run(args, logger):
         c = criterion(logits, y)
 
       #the backward pass with gradient accumulation
-      scaler.scale(c/args.batch_split).backward() #wrapped with special amp stuff, becomes no-op if disabled
+      accelerator.backward(scaler.scale(c/args.batch_split)) #wrapped with special amp stuff, becomes no-op if disabled
 
       accum_step += 1
       
@@ -238,9 +236,9 @@ def run(args, logger):
         if step % args.eval_every == 0:
             
           model.eval()
-          stats = parts.run_eval(args, model, step, stats, device, valid_loader, 'valid', logger)
+          stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger)
           if args.training_stats:
-            stats = parts.run_eval(args, model, step, stats, device, train_loader, 'train', logger)
+            stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger)
           stats['train_loss'][step] = float(c.data.cpu().numpy())
           stats['lr'][step] = optim.param_groups[0]['lr']
           stats['batch_size'][step] = args.batch_size
@@ -291,7 +289,7 @@ def run(args, logger):
   parts.logstats(args, stats, logger, step, best_step, time_taken)
 
   if test_loader is not None:
-    stats = parts.run_eval(args, model, step, stats, device, test_loader, 'test', logger)
+    stats = parts.run_eval(args, model, step, stats, test_loader, 'test', logger)
     parts.logstats(args, stats, logger, step, best_step, 'end')
 
   logger.info(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
@@ -323,8 +321,7 @@ def setup():
   logger = parts.setup_logger(args)
   return args, logger
 
-  
-if __name__ == "__run__":
+if __name__ == "__main__":
   args, logger = setup()
 
   if args.grid_search:
