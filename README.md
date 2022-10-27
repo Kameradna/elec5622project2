@@ -5,7 +5,10 @@ https://drive.google.com/drive/folders/1gHLaMCayQtvR7viV-2_0TC8H8Fdv6n70?usp=sha
 
 ## Prerequisites
 
-Install a conda env or your choice of sandboxed environment, yml files will be included.
+Install a conda env or your choice of sandboxed environment, yml files will be included. After cloning and entering the directory, run
+```shell
+conda create -n elec5622project2 -f environment.yml
+```
 
 ## Datasets
 ```shell
