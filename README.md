@@ -62,11 +62,21 @@ process_output.py takes the output csv files and reports the aggregated results 
 
 
 ## Actual code
-Absolutely standard Alexnet from pytorch. The code was completed in less than a day.
+Absolutely standard Alexnet from pytorch. The initial code was completed in less than a day.
 
-We restructure the data for passing to the ImageFolder class of Dataset in torchvision.
+Refactoring was undertaken to clean up the main file. Accelerate was used after initially manually managing amp and data parallelism. This will allow for growth in the future if this code is used for a harder problem.
 
-We allow for learning rate scheduling, changing batch size etc.
+We include a test script for finding the test accuracy of a specific pth after the fact.
+
+By file-
+
+In dataset_format we restructure the data for passing to the ImageFolder class of Dataset in torchvision.
+
+Main training in main and parts holds reusable functions.
+
+process_output takes your run history and puts it into a csv for easy perusal.
+
+test is a helpful script for testing an older pth to confirm accuracy.
 
 ![image](https://user-images.githubusercontent.com/48018617/194888313-a586faca-3ff0-4423-9b87-aba254cec9ba.png)
 
@@ -131,6 +141,8 @@ The results at batch sizes of 256 and 512 is not more impressive, and we think t
 When we implemented this via accumulating gradients in the original paper, we reached 98% accuracy and will report the final accuracy once the run concludes. Another attempt was run in parallel when we got access to more computation at a starting batch size of 2048.
 
 ![best98 02](https://user-images.githubusercontent.com/48018617/196847875-b12bc460-59ab-45b7-86f1-45fda978a7a6.png)
+
+We simplified the reporting by eval_every 100 or 200 steps and can achieve near-best accuracy in under an hour.
 
 As an extension, we used Big Transfer; a version of a ResNet-50 with included Group Normalisation trained on ImageNet21k and the BiT hyperule of batch size 512, 500 steps with learning rate warmup to 0.003 and then specific cooldown; achieved similar performance to our best every run in around 2 mins.
 
