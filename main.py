@@ -55,12 +55,12 @@ def grid_search(args, logger):
 
   best_acc = 0.0
   grid_dict = { #params to search through, will cover all combinations
-    'use_amp':[True, False],
     'random_rotate':[True, False],
     'random_flip':[True, False],
     'gaussian':[True, False],
     'aggressive':[True, False],
-    'repeats':range(10)
+    'weight_decay':[0.0,0.0005],
+    'repeats':range(3)
   }
 
   #for testing combos quickly to ensure no issues
@@ -73,9 +73,9 @@ def grid_search(args, logger):
     logger.info(f"Run {idx} of {len(grid)} combinations")
     args.random_flip = params['random_flip']
     args.random_rotate = params['random_rotate']
-    args.use_amp = params['use_amp']
     args.gaussian = params['gaussian']
     args.aggressive = params['aggressive']
+    args.weight_decay = params['weight_decay']
 
     #run run
     stats, step, model, stop_reason, kill_flag = run(args, logger)
@@ -105,13 +105,17 @@ def grid_search(args, logger):
   best_stat_df = pd.DataFrame(best_stats)
   best_stat_df.to_csv(os.path.join(args.savedir,name))
 
+
+
+
 def run(args, logger):
-  accelerator = Accelerator()
+  accelerator = Accelerator(gradient_accumulation_steps=args.batch_split)
 
   logger.info("Loading model, weights and data")
   torch.backends.cuda.benchmarking = True
 
   model_start = time.perf_counter()
+
   #getting transforms
   if args.feature_extractor == 'alexnet':
     weights = AlexNet_Weights.DEFAULT
@@ -129,30 +133,24 @@ def run(args, logger):
 
   preprocess = weights.transforms()
   
+
   #setting up training and validation data
   train_loader, valid_loader, test_loader, train_set, valid_set, test_set = parts.mktrainval(args, preprocess, logger)
   
-  # #misc dataparallel
-  # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-  
 
   logger.debug(f"Classes are {valid_set.classes}")
-
-  # #model to dataparallel
-  # model = torch.nn.DataParallel(model)
   
+
   #optimiser, loss function, lr scheduler
   criterion = torch.nn.CrossEntropyLoss() #.to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9, weight_decay=args.weight_decay)
-  # optim_schedule = torch.optim.lr_scheduler.StepLR(optim, step_size=args.lr_step_size, gamma=args.lr_gamma, last_epoch=- 1, verbose=False)
-  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.early_stop_steps//2//args.eval_every) #other items default
-  scaler = torch.cuda.amp.GradScaler(enabled=args.use_amp)
+  optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.patience) #other items default
 
-  model, optim, train_loader, valid_loader, test_loader = accelerator.prepare(model, optim, train_loader, valid_loader, test_loader)
 
-  # #move to GPU if present
-  # model = model.to(device)
+  model, optim, train_loader, valid_loader, test_loader, optim_schedule = accelerator.prepare(model, optim, train_loader, valid_loader, test_loader, optim_schedule)
+
+
+
   optim.zero_grad(set_to_none=True)
   
   #statbuilding
@@ -171,6 +169,7 @@ def run(args, logger):
   
   step = -1
   accum_step = 0
+
                                                    
   #initial validation
   logger.info("Running initial validation")
@@ -182,6 +181,7 @@ def run(args, logger):
   time_taken = time.perf_counter()-model_start
 
   parts.logstats(args, stats, logger, step, None, None)
+
 
 
   best_valid_acc = stats['valid_acc'][step]
@@ -202,31 +202,37 @@ def run(args, logger):
 
       #onto training
       model.train()
-      with torch.autocast(device_type='cuda', dtype=torch.float16, enabled = args.use_amp): #use amp if enabled
-        #move to device
-        # x = x.to(device, non_blocking=True)
-        # y = y.to(device, non_blocking=True)
+      with accelerator.accumulate(model): #use amp if enabled
 
         #the forward pass
         logits = model(x)
         logits.clamp_(0,1) #actually forced nans in amp scenario
         c = criterion(logits, y)
 
-      #the backward pass with gradient accumulation
-      accelerator.backward(scaler.scale(c/args.batch_split)) #wrapped with special amp stuff, becomes no-op if disabled
-
-      accum_step += 1
-      
-      #apply optimisation and reset grads to None for next pass
-      if accum_step % args.batch_split == 0:
+        #the backward pass with gradient accumulation
+        accelerator.backward(c) #/args.batch_split
+        
         step += 1
-        accum_step = 0                                               
-        scaler.step(optim) #equivalent to optim.step()
-        scaler.update()
+        optim.step()
         optim.zero_grad(set_to_none=True)
+        stats['lr'][step] = optim.param_groups[0]['lr']
 
+        optim_schedule.step(stats['valid_acc'][-1])
 
         stats['train_loss'][step] = float(c.data.cpu().numpy())
+        stats['train_loss'][step] = float(c.data.cpu().numpy())
+        
+        stats['batch_size'][step] = args.batch_size
+        stats['batch_split'][step] = args.batch_split
+
+        #adaptive batching, naively increasing the batch size by reinitialising accelerator and all bits. Does this reset states?????
+        if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
+          args.batch_split = int(args.batch_split*2)
+          logger.info(f"Accumulating grads over {args.batch_split} steps")
+          accelerator = Accelerator(gradient_accumulation_steps=args.batch_split)
+          model, optim, train_loader, valid_loader, test_loader, optim_schedule = accelerator.prepare(model, optim, train_loader, valid_loader, test_loader, optim_schedule)
+
+
         #run validation
         if step % args.eval_every == 0:
             
@@ -234,15 +240,7 @@ def run(args, logger):
           stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger)
           if args.training_stats:
             stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger)
-          stats['train_loss'][step] = float(c.data.cpu().numpy())
-          stats['lr'][step] = optim.param_groups[0]['lr']
-          stats['batch_size'][step] = args.batch_size
-          stats['batch_split'][step] = args.batch_split
-            
-          optim_schedule.step(stats['valid_acc'][step])
-          if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
-            args.batch_split = int(args.batch_split*2)
-            logger.info(f"Accumulating grads over {args.batch_split} steps")
+         
 
           #grab the best model if it happens
           if stats['valid_acc'][step] > best_valid_acc:
@@ -257,11 +255,11 @@ def run(args, logger):
 
         if step - args.early_stop_steps > best_step:
           logger.info(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
-          stop_reason = f'stagnatewithreduceonplateau@{step}'
+          stop_reason = f'stagnate@{step}'
           break
-        if step >= args.early_stop_steps*50:#for worst case scenario of learning continuing at snail pace
-          logger.info(f"Learning has taken too long; {args.early_stop_steps*50} steps, terminating training and running test stats")
-          stop_reason = f'too_slow@{step}'
+        if step >= args.epochs*8701/args.batch_size:#for worst case scenario of learning continuing at snail pace
+          logger.info(f"Learning has taken too long; {args.epochs*8701/args.batch_size} steps, terminating training and running test stats")
+          stop_reason = f'timeout@{step}'
           break
 
         if args.verbose:
@@ -289,11 +287,16 @@ def run(args, logger):
 
   logger.info(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
 
-  name_args = [args.feature_extractor, f"baselr{args.base_lr}", f"lrgam{args.lr_gamma}", "", f"bat{args.batch_size}", f"step{step}", stop_reason, f"{stats['test_acc'][step]:.2f}",  "random_flip" if args.random_flip else '', "random_rotate" if args.random_rotate else '',
-      #spaces to runtain interworking with process_output
+  name_args = [args.feature_extractor, 
+      f"baselr{args.base_lr}", 
+      f"lrgam{args.lr_gamma}", "",       #spaces to runtain interworking with process_output
+      f"bat{args.batch_size}", 
+      f"step{step}", stop_reason, 
+      f"{stats['test_acc'][step]:.2f}",  
+      "random_flip" if args.random_flip else '', 
+      "random_rotate" if args.random_rotate else '',
       "gaussian" if args.gaussian else '',
       "aggressive" if args.aggressive else '',
-      'amp' if args.use_amp else '',
       'weight_decay' if args.weight_decay is not None else ''
       ]
 
@@ -312,12 +315,14 @@ def run(args, logger):
   return stats, step, model, stop_reason, kill_flag
 
 def setup():
+
   args = parts.parseargs()
-  logger = parts.setup_logger(args)
-  return args, logger
+  accelerator = Accelerator(gradient_accumulation_steps=args.batch_split)
+  logger = parts.setup_logger(args, accelerator)
+  return args, logger, accelerator
 
 if __name__ == "__main__":
-  args, logger = setup()
+  args, logger, accelerator = setup()
 
   if args.grid_search:
     grid_search(args, logger)

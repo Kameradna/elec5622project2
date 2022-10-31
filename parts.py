@@ -10,6 +10,7 @@ from copy import deepcopy
 import argparse
 import logging
 import logging.config
+from accelerate.logging import get_logger
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
@@ -44,12 +45,9 @@ def run_eval(args, model, step, stats, data_loader, split, logger): #also largel
 
   for b, (x, y) in enumerate(data_loader):
     with torch.no_grad():
-      with torch.autocast(device_type='cuda', dtype=torch.float16, enabled = args.use_amp): #use amp if enabled
-        # x = x.to(device, non_blocking=True)
-        # y = y.to(device, non_blocking=True)
 
-        logits = model(x)
-        c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
+      logits = model(x)
+      c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
 
       #get stats
       top1, top2 = accuracy(logits, y, topk=(1, 2))
@@ -175,12 +173,6 @@ def parseargs():
                     help="Name for this run, set by default by other args, but feel free to identify a specific run by name")
   parser.add_argument("--datadir", default="data", required=False,
                     help="Path to the data folder, preprocessed for torchvision.")
-  parser.add_argument("--dataset", default="hep2", required=False,
-                    help="What dataset should we use?")
-  parser.add_argument("--classes", default=6, type=int, required=False,
-                    help="How many output classes are there?")
-  parser.add_argument("--feature_extractor", default="alexnet", required=False,
-                    help="What feature extractor should we use?")
   parser.add_argument("--savedir", default="save", required=False,
                     help="Path to the save folder, for placement of csv and pth files.")
   parser.add_argument("--loaddir", default="save", required=False,
@@ -191,58 +183,81 @@ def parseargs():
                     help="Save stats for every run?")
   parser.add_argument("--savepth", default=False, action="store_true", required=False,
                     help="Save pth for every run?")
-  parser.add_argument("--base_lr", type=float, required=False, default=0.003,
-                    help="Base learning rate")
-  # parser.add_argument("--lr_step_size", type=int, required=False, default=100,
-  #                   help="Learning rate schedule step size")
-  parser.add_argument("--lr_gamma", type=float, required=False, default=0.75,
-                    help="Learning rate multiplier every step size")
-                    ################################################################################ under dev
-  parser.add_argument("--weight_decay", type=float, required=False, default=0.0005,
-                    help="Weight decay")
-                #add the sgdr parts, with probably some extra spice with batch size increases
-    # parser.add_argument("--epochs", type=int, required=False, default=100,
-  #                   help="Run how many epochs before terminating?")
-  ################################################################################
-  parser.add_argument("--batch_size", type=int, required=False, default=128,
-                    help="Batch size for training")
-  parser.add_argument("--repeats", type=int, required=False, default=1,
-                    help="Repeat the run how many times?")
-  parser.add_argument("--eval_every", type=int, required=False, default=20,
-                    help="Eval_every so many steps")
-  parser.add_argument("--early_stop_steps", type=int, required=False, default=4000,
-                    help="Number of steps of no learning to terminate")
-  
-  # parser.add_argument("--ada_steps", type=int, required=False, default=9999,
-  #                   help="Number of steps at the initial batch size before doubling")
-  parser.add_argument("--batch_split", type=int, required=False, default=1,
-                    help="Number of batches to accumulate grads initially, before adaptive batch sizing begins")
 
+  #architecture, dataset
+  parser.add_argument("--dataset", default="hep2", required=False,
+                    help="What dataset should we use?")
+  parser.add_argument("--classes", default=6, type=int, required=False,
+                    help="How many output classes are there?")
+  parser.add_argument("--feature_extractor", default="alexnet", required=False,
+                    help="What feature extractor should we use?")
+
+  #dataloading
   parser.add_argument("--num_workers", type=int, required=False, default=4,
                     help="Number of workers for dataloading")
-  parser.add_argument("--verbose", required=False, action="store_true", default=False,
-                    help="Log data all the time?")
-  parser.add_argument("--use_amp", required=False, action="store_true", default=False,
-                    help="Use automated mixed precision?")
+
+  #learning rate schedulers
+
+  parser.add_argument("--step_lr", type=int, required=False, default=None,
+                    help="Learning rate schedule step size, if you want a step size")
+  parser.add_argument("--patience", type=int, required=False, default=2000,
+                    help="Learning rate schedule patience before it decreases the lr")
+  parser.add_argument("--lr_gamma", type=float, required=False, default=0.1,
+                    help="Learning rate multiplier every step size")
+
+
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=4000,
+                    help="Number of steps of no learning to terminate")
+
+
+  #optimiser
+  parser.add_argument("--base_lr", type=float, required=False, default=0.003,
+                    help="Base learning rate")
+  parser.add_argument("--weight_decay", type=float, required=False, default=0.0,
+                    help="Weight decay")
+
+
+  parser.add_argument("--batch_size", type=int, required=False, default=128,
+                    help="Batch size for training")
+  parser.add_argument("--batch_split", type=int, required=False, default=1,
+                    help="Number of batches to accumulate grads initially")
+
+  parser.add_argument("--epochs", type=int, required=False, default=100,
+                  help="Run how many epochs before terminating?")
+
   parser.add_argument("--adabatch", required=False, action="store_true", default=False,
                     help="Adaptively increase the batch size when training stagnates to get better performance?")
-  parser.add_argument("--training_stats", required=False, action="store_true", default=False,
-                    help="Calculate training stats?")
-  parser.add_argument("--grid_search", required=False, action="store_true", default=False,
-                    help="Run a grid search across some common hyperparameters?")
-  parser.add_argument("--random_flip", default=False, action="store_true", required=False,
-                    help="Random horizontal flips for data aug?")
-  parser.add_argument("--random_rotate", default=False, action="store_true", required=False,
-                    help="Random rotations for data aug?")
+
+  
+
+
+  #run types and data aug
+
+  parser.add_argument("--random_flip", default=True, action="store_true", required=False,
+                    help="No random horizontal flips for data aug?")
+  parser.add_argument("--random_rotate", default=True, action="store_false", required=False,
+                    help="No random rotations for data aug?")
   parser.add_argument("--gaussian", default=False, action="store_true", required=False,
                     help="Random gaussian blurs for data aug?")
   parser.add_argument("--aggressive", default=False, action="store_true", required=False,
                     help="Random extra aggressive data aug?")                  
-  # args.random_flip = params['random_flip']
-  # args.random_rotate
+
+  #stats and reporting
+  parser.add_argument("--verbose", required=False, action="store_true", default=False,
+                    help="Log data all the time?")
+  parser.add_argument("--training_stats", required=False, action="store_true", default=False,
+                    help="Calculate training stats?")
+  parser.add_argument("--grid_search", required=False, action="store_true", default=False,
+                    help="Run a grid search across some common hyperparameters?")
+  parser.add_argument("--repeats", type=int, required=False, default=1,
+                    help="Repeat the run how many times?")
+  parser.add_argument("--eval_every", type=int, required=False, default=50,
+                    help="Eval_every so many steps")
+
+
   return parser.parse_args()
 
-def setup_logger(args):
+def setup_logger(args, accelerator):
   """Creates and returns a fancy logger."""
   # return logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(message)s")
   # Why is setting up proper logging so !@?#! ugly?
@@ -278,7 +293,7 @@ def setup_logger(args):
           },
       }
   })
-  logger = logging.getLogger(__name__)
+  logger = get_logger(__name__)
   logger.flush = lambda: [h.flush() for h in logger.handlers]
   logger.info(args)
   return logger
