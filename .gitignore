@@ -16,3 +16,4 @@ output.txt
 log/
 *.log
 log/unnamed/train.log
+log/unnamed/train.log

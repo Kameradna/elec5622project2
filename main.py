@@ -32,8 +32,8 @@ Use HuggingFace Accelerate with Deepspeed, maybe fsdp see if there is a speedup 
 Cosine Annealing with warm restarts
 Learning rate warmup
 
-Future plans-
-I plan to use this as the basis for any future versions of a training loop, or I could use Accelerate from HuggingFace
+Use nvFuser with a newer GPU architecture on more difficult problems to acheive way better performance
+Additionally, using optimum gradient checkpointing for memory management.
 """
 
 from torchvision.models import alexnet, AlexNet_Weights, resnet101, ResNet101_Weights
@@ -41,15 +41,10 @@ import torch
 from sklearn.model_selection import ParameterGrid
 import os
 
-# #for DistributedDataParallel
-# import torch.distributed as dist
-# import torch.multiprocessing as mp
-# from torch.nn.parallel import DistributedDataParallel as DDP
 from accelerate import Accelerator
 
 #more boilerplate stuff
 import pandas as pd
-import numpy as np
 from copy import deepcopy
 import time
 
@@ -59,7 +54,7 @@ import parts
 def grid_search(args, logger):
 
   best_acc = 0.0
-  grid_dict = {
+  grid_dict = { #params to search through, will cover all combinations
     'use_amp':[True, False],
     'random_rotate':[True, False],
     'random_flip':[True, False],

@@ -199,7 +199,7 @@ def parseargs():
                     help="Learning rate multiplier every step size")
                     ################################################################################ under dev
   parser.add_argument("--weight_decay", type=float, required=False, default=0.0005,
-                    help="Learning rate multiplier every step size")
+                    help="Weight decay")
                 #add the sgdr parts, with probably some extra spice with batch size increases
     # parser.add_argument("--epochs", type=int, required=False, default=100,
   #                   help="Run how many epochs before terminating?")
