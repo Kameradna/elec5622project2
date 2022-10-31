@@ -1,0 +1,140 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsthm,amsfonts,amssymb,mathtools}
+\usepackage{physics}
+\usepackage{graphicx}
+    \graphicspath{ {./images/} }
+\usepackage[labelfont=bf]{caption}
+\usepackage[labelformat=simple]{subcaption}
+    \renewcommand\thesubfigure{(\alph{subfigure})}
+\usepackage{enumitem}
+\usepackage{geometry}
+    \geometry{
+        a4paper,
+        hmargin=25mm,
+        vmargin=30mm,
+    }
+
+\usepackage{tabularx}
+    \renewcommand{\arraystretch}{1.5}
+\usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{makecell}
+
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage[capitalise]{cleveref}
+    \newcommand{\crefrangeconjunction}{--}
+
+\usepackage{parskip}
+
+% \usepackage{apacite}
+
+% font fix for Perl renderer 
+\usepackage[T1]{fontenc}
+% \usepackage{tgadventor}
+\usepackage{lmodern}
+    \renewcommand\familydefault{lmr}
+
+% headers
+
+\usepackage{fancyhdr}
+\addtolength{\headheight}{2.5pt}
+\renewcommand{\headrulewidth}{0.75pt}
+\pagestyle{fancy} 
+\fancyhead{}
+\fancyhead[L]{\sc ELEC5622 Project 2 Report}
+\fancyhead[C]{}
+\fancyhead[R]{\sc Group 22}
+
+\newcommand{\sid}{490475621}
+\usepackage{setspace}
+    % \onehalfspacing
+    \setstretch{1.1}
+
+\title{\bfseries Cell Classification \\ \vspace{1.5em}
+\large ELEC5622 Project 2 Report}
+\author{Name (SID) --- Group 22}
+
+% \setlength{\parindent}{0pt}
+% \setlength{\parskip}{3pt}
+
+\begin{document}
+
+\rule{\textwidth}{1pt}
+
+\begin{minipage}[h]{\textwidth}
+    \sffamily\maketitle
+\end{minipage}
+
+\vspace{1.5em}
+
+\rule{\textwidth}{1pt}
+
+\vspace{1em}
+
+{
+    \centering
+
+\thispagestyle{empty}
+
+\newpage
+
+{\large\tableofcontents}
+\thispagestyle{empty}
+
+}
+
+\newpage
+
+\setcounter{page}{1}
+
+\section{Introduction}
+
+
+\section{Aims and Background}
+
+
+\section{Contributions of Team Members}
+
+\begin{table}[!h]
+    \begin{tabularx}{\linewidth}{l X}
+        \toprule
+        Team member & Contribution \\
+        \midrule
+        Philip Rowe & Wrote the SVM section, debugged bash, collated results in CSV and ran all locally \\
+        Matt Dickie & Wrote python code. \\
+        David Keness & Wrote python code. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Methodology}
+
+
+
+\section{Results}
+
+
+
+\section{Discussion}
+
+
+
+\section{Conclusion}
+
+
+\clearpage
+
+\phantomsection
+
+\stepcounter{section}
+\addcontentsline{toc}{section}{\thesection \;\, References}
+\renewcommand{\refname}{\thesection \quad References}
+
+\bibliographystyle{ieeetr}
+\bibliography{refs}
+\nocite{*}
+
+\end{document}
