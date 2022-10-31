@@ -2,13 +2,13 @@ import parts
 import torch
 from torchvision.models import alexnet, AlexNet_Weights, resnet101, ResNet101_Weights
 import time
-from accelerate import Accelerator
+
 
 def test(args, logger):
-    accelerator = Accelerator()
     #run eval
     logger.info("Loading model, weights and data")
     torch.backends.cuda.benchmarking = True
+    device = torch.device('cuda:0') if torch.cuda.is_available else torch.device('cpu')
 
     model_start = time.perf_counter()
     #getting transforms
@@ -47,8 +47,6 @@ def test(args, logger):
     
     #setting up training and validation data
     _, _, test_loader, _, _, test_set = parts.mktrainval(args, preprocess, logger)
-
-    model, test_loader = accelerator.prepare(model, test_loader)
     
     #statbuilding
     stats = {"train_acc":{},
@@ -72,13 +70,13 @@ def test(args, logger):
 
 
     model.eval()
-    stats = parts.run_eval(args, model, step, stats, test_loader, 'test', logger)
+    stats = parts.run_eval(args, model, step, stats, test_loader, 'test', logger, device)
 
     parts.logstats(args, stats, logger, step, 1, 'end')
 
     time_taken = time.perf_counter()-model_start
     
-    logger.info(f"Testing took {(time.perf_counter()-model_start):.2f} seconds")
+    logger.info(f"Testing took {time_taken:.2f} seconds")
 
     return 0
 

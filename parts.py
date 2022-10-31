@@ -10,7 +10,6 @@ from copy import deepcopy
 import argparse
 import logging
 import logging.config
-from accelerate.logging import get_logger
 
 def recycle(iterable): #stolen from Google Brain Big Transfer
   """Variant of itertools.cycle that does not save iterates."""
@@ -36,7 +35,7 @@ def accuracy(output, target, topk=(1,)): #from pytorch/references/classification
             res.append(correct_k * (100.0 / batch_size))
         return res
       
-def run_eval(args, model, step, stats, data_loader, split, logger): #also largely from Google Brain Team Big Transfer
+def run_eval(args, model, step, stats, data_loader, split, logger, device): #also largely from Google Brain Team Big Transfer
   #setup
   all_c, all_top1, all_top2 = [], [], []
   nb_classes = len(data_loader.dataset.classes)
@@ -46,6 +45,8 @@ def run_eval(args, model, step, stats, data_loader, split, logger): #also largel
   for b, (x, y) in enumerate(data_loader):
     with torch.no_grad():
 
+      x = x.to(device, non_blocking=True)
+      y = y.to(device, non_blocking=True)
       logits = model(x)
       c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
 
@@ -257,7 +258,7 @@ def parseargs():
 
   return parser.parse_args()
 
-def setup_logger(args, accelerator):
+def setup_logger(args):
   """Creates and returns a fancy logger."""
   # return logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(message)s")
   # Why is setting up proper logging so !@?#! ugly?
@@ -293,7 +294,7 @@ def setup_logger(args, accelerator):
           },
       }
   })
-  logger = get_logger(__name__)
+  logger = logging.getLogger(__name__)
   logger.flush = lambda: [h.flush() for h in logger.handlers]
   logger.info(args)
   return logger

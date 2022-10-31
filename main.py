@@ -41,8 +41,6 @@ import torch
 from sklearn.model_selection import ParameterGrid
 import os
 
-from accelerate import Accelerator
-
 #more boilerplate stuff
 import pandas as pd
 from copy import deepcopy
@@ -109,7 +107,6 @@ def grid_search(args, logger):
 
 
 def run(args, logger):
-  accelerator = Accelerator(gradient_accumulation_steps=args.batch_split)
 
   logger.info("Loading model, weights and data")
   torch.backends.cuda.benchmarking = True
@@ -140,16 +137,14 @@ def run(args, logger):
 
   logger.debug(f"Classes are {valid_set.classes}")
   
+  device = torch.device('cuda:0') if torch.cuda.is_available else torch.device('cpu')
 
   #optimiser, loss function, lr scheduler
-  criterion = torch.nn.CrossEntropyLoss() #.to(device)
+  criterion = torch.nn.CrossEntropyLoss().to(device)
   optim = torch.optim.SGD(model.parameters(), lr=args.base_lr, momentum=0.9, weight_decay=args.weight_decay)
   optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.patience) #other items default
 
-
-  model, optim, train_loader, valid_loader, test_loader, optim_schedule = accelerator.prepare(model, optim, train_loader, valid_loader, test_loader, optim_schedule)
-
-
+  model = torch.nn.DataParallel(model) #move to gpus
 
   optim.zero_grad(set_to_none=True)
   
@@ -174,9 +169,9 @@ def run(args, logger):
   #initial validation
   logger.info("Running initial validation")
   model.eval()
-  stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger)
+  stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger, device)
   if args.training_stats:
-    stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger)
+    stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger, device)
 
   time_taken = time.perf_counter()-model_start
 
@@ -191,27 +186,41 @@ def run(args, logger):
   step += 1 #so by design, the first trained epoch is 0, while the first initial starting point is at step -1
   last_eval_time = time.perf_counter()
   
+
+
   logger.info("Beginning training")
+
   try:
     kill_flag = False
     training_loop_start = time.perf_counter()
+
+
+
     #run training loop
     for x, y in parts.recycle(train_loader):
+
+      x = x.to(device, non_blocking=True)
+      y = y.to(device, non_blocking=True)
+
+
       if args.verbose:
         logger.info(f"Training step {step}")
 
       #onto training
       model.train()
-      with accelerator.accumulate(model): #use amp if enabled
 
-        #the forward pass
-        logits = model(x)
-        logits.clamp_(0,1) #actually forced nans in amp scenario
-        c = criterion(logits, y)
+      #the forward pass
+      logits = model(x)
+      logits.clamp_(0,1) #actually forced nans in amp scenario
+      c = criterion(logits, y)
 
-        #the backward pass with gradient accumulation
-        accelerator.backward(c) #/args.batch_split
-        
+      #the backward pass with gradient accumulation
+      (c/args.batch_split).backward(c) #/args.batch_split
+      accum_step += 1
+      
+
+      if accum_step % args.batch_split == 0:
+        accum_step = 0
         step += 1
         optim.step()
         optim.zero_grad(set_to_none=True)
@@ -225,22 +234,23 @@ def run(args, logger):
         stats['batch_size'][step] = args.batch_size
         stats['batch_split'][step] = args.batch_split
 
-        #adaptive batching, naively increasing the batch size by reinitialising accelerator and all bits. Does this reset states?????
+
+
+        #adaptive batching
         if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
           args.batch_split = int(args.batch_split*2)
           logger.info(f"Accumulating grads over {args.batch_split} steps")
-          accelerator = Accelerator(gradient_accumulation_steps=args.batch_split)
-          model, optim, train_loader, valid_loader, test_loader, optim_schedule = accelerator.prepare(model, optim, train_loader, valid_loader, test_loader, optim_schedule)
+
 
 
         #run validation
         if step % args.eval_every == 0:
             
           model.eval()
-          stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger)
+          stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger, device)
           if args.training_stats:
-            stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger)
-         
+            stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger, device)
+          
 
           #grab the best model if it happens
           if stats['valid_acc'][step] > best_valid_acc:
@@ -265,6 +275,10 @@ def run(args, logger):
         if args.verbose:
           logger.info(f"Training step took {time.perf_counter()-training_loop_start:.2f} seconds")
         ######### end of training loop
+
+
+
+
   except KeyboardInterrupt:
     logger.info(f"Keyboard interrupted training, calculating test accuracy!")
     kill_flag = input("Do you want to end all runs? [y]/n")
@@ -274,6 +288,8 @@ def run(args, logger):
       kill_flag = False
     stop_reason = f'keyboard@{step}'
 
+
+
   
   #display best stats
   model.load_state_dict(best_weights)
@@ -282,7 +298,7 @@ def run(args, logger):
   parts.logstats(args, stats, logger, step, best_step, time_taken)
 
   if test_loader is not None:
-    stats = parts.run_eval(args, model, step, stats, test_loader, 'test', logger)
+    stats = parts.run_eval(args, model, step, stats, test_loader, 'test', logger, device)
     parts.logstats(args, stats, logger, step, best_step, 'end')
 
   logger.info(f"Training took {args.batch_size/8701*step:.2f} epochs, {(time.perf_counter()-model_start)/3600:.2f} hours")
@@ -314,15 +330,18 @@ def run(args, logger):
 
   return stats, step, model, stop_reason, kill_flag
 
+
+
 def setup():
 
   args = parts.parseargs()
-  accelerator = Accelerator(gradient_accumulation_steps=args.batch_split)
-  logger = parts.setup_logger(args, accelerator)
-  return args, logger, accelerator
+  logger = parts.setup_logger(args)
+  return args, logger
+
+
 
 if __name__ == "__main__":
-  args, logger, accelerator = setup()
+  args, logger = setup()
 
   if args.grid_search:
     grid_search(args, logger)
