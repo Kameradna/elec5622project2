@@ -145,7 +145,8 @@ def run(args, logger):
   optim_schedule = torch.optim.lr_scheduler.ReduceLROnPlateau(optim, mode='max', factor=args.lr_gamma, patience=args.patience) #other items default
 
   model = torch.nn.DataParallel(model) #move to gpus
-
+  model.to(device)
+  
   optim.zero_grad(set_to_none=True)
   
   #statbuilding
