@@ -207,7 +207,7 @@ def parseargs():
                     help="Learning rate multiplier every step size")
 
 
-  parser.add_argument("--early_stop_steps", type=int, required=False, default=4000,
+  parser.add_argument("--early_stop_steps", type=int, required=False, default=5000,
                     help="Number of steps of no learning to terminate")
 
 

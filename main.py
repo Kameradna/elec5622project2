@@ -172,6 +172,8 @@ def run(args, logger):
   stats = parts.run_eval(args, model, step, stats, valid_loader, 'valid', logger, device)
   if args.training_stats:
     stats = parts.run_eval(args, model, step, stats, train_loader, 'train', logger, device)
+  last_eval_result = stats['valid_acc'][step]
+
 
   time_taken = time.perf_counter()-model_start
 
@@ -225,21 +227,12 @@ def run(args, logger):
         optim.step()
         optim.zero_grad(set_to_none=True)
         stats['lr'][step] = optim.param_groups[0]['lr']
-
-        optim_schedule.step(stats['valid_acc'][-1])
-
+          
         stats['train_loss'][step] = float(c.data.cpu().numpy())
         stats['train_loss'][step] = float(c.data.cpu().numpy())
         
         stats['batch_size'][step] = args.batch_size
         stats['batch_split'][step] = args.batch_split
-
-
-
-        #adaptive batching
-        if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
-          args.batch_split = int(args.batch_split*2)
-          logger.info(f"Accumulating grads over {args.batch_split} steps")
 
 
 
@@ -260,8 +253,18 @@ def run(args, logger):
 
           time_taken = (time.perf_counter()-last_eval_time)/args.eval_every
           last_eval_time = time.perf_counter()
-          
+
           parts.logstats(args, stats, logger, step, best_step, time_taken)
+
+          last_eval_result = stats['valid_acc'][step]
+
+        optim_schedule.step(last_eval_result)
+
+        #adaptive batching
+        if stats['lr'][step] != optim.param_groups[0]['lr'] and args.adabatch: #if the scheduler changed the learning rate by gamma
+          args.batch_split = int(args.batch_split*2)
+          logger.info(f"Accumulating grads over {args.batch_split} steps")
+       
 
         if step - args.early_stop_steps > best_step:
           logger.info(f"Learning has stagnated for {args.early_stop_steps} steps, terminating training and running test stats")
