@@ -43,6 +43,9 @@ def test(args, logger):
 
     print(f"successfully loaded model to resume from '{args.loaddir}'")
 
+    model = torch.nn.DataParallel(model)
+    model.to(device)
+
     preprocess = weights.transforms()
     
     #setting up training and validation data
